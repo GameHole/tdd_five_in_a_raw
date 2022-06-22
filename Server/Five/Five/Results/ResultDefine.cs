@@ -12,7 +12,7 @@ namespace Five
 
 
         public static readonly Result GameNotStart = new Result(30000);
-        public static readonly Result PlayerIsNotThis = new Result(30001);
+        public static readonly Result NotCurrentTurnPlayer = new Result(30001);
         public static readonly Result AllReadyHasChess = new Result(30002);
     }
 }

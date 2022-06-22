@@ -93,5 +93,26 @@ namespace FivesUnitTest
             await Task.Delay(1100);
             Assert.AreEqual(0, game.turn.index);
         }
+        [Test]
+        public void testPlay()
+        {
+            var result = player0.Play(1, 0);
+            Assert.AreEqual(ResultDefine.Success, result);
+            Assert.AreEqual(1, game.chessboard.GetValue(1, 0));
+            Assert.AreEqual(1, game.turn.index);
+            result = player0.Play(2, 0);
+            Assert.AreEqual(ResultDefine.NotCurrentTurnPlayer, result);
+            Assert.AreEqual(0, game.chessboard.GetValue(2, 0));
+            Assert.AreEqual(1, game.turn.index);
+        }
+        [Test]
+        public void testPlayOnePlace()
+        {
+            game.chessboard.AddValue(1, 0, 2);
+            var result = player0.Play(1, 0);
+            Assert.AreEqual(ResultDefine.AllReadyHasChess, result);
+            Assert.AreEqual(2, game.chessboard.GetValue(1, 0));
+            Assert.AreEqual(0, game.turn.index);
+        }
     }
 }

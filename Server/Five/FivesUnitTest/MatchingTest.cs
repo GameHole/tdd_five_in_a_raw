@@ -25,9 +25,9 @@ namespace FivesUnitTest
             var player = new LogPlayer();
             matching.Match(player);
             Assert.AreEqual("Match ", player.log);
-            Assert.AreNotEqual(null, player.game);
+            Assert.AreNotEqual(0, player.GameId);
             Assert.AreEqual(1, matching.GameCount);
-            Assert.AreEqual(1, player.game.PlayerCount);
+            Assert.AreEqual(1, matching.GetGame(player.GameId).PlayerCount);
         }
         [Test]
         public void testMatchTwoPlayer()
@@ -58,7 +58,7 @@ namespace FivesUnitTest
             {
                 matching.Match(players[i]);
             }
-            Assert.AreNotEqual(players[0].game.Id, players[2].game.Id);
+            Assert.AreNotEqual(players[0].GameId, players[2].GameId);
         }
         [Test]
         public void testGetGame()
@@ -70,7 +70,7 @@ namespace FivesUnitTest
         {
             var player = new LogPlayer();
             matching.Match(player);
-            int id = player.game.Id;
+            int id = player.GameId;
             matching.Cancel(player);
             Assert.AreEqual(0, matching.GetGame(id).PlayerCount);
             Assert.AreEqual("Match CancelMatch ", player.log);

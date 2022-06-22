@@ -49,7 +49,7 @@ namespace FivesUnitTest
             game.Join(player0);
             Assert.IsTrue(game.ContainPlayer(player0));
             Assert.AreEqual(0, player0.PlayerId);
-            Assert.AreEqual(game, player0.game);
+            Assert.AreEqual(game.Id, player0.GameId);
             Assert.AreEqual(1, game.PlayerCount);
             Assert.AreEqual(player0, game.GetPlayer(player0.PlayerId));
         }
@@ -61,7 +61,7 @@ namespace FivesUnitTest
             game.Remove(player0);
             Assert.AreEqual(-1, player0.PlayerId);
             Assert.AreEqual(0, game.PlayerCount);
-            Assert.AreEqual(null, player0.game);
+            Assert.AreEqual(0, player0.GameId);
             Assert.IsFalse(game.ContainPlayer(player0));
         }
         [Test]

@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Five
 {
-    public class Game
+    public class Game:IPlayable
     {
         private Dictionary<int,Player> players;
         private readonly int maxPlayer = 2;
@@ -34,7 +34,8 @@ namespace Five
         {
             var index = players.Count;
             players.Add(index, player);
-            player.game = this;
+            player.GameId = Id;
+            player.playable = new WaitGamePlayable();
             player.PlayerId = index;
         }
 
@@ -56,24 +57,37 @@ namespace Five
             var chess = 1;
             foreach (var item in players.Values)
             {
-                item.Start(this, chess++);
+                item.Start(chess++);
             }
             turn.Start();
+            TurnPlayer();
             TimerDriver.Start(timer);
             timer.onTime -= nextPlayer;
             timer.onTime += nextPlayer;
         }
 
+        private void TurnPlayer()
+        {
+            foreach (var item in players.Values)
+            {
+                if (item.PlayerId == turn.index)
+                    item.playable = this;
+                else
+                    item.playable = new NotTurnPlayable();
+            }
+        }
+
         private void nextPlayer()
         {
             turn.Next();
+            TurnPlayer();
         }
 
         void Finish(int id)
         {
             foreach (var item in players.Values)
             {
-                item.Finish();
+                item.Reset();
             }
             TimerDriver.Stop(timer);
             onFinish?.Invoke(id);
@@ -84,16 +98,8 @@ namespace Five
             return players.ContainsKey(player.PlayerId);
         }
 
-        internal Result Play(int x,int y,Player player)
+        public Result Play(int x,int y,Player player)
         {
-            if (player.chess == 0)
-            {
-                return ResultDefine.GameNotStart;
-            }
-            if (player.PlayerId != turn.index)
-            {
-                return ResultDefine.PlayerIsNotThis;
-            }
             if (!chessboard.AddValue(x, y, player.chess))
             {
                 return ResultDefine.AllReadyHasChess;

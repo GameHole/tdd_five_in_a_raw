@@ -8,9 +8,9 @@ namespace FivesUnitTest
     class LogPlayer : Player
     {
         public string log = "";
-        public override void Start(Game game, int chess)
+        public override void Start(int chess)
         {
-            base.Start(game, chess);
+            base.Start(chess);
             log += "Start ";
         }
         public override void Match()

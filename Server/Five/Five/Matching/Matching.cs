@@ -47,7 +47,7 @@ namespace Five
 
         public void Cancel(Player player)
         {
-            var game = player.game;
+            var game = GetGame(player.GameId);
             game?.Remove(player);
             player.CancelMatch();
         }
