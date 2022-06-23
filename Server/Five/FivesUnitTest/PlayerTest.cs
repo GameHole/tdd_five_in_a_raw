@@ -17,7 +17,6 @@ namespace FivesUnitTest
             game.Join(player);
             player.Start(1);
         }
-
         [Test]
         public void testJoinedPlayer()
         {
@@ -37,12 +36,10 @@ namespace FivesUnitTest
             game.Join(player);
             Assert.AreEqual(ResultDefine.GameNotStart, player.Play(0, 0));
         }
-       
-        
         [Test]
-        public void testReset()
+        public void testFinish()
         {
-            player.Reset();
+            player.Finish();
             Assert.AreEqual(0, player.chess);
             Assert.AreEqual(0, player.GameId);
             Assert.AreEqual(-1, player.PlayerId);
@@ -51,5 +48,6 @@ namespace FivesUnitTest
                 player.Play(0, 0);
             });
         }
+        
     }
 }

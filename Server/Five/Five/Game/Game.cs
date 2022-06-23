@@ -87,7 +87,7 @@ namespace Five
         {
             foreach (var item in players.Values)
             {
-                item.Reset();
+                item.Finish();
             }
             TimerDriver.Stop(timer);
             onFinish?.Invoke(id);

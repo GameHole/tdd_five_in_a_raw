@@ -9,11 +9,11 @@ namespace Five
         List<Game> games = new List<Game>();
         public int GameCount { get=> games.Count;}
 
-        public void Match(Player player)
+        public void Match(Matcher master)
         {
             var game = FactroyGame();
-            game.Join(player);
-            player.Match();
+            game.Join(master.Player);
+            master.Matched();
             if (game.isFull())
             {
                 game.Start();
@@ -45,11 +45,11 @@ namespace Five
             return games.Find(g => g.Id == id);
         }
 
-        public void Cancel(Player player)
+        public void Cancel(Matcher master)
         {
-            var game = GetGame(player.GameId);
-            game?.Remove(player);
-            player.CancelMatch();
+            var game = GetGame(master.GameId);
+            game?.Remove(master.Player);
+            master.Canceled();
         }
     }
 }

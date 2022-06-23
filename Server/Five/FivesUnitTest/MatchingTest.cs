@@ -22,20 +22,20 @@ namespace FivesUnitTest
         [Test]
         public void testMatchOnePlayer()
         {
-            var player = new LogPlayer();
-            matching.Match(player);
-            Assert.AreEqual("Match ", player.log);
-            Assert.AreNotEqual(0, player.GameId);
+            var master = new LogMaster();
+            matching.Match(master);
+            Assert.AreEqual("Match ", master.log);
+            Assert.AreNotEqual(0, master.GameId);
             Assert.AreEqual(1, matching.GameCount);
-            Assert.AreEqual(1, matching.GetGame(player.GameId).PlayerCount);
+            Assert.AreEqual(1, matching.GetGame(master.GameId).PlayerCount);
         }
         [Test]
         public void testMatchTwoPlayer()
         {
-            var players = new LogPlayer[2];
+            var players = new LogMaster[2];
             for (int i = 0; i < players.Length; i++)
             {
-                players[i] = new LogPlayer();
+                players[i] = new LogMaster();
             }
             for (int i = 0; i < players.Length; i++)
             {
@@ -49,10 +49,10 @@ namespace FivesUnitTest
         [Test]
         public void testMatchMutltyPlayer()
         {
-            var players = new LogPlayer[4];
+            var players = new LogMaster[4];
             for (int i = 0; i < players.Length; i++)
             {
-                players[i] = new LogPlayer();
+                players[i] = new LogMaster();
             }
             for (int i = 0; i < players.Length; i++)
             {
@@ -68,7 +68,7 @@ namespace FivesUnitTest
         [Test]
         public void testCancel()
         {
-            var player = new LogPlayer();
+            var player = new LogMaster();
             matching.Match(player);
             int id = player.GameId;
             matching.Cancel(player);
