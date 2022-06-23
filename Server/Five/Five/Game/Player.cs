@@ -21,7 +21,7 @@ namespace Five
             this.chess = chess;
             onStart?.Invoke();
         }
-        public Result Play(int x,int y)
+        public virtual Result Play(int x,int y)
         {
             return playable.Play(x, y, this);
         }

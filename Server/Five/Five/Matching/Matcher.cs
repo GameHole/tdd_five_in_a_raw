@@ -6,14 +6,14 @@ namespace Five
 {
     public class Matcher
     {
-        public Player Player { get; private set; }
+        public Player Player { get; set; }
         private IMatchable matchable;
         Dictionary<Type, IMatchable> kv = new Dictionary<Type, IMatchable>();
         void Add<T>(T item) where T : IMatchable
         {
             kv.Add(typeof(T), item);
         }
-        public void Set<T>() where T : IMatchable
+        internal void Set<T>() where T : IMatchable
         {
             matchable = kv[typeof(T)];
         }
