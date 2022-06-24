@@ -6,7 +6,7 @@ using System.Text;
 
 namespace FivesUnitTest
 {
-    class MatchingTest
+    class TestMatching
     {
         Matching matching;
         [SetUp]
@@ -22,7 +22,7 @@ namespace FivesUnitTest
         [Test]
         public void testMatchOnePlayer()
         {
-            var master = new LogMaster();
+            var master = new LogMatcher();
             matching.Match(master);
             Assert.AreEqual("Match ", master.log);
             Assert.AreNotEqual(0, master.GameId);
@@ -32,10 +32,10 @@ namespace FivesUnitTest
         [Test]
         public void testMatchTwoPlayer()
         {
-            var players = new LogMaster[2];
+            var players = new LogMatcher[2];
             for (int i = 0; i < players.Length; i++)
             {
-                players[i] = new LogMaster();
+                players[i] = new LogMatcher();
             }
             for (int i = 0; i < players.Length; i++)
             {
@@ -49,10 +49,10 @@ namespace FivesUnitTest
         [Test]
         public void testMatchMutltyPlayer()
         {
-            var players = new LogMaster[4];
+            var players = new LogMatcher[4];
             for (int i = 0; i < players.Length; i++)
             {
-                players[i] = new LogMaster();
+                players[i] = new LogMatcher();
             }
             for (int i = 0; i < players.Length; i++)
             {
@@ -68,7 +68,7 @@ namespace FivesUnitTest
         [Test]
         public void testCancel()
         {
-            var player = new LogMaster();
+            var player = new LogMatcher();
             matching.Match(player);
             int id = player.GameId;
             matching.Cancel(player);

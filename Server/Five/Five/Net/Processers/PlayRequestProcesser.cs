@@ -6,6 +6,8 @@ namespace Five
 {
     class PlayRequestProcesser : RequestProcesser
     {
+        public override int MessageCode => 5;
+
         protected override Result processIntarnal(Message message)
         {
             PlayMessage playMessage = (PlayMessage)message;

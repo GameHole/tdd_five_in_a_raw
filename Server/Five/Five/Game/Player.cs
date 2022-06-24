@@ -6,6 +6,7 @@ namespace Five
 {
     public class Player
     {
+        public INotifier notifier;
         internal IPlayable playable;
         public int GameId { get; internal set; }
         public int chess { get; private set; }
@@ -15,6 +16,7 @@ namespace Five
         public Player()
         {
             Reset();
+            notifier = new NoneNotifier();
         }
         public virtual void Start(int chess)
         {
@@ -33,7 +35,7 @@ namespace Five
             chess = 0;
         }
 
-        public void Finish()
+        public virtual void Finish()
         {
             Reset();
             onFinish?.Invoke();

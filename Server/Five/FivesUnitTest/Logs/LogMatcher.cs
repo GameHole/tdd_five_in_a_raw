@@ -5,13 +5,13 @@ using System.Text;
 
 namespace FivesUnitTest
 {
-    class LogMaster : Matcher
+    class LogMatcher : Matcher
     {
         public string log = "";
-        public LogMaster():base(null)
+        public LogMatcher():base(null)
         {
         }
-        public LogMaster(Matching matching) : base(matching)
+        public LogMatcher(Matching matching) : base(matching)
         {
         }
 

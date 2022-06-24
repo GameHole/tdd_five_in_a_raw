@@ -6,7 +6,7 @@ namespace Five
 {
     public interface IMatchable
     {
-        Result Match(Matcher player);
-        Result Cancel(Matcher player);
+        Result Match(Matcher matcher);
+        Result Cancel(Matcher matcher);
     }
 }

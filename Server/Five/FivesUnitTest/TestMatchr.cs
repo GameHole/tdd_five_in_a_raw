@@ -6,13 +6,13 @@ using System.Text;
 
 namespace FivesUnitTest
 {
-    class MatchrTest
+    class TestMatchr
     {
-        LogMaster master;
+        LogMatcher master;
         [SetUp]
         public void SetUp()
         {
-            master = new LogMaster(new Matching());
+            master = new LogMatcher(new Matching());
         }
         [Test]
         public void testMatch()

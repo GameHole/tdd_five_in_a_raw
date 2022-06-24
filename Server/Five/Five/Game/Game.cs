@@ -7,11 +7,16 @@ namespace Five
     public class Game:IPlayable
     {
         private Dictionary<int,Player> players;
-        private readonly int maxPlayer = 2;
-        public Turn turn;
-        public LoopTimer timer;
-        public Chessboard chessboard;
+        private GameNotifier gameNotifier;
+       
+        public readonly int maxPlayer = 2;
+        public Turn turn { get; private set; }
+        public LoopTimer timer { get; private set; }
+        public Chessboard chessboard { get; private set; }
         public int Id;
+       
+        public int PlayerCount { get => players.Count; }
+        public IEnumerable<Player> Players { get => players.Values; }
 
         public Game()
         {
@@ -19,6 +24,7 @@ namespace Five
             turn = new Turn(maxPlayer);
             timer = new LoopTimer(30);
             chessboard = new Chessboard(15, 15);
+            gameNotifier = new GameNotifier(this);
         }
 
         public bool isFull()
@@ -26,9 +32,6 @@ namespace Five
             return PlayerCount >= maxPlayer;
         }
 
-        public event Action<int> onFinish;
-
-        public int PlayerCount { get => players.Count; }
 
         public void Join(Player player)
         {
@@ -62,10 +65,10 @@ namespace Five
             turn.Start();
             TurnPlayer();
             TimerDriver.Start(timer);
-            timer.onTime -= nextPlayer;
-            timer.onTime += nextPlayer;
+            timer.onTime -= NextPlayer;
+            timer.onTime += NextPlayer;
+            gameNotifier.NotifyStart();
         }
-
         private void TurnPlayer()
         {
             foreach (var item in players.Values)
@@ -77,21 +80,23 @@ namespace Five
             }
         }
 
-        private void nextPlayer()
+        private void NextPlayer()
         {
             turn.Next();
             TurnPlayer();
         }
 
-        void Finish(int id)
+        public void Finish(int id)
         {
             foreach (var item in players.Values)
             {
                 item.Finish();
             }
             TimerDriver.Stop(timer);
-            onFinish?.Invoke(id);
+            gameNotifier.NotifyFinish(id);
         }
+
+        
 
         public bool ContainPlayer(Player player)
         {
@@ -110,7 +115,8 @@ namespace Five
             }
             else
             {
-                nextPlayer();
+                gameNotifier.NotifyPlay(x, y, player.PlayerId);
+                NextPlayer();
             }
             return ResultDefine.Success;
         }

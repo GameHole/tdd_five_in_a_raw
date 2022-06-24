@@ -6,7 +6,7 @@ using System.Text;
 
 namespace FivesUnitTest
 {
-    class MessageTest
+    class TestMessage
     {
         [Test]
         public void testMessage()
@@ -21,10 +21,18 @@ namespace FivesUnitTest
             Assert.AreEqual("opcode:1", message.ToString());
         }
         [Test]
+        public void testResponse()
+        {
+            var msg = new Message(1);
+            var message = new Response(msg, new Result(1));
+            Assert.AreEqual(msg.opcode + 1, message.opcode);
+            Assert.AreEqual(1, message.result);
+        }
+        [Test]
         public void testResToString()
         {
             var message = new Response(new Message(1),new Result(1));
-            Assert.AreEqual("opcode:1 result:1", message.ToString());
+            Assert.AreEqual("opcode:2 result:1", message.ToString());
         }
     }
 }

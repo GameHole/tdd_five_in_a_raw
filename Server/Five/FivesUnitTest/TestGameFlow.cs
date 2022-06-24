@@ -7,40 +7,46 @@ using System.Threading.Tasks;
 
 namespace FivesUnitTest
 {
-    class GameFlowTest
+    class TestGameFlow
     {
         Game game;
-        LogPlayer player0;
-        LogPlayer player1;
+        LogPlayer[] players;
+        LogNotifier[] ntfs;
         [SetUp]
         public void SetUp()
         {
             game = new Game();
-            player0 = new LogPlayer();
-            player1 = new LogPlayer();
-            game.Join(player0);
-            game.Join(player1);
+            players = new LogPlayer[2];
+            ntfs = new LogNotifier[2];
+            for (int i = 0; i < players.Length; i++)
+            {
+                var player = new LogPlayer();
+                ntfs[i] = new LogNotifier();
+                player.notifier = ntfs[i];
+                game.Join(player);
+                players[i] = player;
+            }
             game.Start();
         }
         [Test]
         public void testGameStart()
         {
             var localGame = new Game();
-            player0 = new LogPlayer();
-            player1 = new LogPlayer();
-            localGame.Join(player0);
-            localGame.Join(player1);
+            for (int i = 0; i < players.Length; i++)
+            {
+                players[i] = new LogPlayer();
+                localGame.Join(players[i]);
+            }
             localGame.turn.index = 1;
             localGame.Start();
-            Assert.AreEqual("Start ", player0.log);
-            Assert.AreEqual("Start ", player1.log);
-            Assert.AreEqual(1, player0.chess);
-            Assert.AreEqual(2, player1.chess);
-            Assert.AreEqual(0, localGame.turn.index);
-            player0.Play(0, 0);
-            Assert.AreEqual(player0.chess, localGame.chessboard.GetValue(0, 0));
-            player1.Play(0, 1);
-            Assert.AreEqual(player1.chess, localGame.chessboard.GetValue(0, 1));
+            for (int i = 0; i < players.Length; i++)
+            {
+                var item = players[i];
+                Assert.AreEqual("Start ", item.log);
+                Assert.AreEqual(i + 1, item.chess);
+                item.Play(0, i);
+                Assert.AreEqual(item.chess, localGame.chessboard.GetValue(0, i));
+            }
         }
         [Test]
         public void testGameStartRepeet()
@@ -63,10 +69,10 @@ namespace FivesUnitTest
             game.timer.Update(game.timer.time);
             Assert.AreEqual(1, game.turn.index);
             Assert.AreEqual(0, game.chessboard.Count);
-            player0.Play(0, 0);
+            players[0].Play(0, 0);
             Assert.AreEqual(0, game.chessboard.GetValue(0, 0));
             Assert.AreEqual(0, game.chessboard.Count);
-            player1.Play(0, 0);
+            players[1].Play(0, 0);
             Assert.AreEqual(0, game.turn.index);
             Assert.AreEqual(1, game.chessboard.Count);
         }
@@ -74,20 +80,17 @@ namespace FivesUnitTest
         public async Task testFinish()
         {
             game.timer.time = 1;
-            var log = "";
-            game.onFinish += (id) =>
-            {
-                log += $"onFinish:{id}";
-            };
-            game.chessboard.AddValue(0,0, player0.chess);
-            game.chessboard.AddValue(1, 0, player0.chess);
-            game.chessboard.AddValue(2, 0, player0.chess);
-            game.chessboard.AddValue(3, 0, player0.chess);
-            player0.Play(4, 0);
-            Assert.AreEqual("onFinish:0", log);
+            var chess = players[0].chess;
+            game.chessboard.AddValue(0,0, chess);
+            game.chessboard.AddValue(1, 0, chess);
+            game.chessboard.AddValue(2, 0, chess);
+            game.chessboard.AddValue(3, 0, chess);
+            players[0].Play(4, 0);
+            Assert.AreEqual("Start Play(4,0) Finish ", players[0].log);
+            Assert.AreEqual("Start Finish ", players[1].log);
             Assert.AreEqual(0, game.turn.index);
-            player1.Play(10, 10);
-            Assert.AreEqual("onFinish:0", log);
+            players[1].Play(10, 10);
+            Assert.AreEqual("Start Play(4,0) Finish ", players[0].log);
             Assert.AreEqual(0, game.turn.index);
             Assert.AreEqual(0, game.chessboard.GetValue(10,10));
             await Task.Delay(1100);
@@ -96,20 +99,30 @@ namespace FivesUnitTest
         [Test]
         public void testPlay()
         {
-            var result = player0.Play(1, 0);
+            var result = players[0].Play(1, 0);
             Assert.AreEqual(ResultDefine.Success, result);
             Assert.AreEqual(1, game.chessboard.GetValue(1, 0));
             Assert.AreEqual(1, game.turn.index);
-            result = player0.Play(2, 0);
+            result = players[0].Play(2, 0);
             Assert.AreEqual(ResultDefine.NotCurrentTurnPlayer, result);
             Assert.AreEqual(0, game.chessboard.GetValue(2, 0));
             Assert.AreEqual(1, game.turn.index);
         }
         [Test]
+        public void testNotify()
+        {
+            Assert.AreEqual("Start(0,1)(1,2)", ntfs[0].log);
+            Assert.AreEqual(ntfs[0].log, ntfs[1].log);
+            players[0].Play(1, 0);
+            Assert.AreEqual("Played(1,0)id:0", ntfs[0].log);
+            game.Finish(0);
+            Assert.AreEqual("Finish:0", ntfs[0].log);
+        }
+        [Test]
         public void testPlayOnePlace()
         {
             game.chessboard.AddValue(1, 0, 2);
-            var result = player0.Play(1, 0);
+            var result = players[0].Play(1, 0);
             Assert.AreEqual(ResultDefine.AllReadyHasChess, result);
             Assert.AreEqual(2, game.chessboard.GetValue(1, 0));
             Assert.AreEqual(0, game.turn.index);

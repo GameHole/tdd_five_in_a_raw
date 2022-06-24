@@ -20,5 +20,10 @@ namespace FivesUnitTest
             log += $"Play({x},{y}) ";
             return base.Play(x, y);
         }
+        public override void Finish()
+        {
+            base.Finish();
+            log += $"Finish ";
+        }
     }
 }

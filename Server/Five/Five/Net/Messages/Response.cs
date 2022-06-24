@@ -7,10 +7,12 @@ namespace Five
     public class Response:Message
     {
         public int result;
-
-        public Response(Message message,Result result):base(message.opcode)
+        public Response(int opcode, int result) : base(opcode)
         {
-            this.result = result.code;
+            this.result = result;
+        }
+        public Response(Message message,Result result):this(MessageCode.GetResponseCode(message.opcode), result.code)
+        {
         }
         public override string ToString()
         {

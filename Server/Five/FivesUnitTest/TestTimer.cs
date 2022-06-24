@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace FivesUnitTest
 {
-    class TimerTest
+    class TestTimer
     {
         LoopTimer timer;
         [SetUp]

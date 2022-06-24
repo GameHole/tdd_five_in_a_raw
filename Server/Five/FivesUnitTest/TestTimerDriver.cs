@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace FivesUnitTest
 {
-    class TimerDriverTest
+    class TestTimerDriver
     {
         [SetUp]
         public void SetUp()

@@ -5,7 +5,7 @@ using System.Text;
 using Five;
 namespace FivesUnitTest
 {
-    class PlayerTest
+    class TestPlayer
     {
         Player player;
         Game game;

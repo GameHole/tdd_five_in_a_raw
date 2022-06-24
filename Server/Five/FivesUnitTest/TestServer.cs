@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace FivesUnitTest
 {
-    class ServerTest
+    class TestServer
     {
         [Test]
         public async Task testStart()

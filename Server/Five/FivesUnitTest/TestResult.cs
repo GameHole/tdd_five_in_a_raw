@@ -6,7 +6,7 @@ using System.Text;
 
 namespace FivesUnitTest
 {
-    class ResultTest
+    class TestResult
     {
         [Test]
         public void testResult()

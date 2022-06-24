@@ -9,21 +9,25 @@ namespace Five
     {
         public Client(ASocket socket, Matcher matcher)
         {
-            processers = new RequestProcesser[]
-            {
-                new MatchRequestProcesser(),
-                new CancelRequestProcesser(),
-                new PlayRequestProcesser()
-            };
-            foreach (var item in processers)
+            processers = new Dictionary<int, RequestProcesser>();
+            Add(new MatchRequestProcesser());
+            Add(new CancelRequestProcesser());
+            Add(new PlayRequestProcesser());
+            foreach (var item in processers.Values)
             {
                 item.Init(socket, matcher);
             }
+            socket.onRecv = Process;
         }
-        RequestProcesser[] processers;
-        public void Process(Message message)
+        void Add(RequestProcesser processer)
         {
-            processers[message.opcode - 1].Process(message);
+            processers.Add(processer.MessageCode, processer);
+        }
+        Dictionary<int, RequestProcesser> processers;
+        public virtual void Process(Message message)
+        {
+            if (processers.TryGetValue(message.opcode, out var processer))
+                processer.Process(message);
         }
     }
 }

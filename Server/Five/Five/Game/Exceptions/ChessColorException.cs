@@ -4,6 +4,7 @@ using System.Text;
 
 namespace Five
 {
+    [Serializable]
     public class ChessColorException:Exception
     {
         public ChessColorException(string msg) : base(msg) { }
