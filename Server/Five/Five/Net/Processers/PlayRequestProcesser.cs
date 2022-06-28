@@ -10,7 +10,7 @@ namespace Five
 
         protected override Result processIntarnal(Message message)
         {
-            PlayMessage playMessage = (PlayMessage)message;
+            PlayRequest playMessage = (PlayRequest)message;
             return matcher.Player.Play(playMessage.x, playMessage.y);
         }
     }

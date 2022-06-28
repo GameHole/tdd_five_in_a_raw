@@ -1,19 +1,22 @@
-﻿using System;
+﻿using Five;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Five
+namespace FivesUnitTest
 {
-    public class DefaultSerializer : ASerializer
+    class LogSerializer : ASerializer
     {
+        public string log;
         public override Message Deserialize(ByteStream stream)
         {
-            return new Message(stream.Read<int>());
+            log = $"Deserialize";
+            return null;
         }
 
         public override void Serialize(Message message, ByteStream stream)
         {
-            stream.Write(message.opcode);
+            log = $"Serialize";
         }
     }
 }

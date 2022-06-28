@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Five
 {
-    abstract class RequestProcesser
+    public abstract class RequestProcesser: IProcesser
     {
         ASocket socket;
         protected Matcher matcher;

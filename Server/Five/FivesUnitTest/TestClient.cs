@@ -19,7 +19,23 @@ namespace FivesUnitTest
             logMatcher = new LogMatcher(new Matching());
             logPlayer = new LogPlayer();
             logMatcher.Player = logPlayer;
-            client = new LogClient(logSocket, logMatcher);
+            client = new LogClient(logSocket);
+            new RequestRegister(logSocket, logMatcher).Regist(client);
+        }
+        [Test]
+        public void testRunProcess()
+        {
+            var processer = new LogProcesser();
+            client.Add(processer.MessageCode,processer);
+            client.Process(new Message(processer.MessageCode));
+            Assert.AreEqual("Process", processer.log);
+        }
+        [Test]
+        public void testRegistedProcess()
+        {
+            Assert.IsTrue(client.Contains(MessageCode.RequestMatch));
+            Assert.IsTrue(client.Contains(MessageCode.RequestCancelMatch));
+            Assert.IsTrue(client.Contains(MessageCode.RequestPlay));
         }
         [Test]
         public void testProcessMessage()
@@ -39,7 +55,7 @@ namespace FivesUnitTest
         [Test]
         public void testPlayApi()
         {
-            var message = new PlayMessage(1, 2);
+            var message = new PlayRequest(1, 2);
             client.Process(message);
 
             Assert.AreEqual($"Play({message.x},{message.y}) ", logPlayer.log);
@@ -62,7 +78,7 @@ namespace FivesUnitTest
             });
         }
         [Test]
-        public void testRecv()
+        public void testRecvForProcess()
         {
             logSocket.onRecv(new Message(1));
             Assert.AreEqual("Process", client.log);

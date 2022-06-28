@@ -11,22 +11,28 @@ namespace FivesUnitTest
     class TestServer
     {
         [Test]
-        public async Task testStart()
+        public async Task testServer()
         {
             var server = new Server("127.0.0.1", 10000);
-            Assert.AreNotEqual(null, server.Listener);
-            server.Start();
+            TcpSocket ssocket = null;
+            server.onAccept += (socket) =>
+            {
+                ssocket = socket;
+            };
+            server.StartAsync();
             await Task.Delay(200);
-            var client = new TcpClient();
+            Assert.IsTrue(server.IsRun);
+            var client = new TcpSocket();
             client.Connect("127.0.0.1", 10000);
             await Task.Delay(200);
-            Assert.AreEqual(1, server.clients.Count);
-            var sclient = server.clients[0];
+            Assert.AreEqual(1, server.SocketCount);
             server.Stop();
-            Assert.AreEqual(0, server.clients.Count);
+            Assert.IsFalse(server.IsRun);
+            Assert.AreEqual(0, server.SocketCount);
+            Assert.IsFalse(ssocket.isVailed);
             Assert.Throws<ObjectDisposedException>(() =>
             {
-                sclient.GetStream();
+                server.socket.Accept();
             });
         }
     }

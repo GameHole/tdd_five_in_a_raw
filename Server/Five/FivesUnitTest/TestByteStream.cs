@@ -21,6 +21,14 @@ namespace FivesUnitTest
             Assert.AreEqual(0, stream.Count);
         }
         [Test]
+        public void testByteStreamCapcity()
+        {
+            var stream = new ByteStream(4);
+            Assert.AreEqual(4, stream.Bytes.Length);
+            Assert.AreEqual(0, stream.Count);
+            Assert.AreEqual(0, stream.Index);
+        }
+        [Test]
         public void testReadException()
         {
            var ex= Assert.Throws<StreamException>(() => stream.Read<int>());

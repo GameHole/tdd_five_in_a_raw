@@ -77,7 +77,7 @@ namespace FivesUnitTest
             Assert.AreEqual(1, game.chessboard.Count);
         }
         [Test]
-        public async Task testFinish()
+        public async Task testPlayToFinish()
         {
             game.timer.time = 1;
             var chess = players[0].chess;
@@ -95,6 +95,17 @@ namespace FivesUnitTest
             Assert.AreEqual(0, game.chessboard.GetValue(10,10));
             await Task.Delay(1100);
             Assert.AreEqual(0, game.turn.index);
+        }
+        [Test]
+        public void testFinish()
+        {
+            game.Finish(1);
+            Assert.AreEqual(0, game.PlayerCount);
+            foreach (var item in players)
+            {
+                Assert.AreEqual(-1, item.PlayerId);
+            }
+            Assert.IsFalse(TimerDriver.IsContainTimer(game.timer));
         }
         [Test]
         public void testPlay()
@@ -126,6 +137,19 @@ namespace FivesUnitTest
             Assert.AreEqual(ResultDefine.AllReadyHasChess, result);
             Assert.AreEqual(2, game.chessboard.GetValue(1, 0));
             Assert.AreEqual(0, game.turn.index);
+        }
+        [Test]
+        public void testStop()
+        {
+            Assert.IsTrue(TimerDriver.IsContainTimer(game.timer));
+            Assert.AreEqual(2, game.PlayerCount);
+            game.Stop();
+            Assert.AreEqual(0, game.PlayerCount);
+            foreach (var item in players)
+            {
+                Assert.AreEqual(-1, item.PlayerId);
+            }
+            Assert.IsFalse(TimerDriver.IsContainTimer(game.timer));
         }
     }
 }

@@ -4,13 +4,21 @@ using System.Text;
 
 namespace Five
 {
-    abstract class NamedMessageSerializer<T>:DefaultSerializer where T:Message
+    public abstract class NamedMessageSerializer<T>: ASerializer where T:Message
     {
+        public override Message Deserialize(ByteStream stream)
+        {
+            stream.Read<int>();
+            return DeserializeContant(stream);
+        }
+
+        protected abstract Message DeserializeContant(ByteStream stream);
+
         public override void Serialize(Message message, ByteStream stream)
         {
-            base.Serialize(message, stream);
-            SerializeMessage(message as T, stream);
+            stream.Write(message.opcode);
+            SerializeContant(message as T, stream);
         }
-        protected abstract void SerializeMessage(T message, ByteStream stream);
+        public abstract void SerializeContant(T message, ByteStream stream);
     }
 }

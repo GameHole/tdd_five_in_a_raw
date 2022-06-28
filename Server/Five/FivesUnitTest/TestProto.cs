@@ -13,9 +13,11 @@ namespace FivesUnitTest
         {
             Proto proto = new Proto();
             ByteStream stream = new ByteStream();
+            Assert.IsFalse(proto.IsVailed(stream));
             proto.Write(stream);
-            Assert.AreEqual(4, stream.Count);
+            Assert.AreEqual(proto.ByteSize, stream.Count);
             Assert.IsTrue(proto.IsVailed(stream));
+            Assert.AreEqual(0, stream.Index);
         }
         [Test]
         public void testIsVailed()

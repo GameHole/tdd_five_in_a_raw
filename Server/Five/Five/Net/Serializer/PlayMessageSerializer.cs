@@ -4,18 +4,17 @@ using System.Text;
 
 namespace Five
 {
-    class PlayMessageSerializer:NamedMessageSerializer<PlayMessage>
+    public class PlayMessageSerializer:NamedMessageSerializer<PlayMessage>
     {
-        public override Message Deserialize(ByteStream stream)
-        {
-            stream.Read<int>();
-            return new PlayMessage(stream.Read<int>(), stream.Read<int>());
-        }
-
-        protected override void SerializeMessage(PlayMessage message, ByteStream stream)
+        public override void SerializeContant(PlayMessage message, ByteStream stream)
         {
             stream.Write(message.x);
             stream.Write(message.y);
+        }
+
+        protected override Message DeserializeContant(ByteStream stream)
+        {
+            return new PlayRequest(stream.Read<int>(), stream.Read<int>());
         }
     }
 }

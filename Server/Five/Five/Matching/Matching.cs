@@ -32,6 +32,15 @@ namespace Five
             return NewGame();
         }
 
+        public void Clear()
+        {
+            foreach (var item in games)
+            {
+                item.Stop();
+            }
+            games.Clear();
+        }
+
         private Game NewGame()
         {
             var game = new Game();

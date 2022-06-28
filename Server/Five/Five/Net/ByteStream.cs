@@ -8,9 +8,25 @@ namespace Five
     {
         static readonly byte[] empty = new byte[0];
         byte[] bytes = empty;
-        public int Index { get; private set; }
-        public int Count { get; private set; }
+        public int Index { get; set; }
+        public int Count { get; set; }
+        public byte[] Bytes { get=> bytes; }
+        public int GetLastCount() => Count - Index;
+
         private ArrayExtender<byte> extender = new ArrayExtender<byte>();
+        public ByteStream() { }
+        public ByteStream(int capcity)
+        {
+            bytes = new byte[capcity];
+        }
+
+        internal ByteStream(byte[] bytes, int index, int count)
+        {
+            this.bytes = bytes;
+            Index = index;
+            this.Count = count;
+        }
+
         public unsafe T Read<T>()where T:unmanaged
         {
             T value = Peek<T>();
@@ -30,6 +46,12 @@ namespace Five
             }
             return value;
         }
+
+        public int GetLastCapacity()
+        {
+            return bytes.Length - Count;
+        }
+
         public unsafe void Write<T>(T value) where T : unmanaged
         {
             int size = sizeof(T);
@@ -39,6 +61,13 @@ namespace Five
             {
                 *(T*)(bytesPtr + index) = value;
             }
+            Count += size;
+        }
+        public void Write(ByteStream stream)
+        {
+            int size = stream.Count;
+            bytes = extender.TryExtend(bytes, Count, size);
+            Array.Copy(stream.Bytes, 0, bytes, Count, size);
             Count += size;
         }
         public void ResetIndex()

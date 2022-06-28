@@ -27,6 +27,8 @@ namespace Five
             gameNotifier = new GameNotifier(this);
         }
 
+       
+
         public bool isFull()
         {
             return PlayerCount >= maxPlayer;
@@ -88,15 +90,29 @@ namespace Five
 
         public void Finish(int id)
         {
+            gameNotifier.NotifyFinish(id);
             foreach (var item in players.Values)
             {
                 item.Finish();
             }
-            TimerDriver.Stop(timer);
-            gameNotifier.NotifyFinish(id);
+            stopInternal();
         }
 
-        
+        private void stopInternal()
+        {
+            players.Clear();
+            TimerDriver.Stop(timer);
+        }
+
+        public void Stop()
+        {
+            foreach (var item in players.Values)
+            {
+                item.Reset();
+            }
+            stopInternal();
+        }
+
 
         public bool ContainPlayer(Player player)
         {

@@ -66,6 +66,15 @@ namespace FivesUnitTest
             Assert.AreEqual(null, matching.GetGame(0));
         }
         [Test]
+        public void testClear()
+        {
+            matching.Match(new LogMatcher());
+            var game = matching.GetGame(1);
+            matching.Clear();
+            Assert.AreEqual(0, game.PlayerCount);
+            Assert.AreEqual(0, matching.GameCount);
+        }
+        [Test]
         public void testCancel()
         {
             var player = new LogMatcher();

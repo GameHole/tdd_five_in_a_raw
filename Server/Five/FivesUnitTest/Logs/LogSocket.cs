@@ -6,6 +6,12 @@ namespace FivesUnitTest
     class LogSocket : ASocket
     {
         internal string log;
+
+        public override void Close()
+        {
+            onClose?.Invoke();
+        }
+
         public override void Send(Message message)
         {
             log = "Send " + message.ToString();

@@ -4,27 +4,37 @@ using System.Text;
 
 namespace Five
 {
-    public class MessageSerializer
+    public class MessageSerializer: Container<ASerializer>
     {
-        Dictionary<int, ASerializer> serizers = new Dictionary<int, ASerializer>();
-        public MessageSerializer()
-        {
-            Add(MessageCode.RequestMatch, new DefaultSerializer());
-            Add(MessageCode.GetResponseCode(MessageCode.RequestMatch), new ResponseSerializer());
-            Add(MessageCode.RequestPlay, new PlayMessageSerializer());
-        }
-        void Add(int code,ASerializer serializer)
-        {
-            serizers.Add(code, serializer);
-        }
         public void Serialize(Message message,ByteStream stream)
         {
-            serizers[message.opcode].Serialize(message, stream);
+            container[message.opcode].Serialize(message, stream);
         }
         public Message Deserialize(ByteStream stream)
         {
+            if (!TryDeserialize(stream,out var message))
+            {
+                throw new KeyNotFoundException($"OpCode = {stream.Peek<int>()}");
+            }
+            return message;
+        }
+
+        public ASerializer GetSerializer(int code)
+        {
+            container.TryGetValue(code, out var serializer);
+            return serializer;
+        }
+
+        public bool TryDeserialize(ByteStream stream, out Message message)
+        {
+            message = default;
             int opcode = stream.Peek<int>();
-            return serizers[opcode].Deserialize(stream);
+            if (container.TryGetValue(opcode,out var serializer))
+            {
+                message = serializer.Deserialize(stream);
+                return true;
+            }
+            return false;
         }
     }
 }

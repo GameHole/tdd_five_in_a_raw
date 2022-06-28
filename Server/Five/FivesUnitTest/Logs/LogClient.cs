@@ -9,7 +9,7 @@ namespace FivesUnitTest
     {
         internal string log;
 
-        public LogClient(ASocket socket, Matcher matcher) : base(socket, matcher)
+        public LogClient(ASocket socket) : base(socket)
         {
         }
         public override void Process(Message message)
