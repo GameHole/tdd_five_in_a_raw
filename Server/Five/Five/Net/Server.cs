@@ -11,31 +11,23 @@ namespace Five
     public class Server
     {
         public Socket socket { get;private set; }
-        public int SocketCount { get=> clients.Count;  }
+        public NetList<TcpSocket> sockets { get; private set; }
         public Action<TcpSocket> onAccept;
-
         public bool IsRun { get; private set; }
-        private List<TcpSocket> clients = new List<TcpSocket>();
         public Server(string ip,int port)
         {
             socket = new Socket(SocketType.Stream,ProtocolType.Tcp);
             socket.Bind(new IPEndPoint(IPAddress.Parse(ip), port));
+            sockets = new NetList<TcpSocket>();
+            sockets.onAdd = (s) => onAccept?.Invoke(s);
         }
-        internal void Remove(TcpSocket socket)
+        public virtual void Stop()
         {
-            clients.Remove(socket);
-        }
-        public bool Contains(TcpSocket socket)
-        {
-            return clients.Contains(socket);
-        }
-        public void Stop()
-        {
-            foreach (var item in clients)
+            foreach (var item in sockets)
             {
                 item.Release();
             }
-            clients.Clear();
+            sockets.Clear();
             socket.Close();
             IsRun = false;
         }
@@ -44,16 +36,20 @@ namespace Five
         {
             Task.Factory.StartNew(() =>
             {
-                IsRun = true;
-                socket.Listen(20);
-                while (IsRun)
-                {
-                    var client = socket.Accept();
-                    var tcp = new TcpServerSocket(client,this);
-                    clients.Add(tcp);
-                    onAccept?.Invoke(tcp);
-                }
+                Start();
             });
+        }
+
+        public void Start()
+        {
+            IsRun = true;
+            socket.Listen(20);
+            while (IsRun)
+            {
+                var client = socket.Accept();
+                var tcp = new TcpServerSocket(client, this);
+                sockets.Add(tcp);
+            }
         }
     }
 }

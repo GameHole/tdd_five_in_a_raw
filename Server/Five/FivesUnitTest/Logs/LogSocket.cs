@@ -3,7 +3,7 @@ using System.Net.Sockets;
 
 namespace FivesUnitTest
 {
-    class LogSocket : ASocket
+    public class LogSocket : ASocket
     {
         internal string log;
 

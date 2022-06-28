@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Five
 {
-    public class Container<T>
+    public class MessageContainer<T>
     {
         protected Dictionary<int, T> container = new Dictionary<int, T>();
         public bool Contains(int code)

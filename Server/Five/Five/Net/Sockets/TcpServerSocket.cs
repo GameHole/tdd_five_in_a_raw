@@ -13,7 +13,7 @@ namespace Five
         protected override void CloseInternal()
         {
             base.CloseInternal();
-            server.Remove(this);
+            server.sockets.Remove(this);
         }
     }
 }

@@ -103,7 +103,7 @@ namespace FivesUnitTest
             socket.Close();
             await Task.Delay(100);
             Assert.AreEqual("close", log);
-            Assert.IsFalse(server.Contains(ssocket));
+            Assert.IsFalse(server.sockets.Contains(ssocket));
             Assert.IsFalse(ssocket.isVailed);
             Assert.Throws<ObjectDisposedException>(()=>
             {

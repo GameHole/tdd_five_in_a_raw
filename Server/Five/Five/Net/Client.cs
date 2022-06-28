@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Five
 {
-    public class Client: Container<IProcesser>
+    public class Client: MessageContainer<IProcesser>
     {
         public Client(ASocket socket)
         {

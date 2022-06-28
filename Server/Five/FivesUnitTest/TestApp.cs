@@ -18,7 +18,7 @@ namespace FivesUnitTest
             await Task.Delay(100);
             socket.Connect("127.0.0.1", 10000);
             await Task.Delay(100);
-            Assert.AreEqual(1,app.mgr.ClientCount);
+            Assert.AreEqual(1,app.mgr.clients.Count);
             var log = "";
             socket.onRecv += (msg) => log += $"msg:{msg.opcode}";
             socket.Send(new Message(MessageCode.RequestMatch));
@@ -26,7 +26,7 @@ namespace FivesUnitTest
             Assert.AreEqual($"msg:{MessageCode.GetResponseCode(MessageCode.RequestMatch)}", log);
             app.Stop();
             Assert.AreEqual(0, app.matching.GameCount);
-            Assert.AreEqual(0, app.mgr.ClientCount);
+            Assert.AreEqual(0, app.mgr.clients.Count);
             Assert.IsFalse(app.server.IsRun);
         }
     }

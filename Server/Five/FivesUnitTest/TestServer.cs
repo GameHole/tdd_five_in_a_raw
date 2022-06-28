@@ -25,10 +25,10 @@ namespace FivesUnitTest
             var client = new TcpSocket();
             client.Connect("127.0.0.1", 10000);
             await Task.Delay(200);
-            Assert.AreEqual(1, server.SocketCount);
+            Assert.AreEqual(1, server.sockets.Count);
             server.Stop();
             Assert.IsFalse(server.IsRun);
-            Assert.AreEqual(0, server.SocketCount);
+            Assert.AreEqual(0, server.sockets.Count);
             Assert.IsFalse(ssocket.isVailed);
             Assert.Throws<ObjectDisposedException>(() =>
             {

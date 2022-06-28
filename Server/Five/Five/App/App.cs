@@ -16,6 +16,11 @@ namespace Five
             server.onAccept += mgr.onAccept;
         }
 
+        public void Start()
+        {
+            server.Start();
+        }
+
         public ClientMgr mgr { get;private set; }
         public Matching matching { get; private set; }
         public void StartAsync()
@@ -25,7 +30,7 @@ namespace Five
 
         public void Stop()
         {
-            mgr.Clear();
+            mgr.clients.Clear();
             server.Stop();
             matching.Clear();
         }

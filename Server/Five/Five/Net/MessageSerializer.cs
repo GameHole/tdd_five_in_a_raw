@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Five
 {
-    public class MessageSerializer: Container<ASerializer>
+    public class MessageSerializer: MessageContainer<ASerializer>
     {
         public void Serialize(Message message,ByteStream stream)
         {

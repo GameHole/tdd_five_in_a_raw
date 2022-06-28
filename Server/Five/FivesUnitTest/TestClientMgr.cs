@@ -17,20 +17,22 @@ namespace FivesUnitTest
         [Test]
         public void testClientMgr()
         {
-            Assert.AreEqual(0, mgr.ClientCount);
+            Assert.AreEqual(0, mgr.clients.Count);
         }
         [Test]
         public void testonAccept()
         {
             mgr.onAccept(new LogSocket());
-            Assert.AreEqual(1, mgr.ClientCount);
+            Assert.AreEqual(1, mgr.clients.Count);
         }
         [Test]
         public void testRemove()
         {
+            Client client = null;
+            mgr.clients.onAdd += (c) => client = c;
             mgr.onAccept(new LogSocket());
-            mgr.Remove(mgr.GetClient(0));
-            Assert.AreEqual(0, mgr.ClientCount);
+            mgr.clients.Remove(client);
+            Assert.AreEqual(0, mgr.clients.Count);
         }
         [Test]
         public void testSocketClose()
@@ -38,7 +40,7 @@ namespace FivesUnitTest
             var scket = new LogSocket();
             mgr.onAccept(scket);
             scket.Close();
-            Assert.AreEqual(0, mgr.ClientCount);
+            Assert.AreEqual(0, mgr.clients.Count);
         }
     }
 }

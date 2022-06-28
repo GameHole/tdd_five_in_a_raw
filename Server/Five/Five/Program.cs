@@ -6,7 +6,8 @@ namespace Five
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+            var app = new App(new Server("127.0.0.1",10000));
+            app.Start();
         }
     }
 }

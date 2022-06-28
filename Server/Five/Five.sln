@@ -3,9 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29709.97
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Five", "Five\Five.csproj", "{BF651C24-93CF-47B3-953F-30844C8A263B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Five", "Five\Five.csproj", "{BF651C24-93CF-47B3-953F-30844C8A263B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FivesUnitTest", "FivesUnitTest\FivesUnitTest.csproj", "{79AAE64C-0128-4EE5-8636-D05E70674060}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FivesUnitTest", "FivesUnitTest\FivesUnitTest.csproj", "{79AAE64C-0128-4EE5-8636-D05E70674060}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConcurrenceTest", "ConcurrenceTest\ConcurrenceTest.csproj", "{0BBE9972-ADBB-4484-85C9-F035AA762168}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{79AAE64C-0128-4EE5-8636-D05E70674060}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{79AAE64C-0128-4EE5-8636-D05E70674060}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{79AAE64C-0128-4EE5-8636-D05E70674060}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0BBE9972-ADBB-4484-85C9-F035AA762168}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0BBE9972-ADBB-4484-85C9-F035AA762168}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0BBE9972-ADBB-4484-85C9-F035AA762168}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0BBE9972-ADBB-4484-85C9-F035AA762168}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
