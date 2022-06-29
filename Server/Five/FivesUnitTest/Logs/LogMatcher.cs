@@ -5,7 +5,7 @@ using System.Text;
 
 namespace FivesUnitTest
 {
-    class LogMatcher : Matcher
+    public class LogMatcher : Matcher
     {
         public string log = "";
         public LogMatcher():base(null)

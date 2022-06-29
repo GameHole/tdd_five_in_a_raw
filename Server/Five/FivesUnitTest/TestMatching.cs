@@ -80,9 +80,30 @@ namespace FivesUnitTest
             var player = new LogMatcher();
             matching.Match(player);
             int id = player.GameId;
-            matching.Cancel(player);
+            Assert.AreEqual(ResultDefine.Success, matching.Cancel(player)); 
             Assert.AreEqual(0, matching.GetGame(id).PlayerCount);
             Assert.AreEqual("Match CancelMatch ", player.log);
+        }
+        [Test]
+        public void testCancelOnGameStart()
+        {
+            LogMatcher[] player = new LogMatcher[2];
+            for (int i = 0; i < player.Length; i++)
+            {
+                player[i] = new LogMatcher();
+                matching.Match(player[i]);
+            }
+            var game = matching.GetGame(player[0].GameId);
+            Assert.AreEqual(ResultDefine.GameStarted, matching.Cancel(player[0]));
+            Assert.AreEqual(2, game.PlayerCount);
+            Assert.AreEqual("Match Start ", player[0].log);
+            game.Finish(1);
+            Assert.AreEqual(ResultDefine.NotInMatching, matching.Cancel(player[0]));
+        }
+        [Test]
+        public void testCancelNotInGame()
+        {
+            Assert.AreEqual(ResultDefine.NotInMatching, matching.Cancel(new LogMatcher()));
         }
     }
 }

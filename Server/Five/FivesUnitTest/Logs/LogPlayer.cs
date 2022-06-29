@@ -5,7 +5,7 @@ using System.Text;
 
 namespace FivesUnitTest
 {
-    class LogPlayer : Player
+    public class LogPlayer : Player
     {
         public string log = "";
 

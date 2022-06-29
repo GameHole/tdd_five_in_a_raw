@@ -18,8 +18,8 @@ namespace Five
 
         public Result Match(Matcher player)
         {
-            matching.Match(player);
             player.Set<MachingMatcher>();
+            matching.Match(player);
             return ResultDefine.Success;
         }
     }

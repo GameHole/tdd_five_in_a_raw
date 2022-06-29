@@ -13,9 +13,8 @@ namespace Five
         }
         public Result Cancel(Matcher player)
         {
-            matching.Cancel(player);
             player.Set<DefaultMatcher>();
-            return ResultDefine.Success;
+            return matching.Cancel(player);
         }
 
         public Result Match(Matcher player)

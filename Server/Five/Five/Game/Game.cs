@@ -1,12 +1,14 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading;
 
 namespace Five
 {
     public class Game:IPlayable
     {
-        private Dictionary<int,Player> players;
+        private ConcurrentDictionary<int,Player> players;
         private GameNotifier gameNotifier;
        
         public readonly int maxPlayer = 2;
@@ -14,20 +16,18 @@ namespace Five
         public LoopTimer timer { get; private set; }
         public Chessboard chessboard { get; private set; }
         public int Id;
-       
-        public int PlayerCount { get => players.Count; }
+        private int _count = 0;
+        public int PlayerCount { get => _count; }
         public IEnumerable<Player> Players { get => players.Values; }
 
         public Game()
         {
-            players = new Dictionary<int, Player>();
+            players = new ConcurrentDictionary<int, Player>();
             turn = new Turn(maxPlayer);
             timer = new LoopTimer(30);
             chessboard = new Chessboard(15, 15);
             gameNotifier = new GameNotifier(this);
         }
-
-       
 
         public bool isFull()
         {
@@ -35,13 +35,32 @@ namespace Five
         }
 
 
-        public void Join(Player player)
+        public bool Join(Player player)
         {
-            var index = players.Count;
-            players.Add(index, player);
-            player.GameId = Id;
-            player.playable = new WaitGamePlayable();
-            player.PlayerId = index;
+            if(TryDistributeIdentity(out var playerId))
+            {
+                player.GameId = Id;
+                player.playable = new WaitGamePlayable();
+                player.PlayerId = playerId;
+                players.TryAdd(player.PlayerId, player);
+                return true;
+            }
+            return false;
+        }
+        bool TryDistributeIdentity(out int index)
+        {
+            index = Interlocked.Increment(ref _count) - 1;
+            if (index >= maxPlayer)
+            {
+                Interlocked.Decrement(ref _count);
+                return false;
+            }
+            return true;
+        }
+
+        public bool isStarted()
+        {
+            return isFull();
         }
 
         public Player GetPlayer(int index)
@@ -52,7 +71,8 @@ namespace Five
 
         public void Remove(Player player)
         {
-            players.Remove(player.PlayerId);
+            players.TryRemove(player.PlayerId, out var p);
+            Interlocked.Decrement(ref _count);
             player.Reset();
         }
 
@@ -101,6 +121,7 @@ namespace Five
         private void stopInternal()
         {
             players.Clear();
+            Interlocked.Exchange(ref _count, 0);
             TimerDriver.Stop(timer);
         }
 

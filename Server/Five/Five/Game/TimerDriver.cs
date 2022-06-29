@@ -1,12 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.Collections.Concurrent;
 using System.Text;
 
 namespace Five
 {
     public class TimerDriver
     {
-        private static Dictionary<LoopTimer, System.Timers.Timer> pairs = new Dictionary<LoopTimer, System.Timers.Timer>();
+        private static ConcurrentDictionary<LoopTimer, System.Timers.Timer> pairs = new ConcurrentDictionary<LoopTimer, System.Timers.Timer>();
 
         public static void Clear()
         {
@@ -37,7 +37,7 @@ namespace Five
             {
                 sysTimer.Close();
                 sysTimer.Dispose();
-                pairs.Remove(timer);
+                pairs.TryRemove(timer,out var t);
             }
         }
 
@@ -48,7 +48,7 @@ namespace Five
             var timer = new System.Timers.Timer(1000);
             timer.Elapsed += (o, e) => loopTimer.Update(1);
             timer.Start();
-            pairs.Add(loopTimer, timer);
+            pairs.TryAdd(loopTimer, timer);
             return true;
         }
     }

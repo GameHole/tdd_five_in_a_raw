@@ -1,28 +1,31 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.Collections.Concurrent;
 using System.Text;
 
 namespace Five
 {
     public class Matching
     {
-        List<Game> games = new List<Game>();
+        ConcurrentDictionary<int,Game> games = new ConcurrentDictionary<int, Game>();
         public int GameCount { get=> games.Count;}
 
         public void Match(Matcher master)
         {
-            var game = FactroyGame();
-            game.Join(master.Player);
-            master.Matched();
-            if (game.isFull())
+            lock (games)
             {
-                game.Start();
+                var game = FindNotStartGame();
+                game.Join(master.Player);
+                master.Matched();
+                if (game.isFull())
+                {
+                    game.Start();
+                }
             }
         }
 
-        private Game FactroyGame()
+        private Game FindNotStartGame()
         {
-            foreach (var item in games)
+            foreach (var item in games.Values)
             {
                 if (!item.isFull())
                 {
@@ -34,7 +37,7 @@ namespace Five
 
         public void Clear()
         {
-            foreach (var item in games)
+            foreach (var item in games.Values)
             {
                 item.Stop();
             }
@@ -45,20 +48,34 @@ namespace Five
         {
             var game = new Game();
             game.Id = games.Count + 1;
-            games.Add(game);
+            games.TryAdd(game.Id,game);
             return game;
         }
 
         public Game GetGame(int id)
         {
-            return games.Find(g => g.Id == id);
+            games.TryGetValue(id, out var game);
+            return game;
         }
 
-        public void Cancel(Matcher master)
+        public Result Cancel(Matcher master)
         {
-            var game = GetGame(master.GameId);
-            game?.Remove(master.Player);
-            master.Canceled();
+            lock (games)
+            {
+                var game = GetGame(master.GameId);
+                if (game == null)
+                {
+                    return ResultDefine.NotInMatching;
+                }
+                if (game.isStarted())
+                {
+                    return ResultDefine.GameStarted;
+                }
+                game.Remove(master.Player);
+                master.Canceled();
+                return ResultDefine.Success;
+            }
+           
         }
     }
 }

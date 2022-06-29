@@ -46,12 +46,23 @@ namespace FivesUnitTest
         {
             var player0 = new Player();
             Assert.AreEqual(-1, player0.PlayerId);
-            game.Join(player0);
+            Assert.IsTrue(game.Join(player0));
             Assert.IsTrue(game.ContainPlayer(player0));
             Assert.AreEqual(0, player0.PlayerId);
             Assert.AreEqual(game.Id, player0.GameId);
             Assert.AreEqual(1, game.PlayerCount);
             Assert.AreEqual(player0, game.GetPlayer(player0.PlayerId));
+        }
+        [Test]
+        public void testJoinMaxPlayer()
+        {
+            for (int i = 0; i < 2; i++)
+            {
+                Assert.IsTrue(game.Join(new LogPlayer()));
+            }
+            Assert.AreEqual(game.maxPlayer, game.PlayerCount);
+            Assert.IsFalse(game.Join(new LogPlayer()));
+            Assert.AreEqual(game.maxPlayer, game.PlayerCount);
         }
         [Test]
         public void testRemovePlayer()

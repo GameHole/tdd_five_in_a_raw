@@ -9,10 +9,12 @@ namespace FivesUnitTest
     class TestMatchr
     {
         LogMatcher master;
+        Matching matching;
         [SetUp]
         public void SetUp()
         {
-            master = new LogMatcher(new Matching());
+            matching = new Matching();
+            master = new LogMatcher(matching);
         }
         [Test]
         public void testMatch()
@@ -50,6 +52,16 @@ namespace FivesUnitTest
         public void testCancelMatchOnGameStart()
         {
             master.Started();
+            var result = master.Cancel();
+            Assert.AreEqual(ResultDefine.GameStarted, result);
+        }
+        [Test]
+        public void testCancelMatchOnRealGameStart()
+        {
+            var match1 = new LogMatcher(matching);
+            match1.Match();
+            master.Match();
+            Assert.AreEqual("Match Start ", master.log);
             var result = master.Cancel();
             Assert.AreEqual(ResultDefine.GameStarted, result);
         }
