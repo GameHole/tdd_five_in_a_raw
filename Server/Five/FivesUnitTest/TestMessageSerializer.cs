@@ -20,12 +20,12 @@ namespace FivesUnitTest
             serizer = new MessageSerializer();
             stream = new ByteStream();
             serializer = new LogSerializer();
-            serizer.Add(OpCode, serializer);
+            serizer.Container.Add(OpCode, serializer);
         }
         [Test]
         public void testContainSerializer()
         {
-            Assert.IsTrue(serizer.Contains(OpCode));
+            Assert.IsTrue(serizer.Container.Contains(OpCode));
         }
         [Test]
         public void testRunSerializer()

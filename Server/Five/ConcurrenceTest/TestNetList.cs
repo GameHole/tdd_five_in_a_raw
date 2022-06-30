@@ -8,11 +8,11 @@ namespace ConcurrenceTest
     public class TestNetList
     {
         const int count = 1000;
-        NetList<object> list;
+        ConcurrentList<object> list;
         [SetUp]
         public void SetUp()
         {
-            list = new NetList<object>();
+            list = new ConcurrentList<object>();
         }
         [Test]
         public async Task testAdd()

@@ -22,7 +22,7 @@ namespace FivesUnitTest
             server.StartAsync();
             await Task.Delay(200);
             Assert.IsTrue(server.IsRun);
-            var client = new TcpSocket();
+            var client = new TcpSocket(new SerializerRegister());
             client.Connect("127.0.0.1", 10000);
             await Task.Delay(200);
             Assert.AreEqual(1, server.sockets.Count);

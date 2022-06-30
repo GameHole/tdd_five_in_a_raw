@@ -5,7 +5,7 @@ namespace Five
     class TcpServerSocket:TcpSocket
     {
         private Server server;
-        public TcpServerSocket(Socket socket, Server server):base(socket)
+        public TcpServerSocket(Socket socket, Server server,SerializerRegister register):base(socket, register)
         {
             this.server = server;
             RecvAsync();

@@ -7,6 +7,8 @@ namespace Five
     public class App
     {
         public Server server { get; private set; }
+        public ClientMgr mgr { get; private set; }
+        public Matching matching { get; private set; }
 
         public App(Server server)
         {
@@ -20,14 +22,10 @@ namespace Five
         {
             server.Start();
         }
-
-        public ClientMgr mgr { get;private set; }
-        public Matching matching { get; private set; }
         public void StartAsync()
         {
             server.StartAsync();
         }
-
         public void Stop()
         {
             mgr.clients.Clear();

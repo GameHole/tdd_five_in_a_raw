@@ -11,14 +11,14 @@ namespace Five
     public class Server
     {
         public Socket socket { get;private set; }
-        public NetList<TcpSocket> sockets { get; private set; }
+        public ConcurrentList<TcpSocket> sockets { get; private set; }
         public Action<TcpSocket> onAccept;
         public bool IsRun { get; private set; }
         public Server(string ip,int port)
         {
             socket = new Socket(SocketType.Stream,ProtocolType.Tcp);
             socket.Bind(new IPEndPoint(IPAddress.Parse(ip), port));
-            sockets = new NetList<TcpSocket>();
+            sockets = new ConcurrentList<TcpSocket>();
             sockets.onAdd = (s) => onAccept?.Invoke(s);
         }
         public virtual void Stop()
@@ -47,7 +47,7 @@ namespace Five
             while (IsRun)
             {
                 var client = socket.Accept();
-                var tcp = new TcpServerSocket(client, this);
+                var tcp = new TcpServerSocket(client, this,new SerializerRegister());
                 sockets.Add(tcp);
             }
         }

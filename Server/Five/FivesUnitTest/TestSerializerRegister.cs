@@ -38,7 +38,7 @@ namespace FivesUnitTest
             for (int i = 0; i < codes.Length; i++)
             {
                 int code = codes[i];
-                Assert.IsTrue(ser.Contains(code), code.ToString());
+                Assert.IsTrue(ser.Container.Contains(code), code.ToString());
                 Assert.AreEqual(requestTypes[i], ser.GetSerializer(code).GetType());
             }
 
@@ -61,7 +61,7 @@ namespace FivesUnitTest
             for (int i = 0; i < codes.Length; i++)
             {
                 int res = MessageCode.GetResponseCode(codes[i]);
-                Assert.IsTrue(ser.Contains(res), res.ToString());
+                Assert.IsTrue(ser.Container.Contains(res), res.ToString());
                 Assert.AreEqual(responseTypes[i], ser.GetSerializer(res).GetType());
             }
         }

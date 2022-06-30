@@ -15,5 +15,10 @@ namespace Five
         {
             container.Add(code, value);
         }
+
+        internal bool TryGetValue(int code, out T item)
+        {
+            return container.TryGetValue(code, out item);
+        }
     }
 }

@@ -9,18 +9,18 @@ namespace Five
 {
     public class TcpSocket : ASocket
     {
-        private MessageSerializer serializer = new MessageSerializer();
+        protected MessageSerializer serializer = new MessageSerializer();
         private Socket socket;
         public MessagePacker packer { get; private set; }
-        public TcpSocket():this(new Socket(SocketType.Stream, ProtocolType.Tcp))
+        public TcpSocket(SerializerRegister register) :this(new Socket(SocketType.Stream, ProtocolType.Tcp),register)
         {
             socket.Bind(new IPEndPoint(IPAddress.Any, 0));
         }
 
-        public TcpSocket(Socket socket)
+        public TcpSocket(Socket socket, SerializerRegister register)
         {
             this.socket = socket;
-            new SerializerRegister().Regist(serializer);
+            register.Regist(serializer);
             var proto = new Proto();
             packer = new MessagePacker(proto, 2048);
         }

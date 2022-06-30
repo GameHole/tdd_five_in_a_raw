@@ -20,7 +20,7 @@
             int i = 0;
             foreach (var item in game.Players)
             {
-                infos[i++] = new PlayerInfo(item);
+                infos[i++] = new PlayerInfo(item.chess,item.PlayerId);
             }
             foreach (var item in game.Players)
             {

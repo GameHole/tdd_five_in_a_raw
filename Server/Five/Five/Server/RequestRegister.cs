@@ -13,7 +13,7 @@ namespace Five
             this.socket = socket;
             this.matcher = matcher;
         }
-        public void Regist(Client client)
+        public void Regist(MssageProcesser client)
         {
             var array = new RequestProcesser[]
             {
@@ -24,7 +24,7 @@ namespace Five
             foreach (var item in array)
             {
                 item.Init(socket, matcher);
-                client.Add(item.MessageCode,item);
+                client.Processers.Add(item.MessageCode,item);
             }
         }
     }

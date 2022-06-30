@@ -14,7 +14,7 @@ namespace FivesUnitTest
         {
             var app = new App(new Server("127.0.0.1",10000));
             app.StartAsync();
-            var socket = new TcpSocket();
+            var socket = new TcpSocket(new SerializerRegister());
             await Task.Delay(100);
             socket.Connect("127.0.0.1", 10000);
             await Task.Delay(100);

@@ -26,16 +26,16 @@ namespace FivesUnitTest
         public void testRunProcess()
         {
             var processer = new LogProcesser();
-            client.Add(processer.MessageCode,processer);
+            client.Processers.Add(processer.MessageCode,processer);
             client.Process(new Message(processer.MessageCode));
             Assert.AreEqual("Process", processer.log);
         }
         [Test]
         public void testRegistedProcess()
         {
-            Assert.IsTrue(client.Contains(MessageCode.RequestMatch));
-            Assert.IsTrue(client.Contains(MessageCode.RequestCancelMatch));
-            Assert.IsTrue(client.Contains(MessageCode.RequestPlay));
+            Assert.IsTrue(client.Processers.Contains(MessageCode.RequestMatch));
+            Assert.IsTrue(client.Processers.Contains(MessageCode.RequestCancelMatch));
+            Assert.IsTrue(client.Processers.Contains(MessageCode.RequestPlay));
         }
         [Test]
         public void testProcessMessage()

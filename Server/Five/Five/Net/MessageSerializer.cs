@@ -4,11 +4,13 @@ using System.Text;
 
 namespace Five
 {
-    public class MessageSerializer: MessageContainer<ASerializer>
+    public class MessageSerializer
     {
-        public void Serialize(Message message,ByteStream stream)
+        public MessageContainer<ASerializer> Container{ get; private set; } = new MessageContainer<ASerializer>();
+        public void Serialize(Message message, ByteStream stream)
         {
-            container[message.opcode].Serialize(message, stream);
+            if (Container.TryGetValue(message.opcode, out var serializer))
+                serializer.Serialize(message, stream);
         }
         public Message Deserialize(ByteStream stream)
         {
@@ -21,7 +23,7 @@ namespace Five
 
         public ASerializer GetSerializer(int code)
         {
-            container.TryGetValue(code, out var serializer);
+            Container.TryGetValue(code, out var serializer);
             return serializer;
         }
 
@@ -29,7 +31,7 @@ namespace Five
         {
             message = default;
             int opcode = stream.Peek<int>();
-            if (container.TryGetValue(opcode,out var serializer))
+            if (Container.TryGetValue(opcode,out var serializer))
             {
                 message = serializer.Deserialize(stream);
                 return true;

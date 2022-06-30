@@ -15,7 +15,7 @@ namespace FivesUnitTest
         public void SetUp()
         {
             server = new Server("127.0.0.1", 10000);
-            socket = new TcpSocket();
+            socket = new TcpSocket(new SerializerRegister());
             server.StartAsync();
         }
         [TearDown]
@@ -94,7 +94,7 @@ namespace FivesUnitTest
         {
             TcpSocket ssocket = null;
             server.onAccept += (socket) => ssocket = socket;
-            var socket = new TcpSocket();
+            var socket = new TcpSocket(new SerializerRegister());
             await Task.Delay(200);
             socket.Connect("127.0.0.1", 10000);
             await Task.Delay(200);

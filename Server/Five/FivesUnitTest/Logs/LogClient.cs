@@ -5,7 +5,7 @@ using System.Text;
 
 namespace FivesUnitTest
 {
-    class LogClient : Client
+    class LogClient : MssageProcesser
     {
         internal string log;
 

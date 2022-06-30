@@ -7,15 +7,15 @@ namespace Five
     public class ClientMgr
     {
         private Matching matching;
-        public NetList<Client> clients { get; private set; }
+        public ConcurrentList<MssageProcesser> clients { get; private set; }
         public ClientMgr(Matching matching)
         {
             this.matching = matching;
-            clients = new NetList<Client>();
+            clients = new ConcurrentList<MssageProcesser>();
         }
         public void onAccept(ASocket socket)
         {
-            Client client = new Client(socket);
+            MssageProcesser client = new MssageProcesser(socket);
             new RequestRegister(socket, new Matcher(matching)).Regist(client);
             clients.Add(client);
             socket.onClose += () => clients.Remove(client);
