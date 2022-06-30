@@ -7,3 +7,14 @@ Server/Five/ConcurrenceTest/obj
 Server/Five/ConcurrenceTest/bin
 Server/Five/LearningTest/bin
 Server/Five/LearningTest/obj
+FiveInARow/obj
+FiveInARow/.vs
+FiveInARow/Library
+FiveInARow/Logs
+FiveInARow/Five.csproj
+FiveInARow/Five.Net.csproj
+FiveInARow/Assembly-CSharp.csproj
+FiveInARow/.vsconfig
+FiveInARow/Tests.csproj
+FiveInARow/UnitTests.csproj
+FiveInARow/FiveInARow.sln

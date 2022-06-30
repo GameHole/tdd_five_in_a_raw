@@ -5,15 +5,17 @@ using System.Text;
 
 namespace Five
 {
-    public class Client: MessageContainer<IProcesser>
+    public class MssageProcesser
     {
-        public Client(ASocket socket)
+        public MessageContainer<IProcesser> Processers { get; private set; }
+        public MssageProcesser(ASocket socket)
         {
             socket.onRecv = Process;
+            Processers = new MessageContainer<IProcesser>();
         }
         public virtual void Process(Message message)
         {
-            if (container.TryGetValue(message.opcode, out var processer))
+            if (Processers.TryGetValue(message.opcode, out var processer))
                 processer.Process(message);
         }
     }

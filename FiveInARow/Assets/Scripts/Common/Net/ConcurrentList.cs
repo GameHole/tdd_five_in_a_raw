@@ -6,7 +6,7 @@ using System.Text;
 
 namespace Five
 {
-    public class NetList<T>: IEnumerable<T> where T:class
+    public class ConcurrentList<T>: IEnumerable<T> where T:class
     {
         private ConcurrentDictionary<T, T> clients = new ConcurrentDictionary<T, T>();
         public Action<T> onAdd;
