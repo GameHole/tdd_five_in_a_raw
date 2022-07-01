@@ -14,10 +14,16 @@ namespace UnitTests
         [Test]
         public void testInstantiate()
         {
-            var prefab = PrefabHelper.Instantiate("GameObjects/Chess");
+            var prefab = PrefabHelper.Instantiate<GameObject>("GameObjects/Chess");
             Assert.NotNull(prefab);
         }
-
+        [Test]
+        public void testInstantiateWithParent()
+        {
+            var parent = new GameObject().transform;
+            var prefab = PrefabHelper.Instantiate<GameObject>("GameObjects/Chess", parent);
+            Assert.AreEqual(parent,prefab.transform.parent);
+        }
         [Test]
         public void testFindException()
         {

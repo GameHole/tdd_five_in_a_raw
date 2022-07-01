@@ -1,5 +1,7 @@
 ﻿using NUnit.Framework;
 using System.Collections;
+using System.Threading;
+using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.TestTools;
 
@@ -38,6 +40,20 @@ namespace UnitTests
         public void testColorEqual()
         {
             Assert.AreEqual(new Color(0.1f, 0.1f, 0.1f, 0.1f), new Color(0.1f, 0.1f, 0.1f, 0.1f));
+        }
+        [Test]
+        public void testAsync()
+        {
+            var task = AsyncFunc().GetAwaiter();
+            Assert.AreEqual(1, task.GetResult());
+        }
+        Task<int> AsyncFunc()
+        {
+            return Task.Factory.StartNew(() =>
+            {
+                Thread.Sleep(10);
+                return 1;
+            });
         }
     }
 }

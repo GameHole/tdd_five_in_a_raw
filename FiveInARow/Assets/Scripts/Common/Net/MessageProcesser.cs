@@ -5,10 +5,10 @@ using System.Text;
 
 namespace Five
 {
-    public class MssageProcesser
+    public class MessageProcesser
     {
         public MessageContainer<IProcesser> Processers { get; private set; }
-        public MssageProcesser(ASocket socket)
+        public MessageProcesser(ASocket socket)
         {
             socket.onRecv = Process;
             Processers = new MessageContainer<IProcesser>();

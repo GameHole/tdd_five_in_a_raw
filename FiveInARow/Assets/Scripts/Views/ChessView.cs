@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 namespace Five
 {
-    public class ChessView : MonoBehaviour
+    public class ChessView : AChessView
     {
         private MeshRenderer _meshRenderer;
         private MeshRenderer meshRenderer
@@ -14,22 +14,11 @@ namespace Five
             }
         }
         public Color color { get => meshRenderer.material.color; }
-        private int _chessType;
-        public int ChessType
-        {
-            get => _chessType;
-            set
-            {
-                _chessType = value;
-                SetColor(gameObject, _chessType);
-            }
-        }
-        void SetColor(GameObject clone, int chessType)
+
+        protected override void TypeSetted()
         {
             var mat = meshRenderer.material;
-            var color = mat.color;
-            color.r = color.g = color.b = chessType - 1;
-            mat.color = color;
+            mat.color = TypeToColor(mat.color.a);
         }
     }
 }

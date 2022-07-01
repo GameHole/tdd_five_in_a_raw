@@ -15,7 +15,7 @@ namespace Five
         {
             this.width = width;
             this.height = height;
-            view = PrefabHelper.Instantiate("GameObjects/ChessBoard");
+            view = PrefabHelper.Instantiate<GameObject>("GameObjects/ChessBoard");
             DrawGrading();
         }
         private void DrawGrading()

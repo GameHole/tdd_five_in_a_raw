@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4018625888057951245}
-  - component: {fileID: 535190197693537699}
+  - component: {fileID: 7705446236636931547}
   m_Layer: 0
   m_Name: ChessPreview
   m_TagString: Untagged
@@ -32,7 +32,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &535190197693537699
+--- !u!114 &7705446236636931547
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -41,7 +41,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 4018625888057951244}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5fd667b7e37f93744b29b01f6dcdf27d, type: 3}
+  m_Script: {fileID: 11500000, guid: e8cab701f53b2254d932881123b19b56, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &4018625889358131590

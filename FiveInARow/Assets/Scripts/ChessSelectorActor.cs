@@ -14,7 +14,7 @@ namespace Five
             this.selector = selector;
             this.ray = ray;
             this.castor = castor;
-            chessPreview = PrefabHelper.Instantiate("GameObjects/ChessPreview");
+            chessPreview = PrefabHelper.Instantiate<GameObject>("GameObjects/ChessPreview");
         }
 
         public void Place()
