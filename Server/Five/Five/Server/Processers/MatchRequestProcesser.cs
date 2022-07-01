@@ -6,7 +6,7 @@ namespace Five
 {
     class MatchRequestProcesser : RequestProcesser
     {
-        public override int MessageCode => 1;
+        public override int OpCode => 1;
 
         protected override Result processIntarnal(Message message)
         {

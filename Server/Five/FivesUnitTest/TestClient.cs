@@ -26,8 +26,8 @@ namespace FivesUnitTest
         public void testRunProcess()
         {
             var processer = new LogProcesser();
-            client.Processers.Add(processer.MessageCode,processer);
-            client.Process(new Message(processer.MessageCode));
+            client.Processers.Add(processer.OpCode,processer);
+            client.Process(new Message(processer.OpCode));
             Assert.AreEqual("Process", processer.log);
         }
         [Test]

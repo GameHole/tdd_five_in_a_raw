@@ -17,7 +17,7 @@ namespace Five
         {
             socket.Send(new Response(message, processIntarnal(message)));
         }
-        public abstract int MessageCode { get; }
+        public abstract int OpCode { get; }
         protected abstract Result processIntarnal(Message message);
     }
 }

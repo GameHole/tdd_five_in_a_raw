@@ -71,7 +71,7 @@ namespace Five
             packer.MoveBrokenBytesToHead();
         }
 
-        public void Connect(string ip, int port)
+        public override void Connect(string ip, int port)
         {
             socket.Connect(ip, port);
             RecvAsync();

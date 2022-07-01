@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Five
 {
-    public class RequestRegister
+    public class RequestRegister: IProcesserRegister
     {
         ASocket socket;
         Matcher matcher;
@@ -13,7 +13,7 @@ namespace Five
             this.socket = socket;
             this.matcher = matcher;
         }
-        public void Regist(MssageProcesser client)
+        public void Regist(MessageProcesser client)
         {
             var array = new RequestProcesser[]
             {
@@ -24,7 +24,7 @@ namespace Five
             foreach (var item in array)
             {
                 item.Init(socket, matcher);
-                client.Processers.Add(item.MessageCode,item);
+                client.Processers.Add(item.OpCode,item);
             }
         }
     }

@@ -6,7 +6,7 @@ namespace FivesUnitTest
     {
         internal string log;
 
-        public int MessageCode => 10000;
+        public int OpCode => 10000;
 
         public void Process(Message message)
         {

@@ -28,7 +28,7 @@ namespace FivesUnitTest
         [Test]
         public void testRemove()
         {
-            MssageProcesser client = null;
+            MessageProcesser client = null;
             mgr.clients.onAdd += (c) => client = c;
             mgr.onAccept(new LogSocket());
             mgr.clients.Remove(client);

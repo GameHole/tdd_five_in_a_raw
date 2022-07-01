@@ -9,7 +9,7 @@ namespace Five
         public Action<Message> onRecv;
         public Action onClose;
         public bool isVailed { get; protected set; }
-
+        public abstract void Connect(string ip, int port);
         public abstract void Send(Message message);
         public abstract void Close();
     }
