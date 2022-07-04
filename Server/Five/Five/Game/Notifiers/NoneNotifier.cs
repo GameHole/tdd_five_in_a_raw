@@ -11,5 +11,7 @@ namespace Five
         public void Played(int x, int y, int id) { }
 
         public void Start(PlayerInfo[] info) { }
+
+        public void Turn(int id) { }
     }
 }

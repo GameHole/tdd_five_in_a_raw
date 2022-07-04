@@ -1,4 +1,6 @@
-﻿namespace Five
+﻿using System;
+
+namespace Five
 {
     class GameNotifier
     {
@@ -32,6 +34,14 @@
             foreach (var item in game.Players)
             {
                 item.notifier.Finish(id);
+            }
+        }
+
+        public void NotifyTurn(int index)
+        {
+            foreach (var item in game.Players)
+            {
+                item.notifier.Turn(index);
             }
         }
     }

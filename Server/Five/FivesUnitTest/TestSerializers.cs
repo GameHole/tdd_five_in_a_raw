@@ -64,12 +64,13 @@ namespace FivesUnitTest
             }
         }
         [Test]
-        public void testFinishNotifySerializer()
+        public void testPlayerIdNotifySerializer()
         {
-            var serizer = new FinishNotifySerializer();
-            serizer.Serialize(new FinishNotify { id = 3 }, stream);
-            var msg = serizer.Deserialize(stream) as FinishNotify;
-            Assert.AreEqual(3, msg.id);
+            var serizer = new PlayerIdNotifySerializer();
+            serizer.Serialize(new PlayerIdNotify(MessageCode.FinishNotify,3), stream);
+            var msg = serizer.Deserialize(stream) as PlayerIdNotify;
+            Assert.AreEqual(MessageCode.FinishNotify, msg.opcode);
+            Assert.AreEqual(3, msg.playerId);
         }
         [Test]
         public void testMatchResponseSerializer()

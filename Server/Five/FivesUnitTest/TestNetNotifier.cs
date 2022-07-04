@@ -33,5 +33,11 @@ namespace FivesUnitTest
             notifier.Played(5,6,1);
             Assert.AreEqual("Send opcode:9 (5,6)1", socket.log);
         }
+        [Test]
+        public void testTurn()
+        {
+            notifier.Turn(1);
+            Assert.AreEqual("Send opcode:13 1", socket.log);
+        }
     }
 }

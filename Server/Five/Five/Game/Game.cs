@@ -85,11 +85,11 @@ namespace Five
                 item.Start(chess++);
             }
             turn.Start();
+            gameNotifier.NotifyStart();
             TurnPlayer();
             TimerDriver.Start(timer);
             timer.onTime -= NextPlayer;
             timer.onTime += NextPlayer;
-            gameNotifier.NotifyStart();
         }
         private void TurnPlayer()
         {
@@ -100,6 +100,7 @@ namespace Five
                 else
                     item.playable = new NotTurnPlayable();
             }
+            gameNotifier.NotifyTurn(turn.index);
         }
 
         public void NextPlayer()

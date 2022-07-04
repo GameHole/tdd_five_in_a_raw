@@ -122,13 +122,14 @@ namespace FivesUnitTest
         [Test]
         public void testNotify()
         {
-            Assert.AreEqual("Start(0,1)(1,2)", ntfs[0].log);
+            Assert.AreEqual("Start(0,1)(1,2) Turn id:0", ntfs[0].log);
             Assert.AreEqual(ntfs[0].log, ntfs[1].log);
             players[0].Play(1, 0);
-            Assert.AreEqual("Played(1,0)id:0", ntfs[0].log);
+            Assert.AreEqual("Start(0,1)(1,2) Turn id:0 Played(1,0)id:0 Turn id:1", ntfs[0].log);
             game.Finish(0);
-            Assert.AreEqual("Finish:0", ntfs[0].log);
+            Assert.AreEqual("Start(0,1)(1,2) Turn id:0 Played(1,0)id:0 Turn id:1 Finish:0", ntfs[0].log);
         }
+
         [Test]
         public void testPlayOnePlace()
         {

@@ -16,7 +16,8 @@ namespace Five
             ser.Container.Add(MessageCode.GetResponseCode(MessageCode.RequestPlay), new ResponseSerializer());
             ser.Container.Add(MessageCode.StartNotify, new StartNotifySerializer());
             ser.Container.Add(MessageCode.PlayedNotify, new PlayNotifySerializer());
-            ser.Container.Add(MessageCode.FinishNotify, new FinishNotifySerializer());
+            ser.Container.Add(MessageCode.FinishNotify, new PlayerIdNotifySerializer());
+            ser.Container.Add(MessageCode.TurnNotify, new PlayerIdNotifySerializer());
         }
     }
 }

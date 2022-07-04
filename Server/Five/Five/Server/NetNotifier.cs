@@ -13,7 +13,7 @@ namespace Five
         }
         public void Finish(int id)
         {
-            socket.Send(new FinishNotify { id= id });
+            socket.Send(new PlayerIdNotify(MessageCode.FinishNotify, id));
         }
 
         public void Played(int x, int y, int id)
@@ -24,6 +24,11 @@ namespace Five
         public void Start(PlayerInfo[] info)
         {
             socket.Send(new StartNotify { infos = info }); 
+        }
+
+        public void Turn(int id)
+        {
+            socket.Send(new PlayerIdNotify(MessageCode.TurnNotify, id));
         }
     }
 }
