@@ -151,5 +151,12 @@ namespace FivesUnitTest
             }
             Assert.IsFalse(TimerDriver.IsContainTimer(game.timer));
         }
+        [Test]
+        public void testTurnResetTimer()
+        {
+            game.timer.Update(1);
+            game.NextPlayer();
+            Assert.AreEqual(0, game.timer.addingUpTime);
+        }
     }
 }

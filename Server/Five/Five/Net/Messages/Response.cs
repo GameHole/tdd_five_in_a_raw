@@ -1,18 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Five
+﻿namespace Five
 {
     public class Response:Message
     {
         public int result;
-        public Response(int opcode, int result) : base(opcode)
+        public Response() { }
+        public Response(int requestOpcode) : base(MessageCode.GetResponseCode(requestOpcode)) { }
+        public virtual Response SetInfo(Message message,Result result)
         {
-            this.result = result;
-        }
-        public Response(Message message,Result result):this(MessageCode.GetResponseCode(message.opcode), result.code)
-        {
+            opcode = MessageCode.GetResponseCode(message.opcode);
+            this.result = result.code;
+            return this;
         }
         public override string ToString()
         {

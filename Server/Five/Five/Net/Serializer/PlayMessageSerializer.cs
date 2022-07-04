@@ -12,9 +12,10 @@ namespace Five
             stream.Write(message.y);
         }
 
-        protected override Message DeserializeContant(ByteStream stream)
+        public override void DeserializeContant(PlayMessage msg, ByteStream stream)
         {
-            return new PlayRequest(stream.Read<int>(), stream.Read<int>());
+            msg.x = stream.Read<int>();
+            msg.y = stream.Read<int>();
         }
     }
 }

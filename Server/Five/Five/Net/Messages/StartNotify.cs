@@ -1,15 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Five
+﻿namespace Five
 {
     public class StartNotify : Message
     {
         public PlayerInfo[] infos;
-        public StartNotify(PlayerInfo[] infos) : base(MessageCode.StartNotify)
+        public StartNotify()
         {
-            this.infos = infos;
+            opcode = MessageCode.StartNotify;
         }
         public override string ToString()
         {

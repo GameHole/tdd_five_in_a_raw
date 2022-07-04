@@ -1,16 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Five
+﻿namespace Five
 {
-    class CancelRequestProcesser : RequestProcesser
+    public class CancelRequestProcesser : RequestProcesser
     {
-        public override int OpCode => 3;
+        public override int OpCode => MessageCode.RequestCancelMatch;
 
-        protected override Result processIntarnal(Message message)
+        protected override Response ProcessContant(Message message)
         {
-            return matcher.Cancel();
+            return new Response().SetInfo(message, matcher.Cancel());
         }
     }
 }

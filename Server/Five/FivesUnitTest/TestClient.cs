@@ -40,31 +40,32 @@ namespace FivesUnitTest
         [Test]
         public void testProcessMessage()
         {
+            var matchProcesser = new MatchRequestProcesser();
+            matchProcesser.Init(logSocket, logMatcher);
+            var cnacelProcesser = new CancelRequestProcesser();
+            cnacelProcesser.Init(logSocket, logMatcher);
+            var playProcesser = new PlayRequestProcesser();
+            playProcesser.Init(logSocket, logMatcher);
 
-            client.Process(new Message(MessageCode.RequestMatch));
-
+            matchProcesser.Process(new Message(MessageCode.RequestMatch));
             Assert.AreEqual("Match ", logMatcher.log);
-            Assert.AreEqual("Send opcode:2 result:0", logSocket.log);
+            Assert.AreEqual("Send opcode:2 result:0 id:0", logSocket.log);
 
-            client.Process(new Message(MessageCode.RequestCancelMatch));
+            cnacelProcesser.Process(new Message(MessageCode.RequestCancelMatch));
 
             Assert.AreEqual("Match CancelMatch ", logMatcher.log);
             Assert.AreEqual("Send opcode:4 result:0", logSocket.log);
 
-        }
-        [Test]
-        public void testPlayApi()
-        {
-            var message = new PlayRequest(1, 2);
-            client.Process(message);
+            var message = new PlayRequest { x = 1, y = 2 };
+            playProcesser.Process(message);
 
             Assert.AreEqual($"Play({message.x},{message.y}) ", logPlayer.log);
             Assert.AreEqual("Send opcode:6 result:29999", logSocket.log);
         }
         [Test]
-        public void testPlayApiException()
+        public void testCastException()
         {
-            var ex = Assert.Throws<InvalidCastException>(() =>
+            var ex = Assert.Throws<NullReferenceException>(() =>
             {
                 client.Process(new Message(MessageCode.RequestPlay));
             });

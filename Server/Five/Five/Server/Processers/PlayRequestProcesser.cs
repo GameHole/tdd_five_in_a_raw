@@ -4,14 +4,13 @@ using System.Text;
 
 namespace Five
 {
-    class PlayRequestProcesser : RequestProcesser
+    public class PlayRequestProcesser : RequestProcesser<PlayRequest>
     {
-        public override int OpCode => 5;
+        public override int OpCode => MessageCode.RequestPlay;
 
-        protected override Result processIntarnal(Message message)
+        protected override Response ProcessContant(PlayRequest message)
         {
-            PlayRequest playMessage = (PlayRequest)message;
-            return matcher.Player.Play(playMessage.x, playMessage.y);
+            return new Response().SetInfo(message, matcher.Player.Play(message.x, message.y));
         }
     }
 }

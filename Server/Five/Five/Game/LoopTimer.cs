@@ -1,13 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading;
 
 namespace Five
 {
     public class LoopTimer
     {
         public float time { get; set; }
-        public float addingUpTime { get; private set; }
+        private float _adding;
+        public float addingUpTime { get => _adding; }
         public event Action onTime;
 
         public LoopTimer(float time)
@@ -17,12 +19,16 @@ namespace Five
 
         public void Update(float dt)
         {
-            this.addingUpTime += dt;
-            if(addingUpTime>=time)
+            _adding += dt;
+            if (_adding >= time)
             {
-                addingUpTime = 0;
+                Reset();
                 onTime?.Invoke();
             }
+        }
+        public void Reset()
+        {
+            Interlocked.Exchange(ref _adding, 0);
         }
     }
 }

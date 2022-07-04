@@ -1,0 +1,22 @@
+﻿using Five;
+using NUnit.Framework;
+using System.Threading.Tasks;
+
+namespace ConcurrenceTest
+{
+    class TestTimer
+    {
+        [Test]
+        public async Task testReset()
+        {
+            var timer = new LoopTimer(10);
+            await Repeat.RepeatAsync(100000, async () =>
+            {
+                timer.Update(1);
+                await Task.Delay(100);
+                timer.Reset();
+            });
+            Assert.AreEqual(0, timer.addingUpTime);
+        }
+    }
+}

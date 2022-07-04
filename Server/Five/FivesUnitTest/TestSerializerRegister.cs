@@ -54,7 +54,7 @@ namespace FivesUnitTest
             };
             Type[] responseTypes = new Type[]
             {
-                typeof(ResponseSerializer),
+                typeof(MatchResponseSerializer),
                 typeof(ResponseSerializer),
                 typeof(ResponseSerializer)
             };

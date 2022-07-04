@@ -1,19 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
+﻿
 namespace Five
 {
-    public class ResponseSerializer : DefaultSerializer
+    public class ResponseSerializer : NamedMessageSerializer<Response>
     {
-        public override Message Deserialize(ByteStream stream)
+        public override void SerializeContant(Response message, ByteStream stream)
         {
-            return new Response(stream.Read<int>(), stream.Read<int>());
+            stream.Write(message.result);
         }
-        public override void Serialize(Message message, ByteStream stream)
+
+        public override void DeserializeContant(Response msg, ByteStream stream)
         {
-            base.Serialize(message, stream);
-            stream.Write((message as Response).result);
+            msg.result = stream.Read<int>();
         }
     }
 }

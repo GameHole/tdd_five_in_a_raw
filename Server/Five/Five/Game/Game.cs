@@ -102,10 +102,11 @@ namespace Five
             }
         }
 
-        private void NextPlayer()
+        public void NextPlayer()
         {
             turn.Next();
             TurnPlayer();
+            timer.Reset();
         }
 
         public void Finish(int id)

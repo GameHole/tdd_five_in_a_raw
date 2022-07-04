@@ -2,10 +2,10 @@
 {
     public class FinishNotify : Message
     {
-        public int id { get; private set; }
-        public FinishNotify(int id):base(MessageCode.FinishNotify)
+        public int id;
+        public FinishNotify()
         {
-            this.id = id;
+            opcode = MessageCode.FinishNotify;
         }
         public override string ToString()
         {

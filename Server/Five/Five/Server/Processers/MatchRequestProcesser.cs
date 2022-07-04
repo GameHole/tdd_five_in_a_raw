@@ -1,16 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Five
+﻿namespace Five
 {
-    class MatchRequestProcesser : RequestProcesser
+    public class MatchRequestProcesser : RequestProcesser
     {
-        public override int OpCode => 1;
+        public override int OpCode => MessageCode.RequestMatch;
 
-        protected override Result processIntarnal(Message message)
+        protected override Response ProcessContant(Message message)
         {
-            return matcher.Match();
+            return new MatchResponse().SetInfo(message, matcher.Match(), matcher.Player.PlayerId);
         }
     }
 }

@@ -3,9 +3,9 @@
     public class PlayedNotify : PlayMessage
     {
         public int id;
-        public PlayedNotify(int x, int y,int id) :base(MessageCode.PlayedNotify,x,y)
+        public PlayedNotify()
         {
-            this.id = id;
+            opcode = MessageCode.PlayedNotify;
         }
         public override string ToString()
         {

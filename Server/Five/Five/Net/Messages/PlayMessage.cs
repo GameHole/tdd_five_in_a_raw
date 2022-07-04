@@ -8,10 +8,11 @@ namespace Five
     {
         public int x;
         public int y;
-        public PlayMessage(int opcode,int x, int y):base(opcode)
+        public virtual Message SetInfo(int x,int y)
         {
             this.x = x;
             this.y = y;
+            return this;
         }
     }
 }

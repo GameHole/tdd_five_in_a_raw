@@ -6,6 +6,17 @@ namespace Five
 {
     public class StartNotifySerializer : NamedMessageSerializer<StartNotify>
     {
+        public override void DeserializeContant(StartNotify msg, ByteStream stream)
+        {
+            int len = stream.Read<int>();
+            var infos = new PlayerInfo[len];
+            for (int i = 0; i < infos.Length; i++)
+            {
+                infos[i] = stream.Read<PlayerInfo>();
+            }
+            msg.infos = infos;
+        }
+
         public override void SerializeContant(StartNotify message, ByteStream stream)
         {
             stream.Write(message.infos.Length);
@@ -13,17 +24,6 @@ namespace Five
             {
                 stream.Write(message.infos[i]);
             }
-        }
-
-        protected override Message DeserializeContant(ByteStream stream)
-        {
-            int len = stream.Read<int>();
-            var info = new PlayerInfo[len];
-            for (int i = 0; i < info.Length; i++)
-            {
-                info[i]= stream.Read<PlayerInfo>();
-            }
-            return new StartNotify(info);
         }
     }
 }

@@ -13,17 +13,17 @@ namespace Five
         }
         public void Finish(int id)
         {
-            socket.Send(new FinishNotify(id));
+            socket.Send(new FinishNotify { id= id });
         }
 
         public void Played(int x, int y, int id)
         {
-            socket.Send(new PlayedNotify(x,y,id));
+            socket.Send(new PlayedNotify { x = x, y = y, id = id });
         }
 
         public void Start(PlayerInfo[] info)
         {
-            socket.Send(new StartNotify(info));
+            socket.Send(new StartNotify { infos = info }); 
         }
     }
 }
