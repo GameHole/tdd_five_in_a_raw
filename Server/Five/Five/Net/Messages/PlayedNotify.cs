@@ -9,7 +9,7 @@
         }
         public override string ToString()
         {
-            return base.ToString()+$" ({x},{y}){id}";
+            return base.ToString()+$"{id}";
         }
     }
 }

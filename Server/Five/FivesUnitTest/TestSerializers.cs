@@ -81,5 +81,14 @@ namespace FivesUnitTest
             Assert.AreEqual(MessageCode.GetResponseCode(MessageCode.RequestMatch), msg.opcode);
             Assert.AreEqual(3, msg.playerId);
         }
+        [Test]
+        public void testOpCodeErrorSerializer()
+        {
+            var serizer = new OpCodeErrorSerializer();
+            serizer.Serialize(new OpCodeErrorMessage(10), stream);
+            var msg = serizer.Deserialize(stream) as OpCodeErrorMessage;
+            Assert.AreEqual(MessageCode.UnknownOpCode, msg.opcode);
+            Assert.AreEqual(10, msg.unknownOpcode);
+        }
     }
 }

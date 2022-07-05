@@ -41,26 +41,11 @@ namespace FivesUnitTest
             Assert.AreEqual("Deserialize", serializer.log);
         }
         [Test]
-        public void testTryDeserializer()
-        {
-            stream.Write(OpCode);
-            Assert.IsTrue(serizer.TryDeserialize(stream, out var message));
-            Assert.AreEqual("Deserialize", serializer.log);
-        }
-        [Test]
-        public void testFaildTryDeserializer()
-        {
-            stream.Write(20);
-            Assert.IsFalse(serizer.TryDeserialize(stream, out var message));
-        }
-        [Test]
         public void testNotContainedDeserialize()
         {
             stream.Write<int>(10);
-            Assert.Throws<KeyNotFoundException>(() =>
-            {
-                var msg = serizer.Deserialize(stream);
-            });
+            var msg = serizer.Deserialize(stream);
+            Assert.AreEqual(10, msg.opcode);
         }
     }
 }

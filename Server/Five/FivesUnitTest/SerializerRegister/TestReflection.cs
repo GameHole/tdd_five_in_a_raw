@@ -22,10 +22,9 @@ namespace FivesUnitTest
                 MessageCode.FinishNotify,
                 MessageCode.TurnNotify
             };
-            Assert.AreEqual(exp.Length, codes.Count);
             for (int i = 0; i < exp.Length; i++)
             {
-                Assert.AreEqual(exp[i], codes[i]);
+                Assert.Contains(exp[i], codes);
             }
         }
     }

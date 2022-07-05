@@ -8,8 +8,10 @@ namespace Five
     public class MessageProcesser
     {
         public MessageContainer<IProcesser> Processers { get; private set; }
-        public MessageProcesser(ASocket socket)
+        public IProcesser defaultProcesser { get;}
+        public MessageProcesser(ASocket socket, IProcesser defaultProcesser)
         {
+            this.defaultProcesser = defaultProcesser;
             socket.onRecv = Process;
             Processers = new MessageContainer<IProcesser>();
         }
@@ -17,6 +19,8 @@ namespace Five
         {
             if (Processers.TryGetValue(message.opcode, out var processer))
                 processer.Process(message);
+            else
+                defaultProcesser.Process(message);
         }
     }
 }

@@ -15,7 +15,7 @@ namespace Five
         }
         public void onAccept(ASocket socket)
         {
-            MessageProcesser client = new MessageProcesser(socket);
+            MessageProcesser client = new MessageProcesser(socket,new OpCodeErrorResponseProcesser(socket));
             new RequestRegister(socket, new Matcher(matching)).Regist(client);
             clients.Add(client);
             socket.onClose += () => clients.Remove(client);
