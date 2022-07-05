@@ -14,5 +14,9 @@ namespace Five
             this.y = y;
             return this;
         }
+        public override string ToString()
+        {
+            return base.ToString()+$" ({x},{y})";
+        }
     }
 }
