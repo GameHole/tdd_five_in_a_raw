@@ -13,9 +13,10 @@ namespace Five
             stream.Write(message.id);
         }
 
-        protected override Message DeserializeContant(ByteStream stream)
+        public override void DeserializeContant(PlayedNotify msg, ByteStream stream)
         {
-            return new PlayedNotify(stream.Read<int>(), stream.Read<int>(), stream.Read<int>());
+            play.DeserializeContant(msg, stream);
+            msg.id = stream.Read<int>();
         }
     }
 }

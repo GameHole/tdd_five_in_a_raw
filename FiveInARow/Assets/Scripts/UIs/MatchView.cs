@@ -6,15 +6,20 @@ namespace Five
 {
     public class MatchView: UIView
     {
+        protected override string viewName => "MatchView";
+
         public GameObject MatchingView { get; private set; }
         public GameObject CancelView { get;private set; }
 
-        protected override string viewName => "MatchView";
+        public Button matchBtn { get; }
+        public Button cancelBtn { get; }
 
         public MatchView():base()
         {
             MatchingView = View.transform.Find("MatchingView").gameObject;
             CancelView = View.transform.Find("CancelView").gameObject;
+            matchBtn = MatchingView.transform.Find("matchBtn").GetComponent<Button>();
+            cancelBtn = CancelView.transform.Find("cancelBtn").GetComponent<Button>();
             View.SetActive(false);
         }
 

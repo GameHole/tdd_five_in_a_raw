@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Five
+﻿namespace Five
 {
     public class Message
     {
         public int opcode;
-
+        public Message() { }
         public Message(int opcode)
         {
             this.opcode = opcode;

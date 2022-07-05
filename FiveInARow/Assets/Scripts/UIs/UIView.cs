@@ -2,25 +2,16 @@
 
 namespace Five
 {
-    public abstract class UIView
+    public abstract class UIView: AView
     {
-        public GameObject View { get; private set; }
-        public UIView()
+        protected abstract string viewName { get; }
+        protected override GameObject GenrateView()
         {
-            View = PrefabHelper.Instantiate<GameObject>($"UI/{viewName}");
+            return PrefabHelper.Instantiate<GameObject>($"UI/{viewName}");
         }
         public virtual void Join(Transform parent)
         {
             View.transform.SetParent(parent);
-        }
-        protected abstract string viewName { get; }
-        public virtual void Open()
-        {
-            View.SetActive(true);
-        }
-        public virtual void Close()
-        {
-            View.SetActive(false);
         }
     }
 }

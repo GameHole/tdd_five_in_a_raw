@@ -35,6 +35,7 @@ namespace UnitTests
             var chessView = view.GetChess(1, 2);
             Assert.AreEqual(convertor.ToLocalPosition(new Vector2Int(1, 2)), chessView.transform.position);
             Assert.AreEqual(new Color(0, 0, 0, 1), chessView.color);
+            Assert.AreEqual(view.View.transform, chessView.transform.parent);
         }
         [Test]
         public void testSetChessException()

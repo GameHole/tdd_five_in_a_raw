@@ -4,12 +4,12 @@ namespace Five
 {
     class ChessSelectorActor : IChessSelectActor
     {
-        private ChessSelector selector;
+        private ChessSelectorView selector;
         private BoardRaycastor castor;
         internal GameObject chessPreview;
         internal Vector2Int remotePos;
         private IRay ray;
-        public ChessSelectorActor(ChessSelector selector, IRay ray, BoardRaycastor castor)
+        public ChessSelectorActor(ChessSelectorView selector, IRay ray, BoardRaycastor castor)
         {
             this.selector = selector;
             this.ray = ray;

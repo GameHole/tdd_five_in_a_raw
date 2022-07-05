@@ -3,24 +3,22 @@ using UnityEngine;
 
 namespace Five
 {
-    public class GradingView
+    public class GradingView:AView
     {
         public int width { get; set; } = 15;
         public int height { get; set; } = 15;
-        public GameObject view { get; set; }
         public List<Transform> griddingH { get; set; } = new List<Transform>();
         public List<Transform> griddingV { get; set; } = new List<Transform>();
         public float gradingWidth { get; private set; } = 0.015f;
-        public GradingView(int width, int height)
+        public GradingView(int width, int height):base()
         {
             this.width = width;
             this.height = height;
-            view = PrefabHelper.Instantiate<GameObject>("GameObjects/ChessBoard");
             DrawGrading();
         }
         private void DrawGrading()
         {
-            var parent = view.transform.Find("Gradings");
+            var parent = View.transform.Find("Gradings");
             DrawV(parent);
             DrawH(parent);
         }
@@ -45,6 +43,11 @@ namespace Five
         private void DrawH(Transform parent)
         {
             Draw(parent, new Vector3(width, 1, gradingWidth), griddingH, (i) => new Vector3(0, 0, i));
+        }
+
+        protected override GameObject GenrateView()
+        {
+            return PrefabHelper.Instantiate<GameObject>("GameObjects/ChessBoard");
         }
     }
 }

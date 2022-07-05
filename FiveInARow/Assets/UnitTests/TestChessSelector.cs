@@ -6,13 +6,13 @@ namespace UnitTests
 {
     class TestChessSelector
     {
-        ChessSelector selector;
+        ChessSelectorView selector;
         PositionConvertor convertor;
         [SetUp]
         public void SetUp()
         {
             convertor = new PositionConvertor();
-            selector = new ChessSelector(new TestRay(), new BoardRaycastor(15, 15));
+            selector = new ChessSelectorView(new TestRay(), new BoardRaycastor(15, 15));
         }
         [Test]
         public void testChessSelector()

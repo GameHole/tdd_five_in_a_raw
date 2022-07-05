@@ -10,11 +10,17 @@ namespace UnitTests
 {
     class TestClient
     {
+        ProcesserRegister register;
+        [SetUp]
+        public void SetUp()
+        {
+            register = new ProcesserRegister(new MatchView(),new GameView(),new Player(),new PlayersInfo());
+        }
         [Test]
         public void testConnect()
         {
             var socket = new LogSocket();
-            var client = new Client(socket, new ProcesserRegister());
+            var client = new Client(socket, register);
             var result = client.ConnectAsync("1.1.1.1", 0).GetAwaiter();
             Assert.AreEqual(ResultDefine.Success, result.GetResult());
             Assert.AreEqual("Connect 1.1.1.1:0", socket.log);
@@ -23,7 +29,7 @@ namespace UnitTests
         public void testConnectError()
         {
             var socket = new ErrorSocket();
-            var client = new Client(socket, new ProcesserRegister());
+            var client = new Client(socket, register);
             var result = client.ConnectAsync("1.1.1.1", 0).GetAwaiter();
             Assert.AreEqual(LocalResultDefine.ConnectError, result.GetResult());
         }

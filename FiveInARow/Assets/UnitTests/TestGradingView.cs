@@ -18,7 +18,7 @@ namespace UnitTests
             Assert.AreEqual(15, view.width);
             Assert.AreEqual(15, view.height);
             Assert.AreEqual(0.015f, view.gradingWidth, 0.0001f);
-            GameObject unitview = view.view;
+            GameObject unitview = view.View;
             Assert.NotNull(unitview);
             var griddingh = view.griddingH;
             Assert.AreEqual(view.height, griddingh.Count);

@@ -1,13 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using UnityEngine;
 
 namespace Five
 {
-    public class ChessSelector
+    public class ChessSelectorView
     {
         private IChessSelectActor actor;
         private ChessSelectorActor runActor;
@@ -20,7 +16,7 @@ namespace Five
 
         public bool IsRun { get => actor == runActor; }
 
-        public ChessSelector(IRay ray, BoardRaycastor castor)
+        public ChessSelectorView(IRay ray, BoardRaycastor castor)
         {
             runActor = new ChessSelectorActor(this, ray, castor);
             stopActor = new NoneSelectActor();

@@ -4,14 +4,19 @@ using System.Text;
 
 namespace Five
 {
-    public class PlayMessage:Message
+    public class PlayMessage : Message
     {
         public int x;
         public int y;
-        public PlayMessage(int opcode,int x, int y):base(opcode)
+        public virtual Message SetInfo(int x, int y)
         {
             this.x = x;
             this.y = y;
+            return this;
+        }
+        public override string ToString()
+        {
+            return base.ToString() + $" ({x},{y})";
         }
     }
 }

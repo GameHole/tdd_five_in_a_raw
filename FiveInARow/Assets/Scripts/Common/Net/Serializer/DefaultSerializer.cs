@@ -8,7 +8,7 @@ namespace Five
     {
         public override Message Deserialize(ByteStream stream)
         {
-            return new Message(stream.Read<int>());
+            return new Message { opcode = stream.Read<int>() };
         }
 
         public override void Serialize(Message message, ByteStream stream)

@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Five
 {
-    public class ChessboardView
+    public class ChessboardView:AView
     {
         private Dictionary<Vector2Int, ChessView> chess;
         private ChessView chessPrefab;
@@ -30,7 +30,7 @@ namespace Five
             {
                 throw new PositionPlacedChessException(pos);
             }
-            var clone = Object.Instantiate(chessPrefab);
+            var clone = Object.Instantiate(chessPrefab,View.transform);
             clone.transform.position = convertor.ToLocalPosition(pos);
             clone.ChessType = chessType;
             chess[pos] = clone;
@@ -43,6 +43,11 @@ namespace Five
                 Object.Destroy(item.gameObject);
             }
             chess.Clear();
+        }
+
+        protected override GameObject GenrateView()
+        {
+            return new GameObject();
         }
     }
 }

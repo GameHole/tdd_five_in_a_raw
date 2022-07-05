@@ -16,19 +16,44 @@ namespace UnitTests
                 this.type = type;
             }
         }
-        [Test]
-        public void testRegisted()
+        MessageProcesser processer;
+        [SetUp]
+        public void SetUp()
         {
-            RegistorInfo[] infos = new RegistorInfo[]
+            processer = new MessageProcesser(new LogSocket());
+            new ProcesserRegister(null, new GameView(), null, null).Regist(processer);
+        }
+        [Test]
+        public void testRegistedNotify()
+        {
+            RegistorInfo[] notifyInfos = new RegistorInfo[]
             {
-                new RegistorInfo(MessageCode.PlayedNotify,typeof(PlayedProcesser))
+                new RegistorInfo(MessageCode.TurnNotify,typeof(TurnProcesser)),
+                new RegistorInfo(MessageCode.PlayedNotify,typeof(PlayedProcesser)),
+                new RegistorInfo(MessageCode.StartNotify,typeof(StartedProcesser)),
+                new RegistorInfo(MessageCode.FinishNotify,typeof(FinishedProcesser))
             };
-            var processer = new MessageProcesser(new LogSocket());
-            new ProcesserRegister().Regist(processer);
-            foreach (var item in infos)
+
+            foreach (var item in notifyInfos)
             {
-                Assert.IsTrue(processer.Processers.TryGetValue(item.code,out var value));
-                Assert.AreEqual(value.GetType(),item.type);
+                Assert.IsTrue(processer.Processers.TryGetValue(item.code, out var value));
+                Assert.AreEqual(item.type, value.GetType());
+            }
+        }
+        [Test]
+        public void testRegistedResponse()
+        {
+            RegistorInfo[] responseInfos = new RegistorInfo[]
+            {
+                new RegistorInfo(MessageCode.GetResponseCode(MessageCode.RequestMatch),typeof(MatchProcesser)),
+                new RegistorInfo(MessageCode.GetResponseCode(MessageCode.RequestCancelMatch),typeof(CancelMatchProcesser)),
+                new RegistorInfo(MessageCode.GetResponseCode(MessageCode.RequestPlay),typeof(NoneResponseProcesser)),
+            };
+            foreach (var item in responseInfos)
+            {
+                Assert.IsTrue(processer.Processers.TryGetValue(item.code, out var value));
+                Assert.AreEqual(value.GetType(), typeof(ResponseDecorater));
+                Assert.AreEqual(item.type, (value as ResponseDecorater).decorated.GetType());
             }
         }
     }

@@ -1,12 +1,23 @@
 ﻿namespace Five
 {
-    public class PlayedProcesser : IProcesser
+    public class PlayedProcesser : AProcesser<PlayedNotify>
     {
-        public int OpCode => MessageCode.PlayedNotify;
+        private ChessboardView chessView;
+        private PlayersInfo players;
 
-        public void Process(Message message)
+        public PlayedProcesser(ChessboardView chessView, PlayersInfo players)
         {
-            
+            this.chessView = chessView;
+            this.players = players;
         }
+
+        public override int OpCode => MessageCode.PlayedNotify;
+
+
+        public override void ProcessContent(PlayedNotify message)
+        {
+            chessView.SetChess(message.x, message.y,players.FindChess(message.id));
+        }
+       
     }
 }
