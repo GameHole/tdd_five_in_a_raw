@@ -4,7 +4,7 @@
     {
         public FinishButtonEvents(MatchView match, FinishView finish, GameView game)
         {
-            finish.button.onClick.AddListener(() =>
+            finish.button.AddListener(() =>
             {
                 match.Open();
                 finish.Close();

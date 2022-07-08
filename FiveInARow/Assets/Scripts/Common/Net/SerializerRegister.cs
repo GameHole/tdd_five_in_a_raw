@@ -9,7 +9,7 @@ namespace Five
         public void Regist(MessageSerializer ser)
         {
             ser.Container.Add(MessageCode.RequestMatch, new DefaultSerializer());
-            ser.Container.Add(MessageCode.GetResponseCode(MessageCode.RequestMatch), new MatchResponseSerializer());
+            ser.Container.Add(MessageCode.GetResponseCode(MessageCode.RequestMatch), new ResponseSerializer());
             ser.Container.Add(MessageCode.RequestCancelMatch, new DefaultSerializer());
             ser.Container.Add(MessageCode.GetResponseCode(MessageCode.RequestCancelMatch), new ResponseSerializer());
             ser.Container.Add(MessageCode.RequestPlay, new PlayMessageSerializer());

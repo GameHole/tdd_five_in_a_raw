@@ -11,7 +11,7 @@ namespace Five
         }
         public virtual void Join(Transform parent)
         {
-            View.transform.SetParent(parent);
+            View.transform.SetParent(parent,false);
         }
     }
 }

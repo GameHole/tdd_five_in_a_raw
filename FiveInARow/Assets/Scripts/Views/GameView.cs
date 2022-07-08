@@ -5,23 +5,21 @@ namespace Five
 {
     public class GameView : AView
     {
-        public ChessboardView chessboard;
-        public FinishView finishView;
-        public CountDownView countDown;
-        public ChessSelectorView chessSelector;
-        public GradingView grading;
-        public GameView()
+        public GameView() : base() { }
+        public GameView(Container container):this()
         {
             Canvas = View.transform.Find("Canvas");
-            chessboard = new ChessboardView(new PositionConvertor());
-            finishView = new FinishView();
-            countDown = new CountDownView(15);
-            grading = new GradingView(15, 15);
-            chessSelector = new ChessSelectorView(new CameraRay(Camera.main), new BoardRaycastor(15,15));
+            container.Set(this);
+            var chessboard = container.Get<ChessboardView>();
+            var finishView = container.Get<FinishView>();
+            var countDown = container.Get<CountDownView>();
+            var grading = container.Get<GradingView>();
+            var chessSelector = container.Get<ChessSelectorView>();
             countDown.Join(Canvas);
             finishView.Join(Canvas);
             chessboard.View.transform.SetParent(View.transform);
             grading.View.transform.SetParent(View.transform);
+            container.Get<SelfChessView>().View.transform.SetParent(View.transform);
             Close();
         }
 
@@ -29,7 +27,7 @@ namespace Five
 
         protected override GameObject GenrateView()
         {
-            return new GameObject();
+            return PrefabHelper.Instantiate<GameObject>("GameObjects/GameView");
         }
     }
 }

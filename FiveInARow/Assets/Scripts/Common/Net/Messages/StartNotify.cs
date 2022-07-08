@@ -1,6 +1,6 @@
 ﻿namespace Five
 {
-    public class StartNotify : Message
+    public class StartNotify : PlayerIdNotify
     {
         public PlayerInfo[] infos;
         public StartNotify()

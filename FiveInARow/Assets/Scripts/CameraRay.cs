@@ -2,7 +2,7 @@
 
 namespace Five
 {
-    class CameraRay : IRay
+    public class CameraRay : IRay
     {
         Camera camera;
         public CameraRay(Camera camera)

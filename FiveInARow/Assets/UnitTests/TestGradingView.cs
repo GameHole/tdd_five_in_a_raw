@@ -14,27 +14,27 @@ namespace UnitTests
         [Test]
         public void testGradingView()
         {
-            var view = new GradingView(15, 15);
+            var view = new GradingView(15, 20);
             Assert.AreEqual(15, view.width);
-            Assert.AreEqual(15, view.height);
+            Assert.AreEqual(20, view.height);
             Assert.AreEqual(0.015f, view.gradingWidth, 0.0001f);
             GameObject unitview = view.View;
             Assert.NotNull(unitview);
             var griddingh = view.griddingH;
-            Assert.AreEqual(view.height, griddingh.Count);
+            Assert.AreEqual(view.height+1, griddingh.Count);
             for (int i = 0; i < griddingh.Count; i++)
             {
                 var grad = griddingh[i];
                 Assert.AreEqual(new Vector3(view.width, 1, view.gradingWidth), grad.localScale);
-                Assert.AreEqual(new Vector3(0, 0, i), grad.position);
+                Assert.AreEqual(new Vector3(view.width * 0.5f, 0, i), grad.position);
             }
             var griddingv = view.griddingV;
-            Assert.AreEqual(view.width, griddingv.Count);
+            Assert.AreEqual(view.width+1, griddingv.Count);
             for (int i = 0; i < griddingv.Count; i++)
             {
                 var grad = griddingv[i];
-                Assert.AreEqual(new Vector3(view.gradingWidth, 1, view.width), grad.localScale);
-                Assert.AreEqual(new Vector3(i, 0, 0), grad.position);
+                Assert.AreEqual(new Vector3(view.gradingWidth, 1, view.height), grad.localScale);
+                Assert.AreEqual(new Vector3(i, 0, view.height * 0.5f), grad.position);
             }
         }
     }

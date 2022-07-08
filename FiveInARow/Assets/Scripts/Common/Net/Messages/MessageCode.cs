@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Five
+﻿namespace Five
 {
     public static class MessageCode
     {
@@ -13,6 +9,7 @@ namespace Five
         public static readonly int PlayedNotify = 9;
         public static readonly int FinishNotify = 11;
         public static readonly int TurnNotify = 13;
+
         public static int GetResponseCode(int reqCode) => reqCode + 1;
     }
 }

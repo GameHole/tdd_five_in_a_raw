@@ -1,10 +1,5 @@
 ﻿using Five;
 using NUnit.Framework;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace UnitTests
 {
@@ -14,7 +9,7 @@ namespace UnitTests
         [SetUp]
         public void SetUp()
         {
-            register = new ProcesserRegister(new MatchView(),new GameView(),new Player(),new PlayersInfo());
+            register = new ProcesserRegister(new Container(),new GameFlow());
         }
         [Test]
         public void testConnect()
@@ -39,6 +34,18 @@ namespace UnitTests
             var log = new LogProcesserRegister();
             var client = new Client(new LogSocket(), log);
             Assert.AreEqual("registed",log.log);
+        }
+        [Test]
+        public void testUpdate()
+        {
+            var log = new LogProcesser();
+            var socket = new LogSocket();
+            var client = new Client(socket, new LogProcesserRegister());
+            client.Procsesser.Processers.Add(log.OpCode, log);
+            socket.onRecv(new Message(log.OpCode));
+            Assert.Null(log.log);
+            client.Update();
+            Assert.AreEqual("Process", log.log);
         }
     }
 }

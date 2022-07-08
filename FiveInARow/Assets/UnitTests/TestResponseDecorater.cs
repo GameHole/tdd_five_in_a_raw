@@ -14,7 +14,8 @@ namespace UnitTests
         {
             processer = new LogProcesser();
             log = new LogLoger();
-            dec = new ResponseDecorater(processer, log);
+            dec = new ResponseDecorater(processer);
+            dec.logger = log;
             response = new Response(9);
         }
         [Test]
@@ -23,7 +24,7 @@ namespace UnitTests
             Assert.AreEqual(processer.OpCode, dec.OpCode);
             response.result = 10001;
             dec.Process(response);
-            Assert.AreEqual("Response error,result:10001", log.errorLog);
+            Assert.AreEqual("Response error,result:10001", log.logStr);
      
         }
         [Test]

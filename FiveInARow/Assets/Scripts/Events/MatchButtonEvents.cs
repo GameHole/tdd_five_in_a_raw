@@ -4,11 +4,11 @@
     {
         public MatchButtonEvents(MatchView match, ASocket socket)
         {
-            match.matchBtn.onClick.AddListener(() =>
+            match.matchBtn.AddListener(() =>
             {
                 socket.Send(new Message(MessageCode.RequestMatch));
             });
-            match.cancelBtn.onClick.AddListener(() =>
+            match.cancelBtn.AddListener(() =>
             {
                 socket.Send(new Message(MessageCode.RequestCancelMatch));
             });

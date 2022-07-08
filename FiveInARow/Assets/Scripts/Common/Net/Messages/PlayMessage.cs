@@ -4,11 +4,11 @@ using System.Text;
 
 namespace Five
 {
-    public class PlayMessage : Message
+    public class PlayMessage:Message
     {
         public int x;
         public int y;
-        public virtual Message SetInfo(int x, int y)
+        public virtual Message SetInfo(int x,int y)
         {
             this.x = x;
             this.y = y;
@@ -16,7 +16,7 @@ namespace Five
         }
         public override string ToString()
         {
-            return base.ToString() + $" ({x},{y})";
+            return base.ToString()+$" ({x},{y})";
         }
     }
 }

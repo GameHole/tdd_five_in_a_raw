@@ -19,13 +19,8 @@ namespace UnitTests
         {
             Assert.NotNull(castor.colider);
             var tran = castor.colider.transform;
-            var scale = tran.localScale;
-            var w = width * 0.5f;
-            var h = height * 0.5f;
-            Assert.Greater(scale.x,w);
-            Assert.Greater(scale.z, h);
-            Assert.LessOrEqual(scale.y, 0.001f);
-            Assert.AreEqual(new Vector3(w, 0, h), tran.position);
+            Assert.AreEqual(new Vector3(width, 0.001f, height), tran.localScale);
+            Assert.AreEqual(new Vector3(width, 0, height) * 0.5f, tran.position);
         }
         [Test]
         public void testRaycast()

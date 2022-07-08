@@ -10,6 +10,7 @@ namespace Five
         public List<Transform> griddingH { get; set; } = new List<Transform>();
         public List<Transform> griddingV { get; set; } = new List<Transform>();
         public float gradingWidth { get; private set; } = 0.015f;
+        private Transform parent;
         public GradingView(int width, int height):base()
         {
             this.width = width;
@@ -18,14 +19,14 @@ namespace Five
         }
         private void DrawGrading()
         {
-            var parent = View.transform.Find("Gradings");
-            DrawV(parent);
-            DrawH(parent);
+            parent = View.transform.Find("Gradings");
+            DrawV();
+            DrawH();
         }
-        private void Draw(Transform parent, Vector3 scale, List<Transform> list, System.Func<int, Vector3> getPosition)
+        private void Draw(int size, Vector3 scale, List<Transform> list, System.Func<int, Vector3> getPosition)
         {
             var prefab = PrefabHelper.Find("GameObjects/Grading");
-            for (int i = 0; i < width; i++)
+            for (int i = 0; i < size; i++)
             {
                 Vector3 position = getPosition(i);
                 var grading = Object.Instantiate(prefab).transform;
@@ -35,14 +36,14 @@ namespace Five
                 list.Add(grading);
             }
         }
-        private void DrawV(Transform parent)
+        private void DrawV()
         {
-            Draw(parent, new Vector3(gradingWidth, 1, height), griddingV, (i) => new Vector3(i, 0, 0));
+            Draw(width+1, new Vector3(gradingWidth, 1, height), griddingV, (i) => new Vector3(i, 0, height*0.5f));
         }
 
-        private void DrawH(Transform parent)
+        private void DrawH()
         {
-            Draw(parent, new Vector3(width, 1, gradingWidth), griddingH, (i) => new Vector3(0, 0, i));
+            Draw(height+1, new Vector3(width, 1, gradingWidth), griddingH, (i) => new Vector3(width * 0.5f, 0, i));
         }
 
         protected override GameObject GenrateView()

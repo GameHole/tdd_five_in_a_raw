@@ -7,6 +7,7 @@ namespace Five
     public class MessageSerializer
     {
         public MessageContainer<ASerializer> Container{ get; private set; } = new MessageContainer<ASerializer>();
+        private DefaultSerializer defaultSerializer = new DefaultSerializer();
         public void Serialize(Message message, ByteStream stream)
         {
             if (Container.TryGetValue(message.opcode, out var serializer))
@@ -14,29 +15,21 @@ namespace Five
         }
         public Message Deserialize(ByteStream stream)
         {
-            if (!TryDeserialize(stream,out var message))
+            int opcode = stream.Peek<int>();
+            if (Container.TryGetValue(opcode, out var serializer))
             {
-                throw new KeyNotFoundException($"OpCode = {stream.Peek<int>()}");
+                return serializer.Deserialize(stream);
             }
-            return message;
+            else
+            {
+                return defaultSerializer.Deserialize(stream);
+            }
         }
 
         public ASerializer GetSerializer(int code)
         {
             Container.TryGetValue(code, out var serializer);
             return serializer;
-        }
-
-        public bool TryDeserialize(ByteStream stream, out Message message)
-        {
-            message = default;
-            int opcode = stream.Peek<int>();
-            if (Container.TryGetValue(opcode,out var serializer))
-            {
-                message = serializer.Deserialize(stream);
-                return true;
-            }
-            return false;
         }
     }
 }

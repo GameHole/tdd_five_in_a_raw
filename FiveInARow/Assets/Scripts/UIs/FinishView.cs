@@ -18,13 +18,13 @@ namespace Five
         protected override string viewName => "FinishView";
 
         public Text text { get; }
-        public Button button { get; }
+        public ButtonEvent button { get; }
 
         public FinishView():base()
         {
             Close();
             text = View.transform.Find("winText").GetComponent<Text>();
-            button = View.transform.Find("button").GetComponent<Button>();
+            button = new ButtonEvent(View.transform.Find("button").GetComponent<Button>());
         }
 
         void SetWinText(bool win)

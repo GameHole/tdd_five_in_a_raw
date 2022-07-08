@@ -2,34 +2,52 @@
 {
     public class ProcesserRegister:IProcesserRegister
     {
-        public MatchView matchView;
-
-        public GameView gameView;
-        
-        public Player player;
-        public PlayersInfo playersInfo;
-
-        public ProcesserRegister(MatchView matchView, GameView gameView, Player player, PlayersInfo playersInfo)
+        Container container;
+        public GameFlow flow;
+        public ProcesserRegister(Container container, GameFlow flow)
         {
-            this.matchView = matchView;
-            this.gameView = gameView;
-            this.player = player;
-            this.playersInfo = playersInfo;
+            this.container = container;
+            this.flow = flow;
         }
 
         public virtual void Regist(MessageProcesser processer)
         {
-            var loger = UnityEngine.Debug.unityLogger;
+            AddResponses(processer);
+            AddFlows(processer);
+        }
+
+        void AddFlows(MessageProcesser processer)
+        {
+            var playersInfo = container.Get<PlayersInfo>();
+            var player = container.Get<Player>();
+            var flows = new IFlowProcesser[]
+            {
+                 new FinishedProcesser(),
+                 new TurnProcesser(),
+                 new PlayedProcesser(),
+                 new StartedProcesser(player)
+            };
+            foreach (var item in flows)
+            {
+                item.SetInfos(flow, playersInfo);
+            }
+            AddProcessers(processer, flows);
+        }
+
+        private void AddResponses(MessageProcesser processer)
+        {
+            var matchView = container.Get<MatchView>();
             var processers = new IProcesser[]
             {
-                new StartedProcesser(matchView,gameView,playersInfo),
-                new PlayedProcesser(gameView.chessboard,playersInfo),
-                new FinishedProcesser(gameView.finishView,player),
-                new ResponseDecorater(new MatchProcesser(matchView,player),loger),
-                new ResponseDecorater(new CancelMatchProcesser(matchView),loger),
-                new TurnProcesser(gameView.countDown,gameView.chessSelector,player,playersInfo),
-                new ResponseDecorater(new NoneResponseProcesser(MessageCode.RequestPlay),loger)
+                new ResponseDecorater(new MatchProcesser(matchView)),
+                new ResponseDecorater(new CancelMatchProcesser(matchView)),
+                new ResponseDecorater(new NoneResponseProcesser(MessageCode.RequestPlay))
             };
+            AddProcessers(processer, processers);
+        }
+
+        private void AddProcessers(MessageProcesser processer, IProcesser[] processers)
+        {
             foreach (var item in processers)
             {
                 processer.Processers.Add(item.OpCode, item);

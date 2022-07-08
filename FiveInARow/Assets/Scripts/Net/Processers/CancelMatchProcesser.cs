@@ -1,6 +1,6 @@
 ﻿namespace Five
 {
-    public class CancelMatchProcesser : AProcesser<MatchResponse>
+    public class CancelMatchProcesser : AProcesser<Response>
     {
         private MatchView match;
 
@@ -11,7 +11,7 @@
 
         public override int OpCode => MessageCode.GetResponseCode(MessageCode.RequestCancelMatch);
 
-        public override void ProcessContent(MatchResponse message)
+        public override void ProcessContent(Response message)
         {
             match.Canceled();
         }

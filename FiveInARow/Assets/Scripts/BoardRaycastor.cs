@@ -11,10 +11,8 @@ namespace Five
         {
             this.convertor = new PositionConvertor();
             colider = new GameObject().AddComponent<BoxCollider>();
-            var w = width * 0.5f;
-            var h = height * 0.5f;
-            colider.transform.localScale = new Vector3(w+1, 0.001f, h+1);
-            colider.transform.position = new Vector3(w, 0, h);
+            colider.transform.localScale = new Vector3(width, 0.001f, height);
+            colider.transform.position = new Vector3(width, 0, height) *0.5f;
         }
 
 

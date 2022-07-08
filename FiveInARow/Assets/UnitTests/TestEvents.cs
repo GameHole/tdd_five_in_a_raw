@@ -11,9 +11,9 @@ namespace UnitTests
             var socket = new LogSocket();
             var match = new MatchView();
             var sender = new MatchButtonEvents(match, socket);
-            match.matchBtn.onClick.Invoke();
+            match.matchBtn.Invoke();
             Assert.AreEqual("Send opcode:1", socket.log);
-            match.cancelBtn.onClick.Invoke();
+            match.cancelBtn.Invoke();
             Assert.AreEqual("Send opcode:3", socket.log);
         }
         [Test]
@@ -21,12 +21,14 @@ namespace UnitTests
         {
             var finish = new FinishView();
             finish.Open();
+            var cntr = new Container();
             var game = new GameView();
             game.Open();
             var match = new MatchView();
+            match.Matched();
             match.Close();
             var sender = new FinishButtonEvents(match, finish, game);
-            finish.button.onClick.Invoke();
+            finish.button.Invoke();
             Assert.IsFalse(finish.View.activeInHierarchy);
             Assert.IsFalse(game.View.activeInHierarchy);
             Assert.IsTrue(match.View.activeInHierarchy);

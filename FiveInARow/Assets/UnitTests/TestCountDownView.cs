@@ -2,7 +2,8 @@
 using UnityEngine.UI;
 using Five;
 using UnityEngine;
-
+using UnityEngine.TestTools;
+using System.Collections;
 namespace UnitTests
 {
     class TestCountDownView

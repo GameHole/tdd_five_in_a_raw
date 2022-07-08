@@ -1,27 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Five
+﻿namespace Five
 {
-    public class MatchProcesser : AProcesser<MatchResponse>
+    public class MatchProcesser : AProcesser<Response>
     {
         private MatchView match;
-        private Player player;
 
-        public MatchProcesser(MatchView match, Player player)
+        public MatchProcesser(MatchView match)
         {
             this.match = match;
-            this.player = player;
         }
 
         public override int OpCode => MessageCode.GetResponseCode(MessageCode.RequestMatch);
 
-        public override void ProcessContent(MatchResponse message)
+        public override void ProcessContent(Response message)
         {
-            player.id = message.playerId;
             match.Matched();
         }
     }

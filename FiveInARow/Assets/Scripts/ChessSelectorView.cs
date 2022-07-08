@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Five
 {
-    public class ChessSelectorView
+    public class ChessSelectorView:IUpdate
     {
         private IChessSelectActor actor;
         private ChessSelectorActor runActor;
@@ -22,12 +22,12 @@ namespace Five
             stopActor = new NoneSelectActor();
             Stop();
         }
-        public void Update()
+        public void Update(float dt=0)
         {
             actor.Update();
         }
 
-        public void Place()
+        public virtual void Place()
         {
             actor.Place();
         }

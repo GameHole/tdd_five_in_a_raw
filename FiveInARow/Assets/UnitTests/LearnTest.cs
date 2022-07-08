@@ -4,6 +4,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.TestTools;
+using UnityEngine.UI;
 
 namespace UnitTests
 {
@@ -54,6 +55,13 @@ namespace UnitTests
                 Thread.Sleep(10);
                 return 1;
             });
+        }
+        [Test]
+        public void testButtonListenerCount()
+        {
+            var btn = new GameObject().AddComponent<Button>();
+            btn.onClick.AddListener(() => { });
+            Assert.AreEqual(0, btn.onClick.GetPersistentEventCount());
         }
     }
 }

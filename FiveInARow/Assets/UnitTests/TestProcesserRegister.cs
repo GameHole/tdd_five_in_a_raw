@@ -20,8 +20,8 @@ namespace UnitTests
         [SetUp]
         public void SetUp()
         {
-            processer = new MessageProcesser(new LogSocket());
-            new ProcesserRegister(null, new GameView(), null, null).Regist(processer);
+            processer = new MessageProcesser(new LogSocket(),null);
+            new ProcesserRegister(new Container(), new GameFlow()).Regist(processer);
         }
         [Test]
         public void testRegistedNotify()

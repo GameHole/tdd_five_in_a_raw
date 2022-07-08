@@ -11,15 +11,15 @@ namespace Five
         public GameObject MatchingView { get; private set; }
         public GameObject CancelView { get;private set; }
 
-        public Button matchBtn { get; }
-        public Button cancelBtn { get; }
+        public ButtonEvent matchBtn { get; }
+        public ButtonEvent cancelBtn { get; }
 
         public MatchView():base()
         {
             MatchingView = View.transform.Find("MatchingView").gameObject;
             CancelView = View.transform.Find("CancelView").gameObject;
-            matchBtn = MatchingView.transform.Find("matchBtn").GetComponent<Button>();
-            cancelBtn = CancelView.transform.Find("cancelBtn").GetComponent<Button>();
+            matchBtn = new ButtonEvent(MatchingView.transform.Find("matchBtn").GetComponent<Button>());
+            cancelBtn = new ButtonEvent(CancelView.transform.Find("cancelBtn").GetComponent<Button>());
             View.SetActive(false);
         }
 

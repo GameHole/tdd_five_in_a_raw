@@ -5,11 +5,11 @@ namespace Five
     public class ResponseDecorater : AProcesser<Response>
     {
         public IProcesser decorated { get; }
-        private ILogger logger;
-        public ResponseDecorater(IProcesser decorated, ILogger logger)
+        public ILogger logger;
+        public ResponseDecorater(IProcesser decorated)
         {
             this.decorated = decorated;
-            this.logger = logger;
+            logger = Debug.unityLogger;
         }
 
         public override int OpCode => decorated.OpCode;

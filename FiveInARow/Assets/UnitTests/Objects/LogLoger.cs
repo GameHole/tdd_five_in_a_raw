@@ -9,7 +9,7 @@ namespace UnitTests
 {
     class LogLoger : ILogger
     {
-        public string errorLog;
+        public string logStr;
         public ILogHandler logHandler { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
         public bool logEnabled { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
         public LogType filterLogType { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
@@ -56,7 +56,7 @@ namespace UnitTests
 
         public void LogError(string tag, object message)
         {
-            errorLog = message.ToString();
+            logStr = message.ToString();
         }
 
         public void LogError(string tag, object message, UnityEngine.Object context)
@@ -86,7 +86,7 @@ namespace UnitTests
 
         public void LogWarning(string tag, object message)
         {
-            throw new NotImplementedException();
+            logStr = message.ToString();
         }
 
         public void LogWarning(string tag, object message, UnityEngine.Object context)

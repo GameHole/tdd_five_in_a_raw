@@ -4,13 +4,14 @@ using UnityEngine.UI;
 
 namespace Five
 {
-    public class CountDownView:UIView
+    public class CountDownView:UIView,IUpdate
     {
         public CountDownView(float time):base()
         {
             Time = time;
             UpdateTime();
         }
+
         private Text _text;
         private Text text
         {
