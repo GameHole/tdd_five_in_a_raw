@@ -4,16 +4,9 @@ using System.Text;
 
 namespace Five
 {
-    public class RequestRegister: IProcesserRegister
+    public class RequestRegister
     {
-        ASocket socket;
-        Matcher matcher;
-        public RequestRegister(ASocket socket, Matcher matcher)
-        {
-            this.socket = socket;
-            this.matcher = matcher;
-        }
-        public void Regist(MessageProcesser client)
+        public virtual void Regist(Client client)
         {
             var array = new RequestProcesser[]
             {
@@ -23,8 +16,8 @@ namespace Five
             };
             foreach (var item in array)
             {
-                item.Init(socket, matcher);
-                client.Processers.Add(item.OpCode,item);
+                item.Init(client.socket, client.matcher);
+                client.processer.Processers.Add(item.OpCode,item);
             }
         }
     }

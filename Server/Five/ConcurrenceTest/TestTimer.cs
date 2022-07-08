@@ -10,7 +10,7 @@ namespace ConcurrenceTest
         public async Task testReset()
         {
             var timer = new LoopTimer(10);
-            await Repeat.RepeatAsync(100000, async () =>
+            await Repeat.RepeatAsync(1000000, async () =>
             {
                 timer.Update(1);
                 await Task.Delay(100);

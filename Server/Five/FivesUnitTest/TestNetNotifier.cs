@@ -13,13 +13,13 @@ namespace FivesUnitTest
         public void SetUp()
         {
             socket = new LogSocket();
-            notifier = new NetNotifier(socket);
+            notifier = new NetNotifier(socket,new Player());
         }
         [Test]
         public void testStart()
         {
             notifier.Start(new PlayerInfo[] { new PlayerInfo(1, 10), new PlayerInfo(2, 20) });
-            Assert.AreEqual("Send opcode:7 (1,10)(2,20)", socket.log);
+            Assert.AreEqual("Send opcode:7 -1 (1,10)(2,20)", socket.log);
         }
         [Test]
         public void testFinish()

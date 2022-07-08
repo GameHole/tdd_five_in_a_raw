@@ -73,5 +73,11 @@ namespace Five
             }
             return false;
         }
+
+        public void Clear()
+        {
+            Array.Clear(table, 0, table.Length);
+            _count = 0;
+        }
     }
 }

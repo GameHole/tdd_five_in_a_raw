@@ -19,7 +19,7 @@ namespace Five
 
         public void Update(float dt)
         {
-            _adding += dt;
+            Interlocked.Exchange(ref _adding, _adding + dt);
             if (_adding >= time)
             {
                 Reset();

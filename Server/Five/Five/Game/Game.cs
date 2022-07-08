@@ -122,6 +122,7 @@ namespace Five
 
         private void stopInternal()
         {
+            chessboard.Clear();
             players.Clear();
             Interlocked.Exchange(ref _count, 0);
             TimerDriver.Stop(timer);
@@ -148,13 +149,13 @@ namespace Five
             {
                 return ResultDefine.AllReadyHasChess;
             }
+            gameNotifier.NotifyPlay(x, y, player.PlayerId);
             if (chessboard.isFiveInRow(player.chess))
             {
                 Finish(player.PlayerId);
             }
             else
             {
-                gameNotifier.NotifyPlay(x, y, player.PlayerId);
                 NextPlayer();
             }
             return ResultDefine.Success;

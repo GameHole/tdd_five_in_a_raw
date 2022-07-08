@@ -7,9 +7,11 @@ namespace Five
     public class NetNotifier : INotifier
     {
         private ASocket socket;
-        public NetNotifier(ASocket socket)
+        private Player player;
+        public NetNotifier(ASocket socket,Player player)
         {
             this.socket = socket;
+            this.player = player;
         }
         public void Finish(int id)
         {
@@ -23,7 +25,7 @@ namespace Five
 
         public void Start(PlayerInfo[] info)
         {
-            socket.Send(new StartNotify { infos = info }); 
+            socket.Send(new StartNotify { playerId = player.PlayerId, infos = info });
         }
 
         public void Turn(int id)

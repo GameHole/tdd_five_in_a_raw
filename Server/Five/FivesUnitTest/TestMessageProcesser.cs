@@ -22,7 +22,6 @@ namespace FivesUnitTest
             logPlayer = new LogPlayer();
             logMatcher.Player = logPlayer;
             client = new LogClient(logSocket, logProcesser);
-            new RequestRegister(logSocket, logMatcher).Regist(client);
         }
         [Test]
         public void testRunProcess()
@@ -31,13 +30,6 @@ namespace FivesUnitTest
             client.Processers.Add(processer.OpCode,processer);
             client.Process(new Message(processer.OpCode));
             Assert.AreEqual("Process", processer.log);
-        }
-        [Test]
-        public void testRegistedProcess()
-        {
-            Assert.IsTrue(client.Processers.Contains(MessageCode.RequestMatch));
-            Assert.IsTrue(client.Processers.Contains(MessageCode.RequestCancelMatch));
-            Assert.IsTrue(client.Processers.Contains(MessageCode.RequestPlay));
         }
         [Test]
         public void testProcessMessage()
@@ -53,7 +45,7 @@ namespace FivesUnitTest
 
             matchProcesser.Process(new Message(MessageCode.RequestMatch));
             Assert.AreEqual("Match ", logMatcher.log);
-            Assert.AreEqual("Send opcode:2 result:0 id:0", logSocket.log);
+            Assert.AreEqual("Send opcode:2 result:0", logSocket.log);
 
             cnacelProcesser.Process(new Message(MessageCode.RequestCancelMatch));
 
@@ -72,10 +64,17 @@ namespace FivesUnitTest
         [Test]
         public void testCastException()
         {
+            var play = new PlayRequestProcesser();
             var ex = Assert.Throws<NullReferenceException>(() =>
             {
-                client.Process(new Message(MessageCode.RequestPlay));
+                play.Process(new Message(MessageCode.RequestPlay));
             });
+        }
+        [Test]
+        public void testCast()
+        {
+            var play = new PlayMessage();
+            Assert.Null(play as PlayRequest);
         }
         [Test]
         public void testProcessUnkonwnMessage()

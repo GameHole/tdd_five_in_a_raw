@@ -16,7 +16,7 @@ namespace FivesUnitTest
         {
             return new Type[]
             {
-                typeof(MatchResponseSerializer),
+                typeof(ResponseSerializer),
                 typeof(ResponseSerializer),
                 typeof(ResponseSerializer)
             };

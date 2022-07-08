@@ -2,7 +2,6 @@
 {
     public static class MessageCode
     {
-        public static readonly int UnknownOpCode = -10000;
         public static readonly int RequestMatch = 1;
         public static readonly int RequestCancelMatch = 3;
         public static readonly int RequestPlay = 5;

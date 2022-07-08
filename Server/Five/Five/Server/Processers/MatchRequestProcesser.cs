@@ -6,7 +6,7 @@
 
         protected override Response ProcessContant(Message message)
         {
-            return new MatchResponse().SetInfo(message, matcher.Match(), matcher.Player.PlayerId);
+            return new Response().SetInfo(message, matcher.Match());
         }
     }
 }

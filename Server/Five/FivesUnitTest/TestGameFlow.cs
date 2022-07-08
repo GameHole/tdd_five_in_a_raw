@@ -99,6 +99,7 @@ namespace FivesUnitTest
         [Test]
         public void testFinish()
         {
+            game.chessboard.AddValue(0, 0, 1);
             game.Finish(1);
             Assert.AreEqual(0, game.PlayerCount);
             foreach (var item in players)
@@ -106,6 +107,7 @@ namespace FivesUnitTest
                 Assert.AreEqual(-1, item.PlayerId);
             }
             Assert.IsFalse(TimerDriver.IsContainTimer(game.timer));
+            Assert.AreEqual(0, game.chessboard.Count);
         }
         [Test]
         public void testPlay()

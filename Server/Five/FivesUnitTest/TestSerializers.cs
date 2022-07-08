@@ -55,8 +55,9 @@ namespace FivesUnitTest
         public void testStartNotifySerializer()
         {
             var serizer = new StartNotifySerializer();
-            serizer.Serialize(new StartNotify { infos= new PlayerInfo[] { new PlayerInfo(1, 2), new PlayerInfo(2, 3) } }, stream);
+            serizer.Serialize(new StartNotify { playerId=5, infos= new PlayerInfo[] { new PlayerInfo(1, 2), new PlayerInfo(2, 3) } }, stream);
             var msg = serizer.Deserialize(stream) as StartNotify;
+            Assert.AreEqual(5, msg.playerId);
             for (int i = 0; i < msg.infos.Length; i++)
             {
                 Assert.AreEqual(i+1, msg.infos[i].Chess);
@@ -73,21 +74,12 @@ namespace FivesUnitTest
             Assert.AreEqual(3, msg.playerId);
         }
         [Test]
-        public void testMatchResponseSerializer()
-        {
-            var serizer = new MatchResponseSerializer();
-            serizer.Serialize(new MatchResponse().SetInfo(new Message(MessageCode.RequestMatch),ResultDefine.Success,3), stream);
-            var msg = serizer.Deserialize(stream) as MatchResponse;
-            Assert.AreEqual(MessageCode.GetResponseCode(MessageCode.RequestMatch), msg.opcode);
-            Assert.AreEqual(3, msg.playerId);
-        }
-        [Test]
         public void testOpCodeErrorSerializer()
         {
             var serizer = new OpCodeErrorSerializer();
             serizer.Serialize(new OpCodeErrorMessage(10), stream);
             var msg = serizer.Deserialize(stream) as OpCodeErrorMessage;
-            Assert.AreEqual(MessageCode.UnknownOpCode, msg.opcode);
+            Assert.AreEqual(SystemOpCode.UnknownOpCode, msg.opcode);
             Assert.AreEqual(10, msg.unknownOpcode);
         }
     }

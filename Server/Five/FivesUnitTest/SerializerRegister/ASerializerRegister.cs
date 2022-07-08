@@ -35,11 +35,7 @@ namespace FivesUnitTest
             foreach (var item in fields)
             {
                 if (isVailed(item))
-                {
-                    int code = (int)item.GetValue(null);
-                    if (code > 0)
-                        codes.Add(code);
-                }
+                    codes.Add((int)item.GetValue(null));
             }
 
             return codes;

@@ -16,7 +16,6 @@ namespace Five
         }
         public bool IsVailed(ByteStream stream)
         {
-            Console.WriteLine(stream.GetLastCount());
             return stream.GetLastCount() >= ByteSize && stream.Peek<int>() == proto;
         }
     }

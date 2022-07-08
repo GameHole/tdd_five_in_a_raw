@@ -22,13 +22,16 @@ namespace FivesUnitTest
         [Test]
         public void testonAccept()
         {
+            var log= new LogRequestRegister();
+            mgr.register = log;
             mgr.onAccept(new LogSocket());
             Assert.AreEqual(1, mgr.clients.Count);
+            Assert.IsTrue(log.isRun);
         }
         [Test]
         public void testRemove()
         {
-            MessageProcesser client = null;
+            Client client = null;
             mgr.clients.onAdd += (c) => client = c;
             mgr.onAccept(new LogSocket());
             mgr.clients.Remove(client);

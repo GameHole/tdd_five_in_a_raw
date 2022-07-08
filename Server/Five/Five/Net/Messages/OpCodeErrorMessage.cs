@@ -3,7 +3,7 @@
     public class OpCodeErrorMessage:Message
     {
         public int unknownOpcode;
-        public OpCodeErrorMessage():base(MessageCode.UnknownOpCode) { }
+        public OpCodeErrorMessage():base(SystemOpCode.UnknownOpCode) { }
         public OpCodeErrorMessage(int unknown):this()
         {
             this.unknownOpcode = unknown;

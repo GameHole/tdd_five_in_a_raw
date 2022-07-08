@@ -80,6 +80,14 @@ namespace FivesUnitTest
             Assert.AreEqual(2, board.GetValue(0, 4));
         }
         [Test]
+        public void testClear()
+        {
+            board.AddValue(1, 0, TEST_COLOR);
+            board.Clear();
+            Assert.AreEqual(0, board.Count);
+            Assert.IsTrue(board.AddValue(1, 0, TEST_COLOR));
+        }
+        [Test]
         public void testAddValueOnSamePos()
         {
             board.AddValue(1, 0, TEST_COLOR);
