@@ -25,5 +25,10 @@ namespace FivesUnitTest
             base.Finish();
             log += $"Finish ";
         }
+        public override void OutLine()
+        {
+            base.OutLine();
+            log += "OutLine ";
+        }
     }
 }

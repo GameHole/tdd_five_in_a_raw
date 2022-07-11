@@ -67,7 +67,7 @@ namespace Five
                 {
                     return ResultDefine.NotInMatching;
                 }
-                if (game.isStarted())
+                if (game.IsRunning)
                 {
                     return ResultDefine.GameStarted;
                 }

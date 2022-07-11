@@ -8,6 +8,7 @@ namespace Five
     {
         public INotifier notifier;
         internal IPlayable playable;
+        internal IOutLineable outlineable;
         public int GameId { get; internal set; }
         public int chess { get; private set; }
         public int PlayerId { get; internal set; }
@@ -27,11 +28,12 @@ namespace Five
         {
             return playable.Play(x, y, this);
         }
-        internal void Reset()
+        public virtual void Reset()
         {
             GameId = 0;
             PlayerId = -1;
             playable = new NonePlayable();
+            outlineable = new NoneOutLineable();
             chess = 0;
         }
 
@@ -39,6 +41,12 @@ namespace Five
         {
             Reset();
             onFinish?.Invoke();
+        }
+
+        public virtual void OutLine()
+        {
+            notifier = new NoneNotifier();
+            outlineable.OutLine();
         }
     }
 }

@@ -25,6 +25,28 @@ namespace FivesUnitTest
             Assert.AreEqual(15, game.chessboard.height);
         }
         [Test]
+        public void testGameStart()
+        {
+            var players = new LogPlayer[2];
+            for (int i = 0; i < players.Length; i++)
+            {
+                players[i] = new LogPlayer();
+                game.Join(players[i]);
+            }
+            game.turn.index = 1;
+            Assert.IsFalse(game.IsRunning);
+            game.Start();
+            Assert.IsTrue(game.IsRunning);
+            for (int i = 0; i < players.Length; i++)
+            {
+                var item = players[i];
+                Assert.AreEqual("Start ", item.log);
+                Assert.AreEqual(i + 1, item.chess);
+                item.Play(0, i);
+                Assert.AreEqual(item.chess, game.chessboard.GetValue(0, i));
+            }
+        }
+        [Test]
         public void testGetPlayer()
         {
             var player = game.GetPlayer(0);
@@ -83,6 +105,32 @@ namespace FivesUnitTest
                 game.Start();
             });
             Assert.AreEqual("No enough player for start", exp.Message);
+        }
+        [Test]
+        public void testPlayerOutLineOnStop()
+        {
+            var player0 = new Player();
+            game.Join(player0);
+            player0.OutLine();
+            Assert.AreEqual(0, game.PlayerCount);
+        }
+        [Test]
+        public void testPlayerOutLineOnRunning()
+        {
+            for (int c = 0; c < 2; c++)
+            {
+                var players = new Player[] { new Player(), new Player() };
+                for (int i = 0; i < players.Length; i++)
+                {
+                    game.Join(players[i]);
+                }
+                game.Start();
+                players[0].OutLine();
+                Assert.AreEqual(game.maxPlayer, game.PlayerCount);
+                players[1].OutLine();
+                Assert.AreEqual(0, game.PlayerCount);
+                Assert.IsFalse(game.IsRunning);
+            }
         }
     }
 }

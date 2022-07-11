@@ -15,6 +15,7 @@ namespace Five
             matcher = new Matcher(matching);
             matcher.Player.notifier = new NetNotifier(socket, matcher.Player);
             processer = new MessageProcesser(socket, new OpCodeErrorResponseProcesser(socket));
+            socket.onClose += () => matcher.Player.OutLine();
         }
     }
 }

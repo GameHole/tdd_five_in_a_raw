@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Five
 {
-    class NoneNotifier : INotifier
+    public class NoneNotifier : INotifier
     {
         public void Finish(int id) { }
 

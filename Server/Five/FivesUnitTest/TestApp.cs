@@ -199,5 +199,29 @@ namespace FivesUnitTest
             excepts.Add(MessageCode.PlayedNotify);
             excepts.Add(MessageCode.TurnNotify);
         }
+
+        [Test]
+        public async Task testClientOutLine()
+        {
+            await Task.Delay(100);
+            for (int i = 0; i < sockets.Length; i++)
+            {
+                sockets[i].Connect("127.0.0.1", 10000);
+            }
+            for (int i = 0; i < sockets.Length; i++)
+            {
+                await Task.Delay(100);
+                sockets[i].Send(new Message(MessageCode.RequestMatch));
+            }
+            await Task.Delay(100);
+            var game = app.matching.GetGame(1);
+            Assert.IsTrue(game.IsRunning);
+            for (int i = 0; i < sockets.Length; i++)
+            {
+                sockets[i].Close();
+            }
+            await Task.Delay(100);
+            Assert.IsFalse(game.IsRunning);
+        }
     }
 }

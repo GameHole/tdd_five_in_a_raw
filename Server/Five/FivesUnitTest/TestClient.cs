@@ -8,10 +8,15 @@ namespace FivesUnitTest
 {
     class TestClient
     {
+        Client client;
+        [SetUp]
+        public void SetUp()
+        {
+            client = new Client(new LogSocket(), new Matching());
+        }
         [Test]
         public void testClient()
         {
-            var client = new Client(new LogSocket(), new Matching());
             Assert.NotNull(client.matcher);
             Assert.NotNull(client.processer);
             Assert.NotNull(client.socket);
@@ -19,8 +24,15 @@ namespace FivesUnitTest
         [Test]
         public void testNotifier()
         {
-            var client = new Client(new LogSocket(), new Matching());
             Assert.AreEqual(typeof(NetNotifier), client.matcher.Player.notifier.GetType());
+        }
+        [Test]
+        public void testClose()
+        {
+            var log = new LogPlayer();
+            client.matcher.Player = log;
+            client.socket.onClose.Invoke();
+            Assert.AreEqual("OutLine ", log.log);
         }
     }
 }

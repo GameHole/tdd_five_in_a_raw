@@ -29,26 +29,6 @@ namespace FivesUnitTest
             game.Start();
         }
         [Test]
-        public void testGameStart()
-        {
-            var localGame = new Game();
-            for (int i = 0; i < players.Length; i++)
-            {
-                players[i] = new LogPlayer();
-                localGame.Join(players[i]);
-            }
-            localGame.turn.index = 1;
-            localGame.Start();
-            for (int i = 0; i < players.Length; i++)
-            {
-                var item = players[i];
-                Assert.AreEqual("Start ", item.log);
-                Assert.AreEqual(i + 1, item.chess);
-                item.Play(0, i);
-                Assert.AreEqual(item.chess, localGame.chessboard.GetValue(0, i));
-            }
-        }
-        [Test]
         public void testGameStartRepeet()
         {
             Assert.AreEqual(0, game.turn.index);
@@ -101,6 +81,7 @@ namespace FivesUnitTest
         {
             game.chessboard.AddValue(0, 0, 1);
             game.Finish(1);
+            Assert.IsFalse(game.IsRunning);
             Assert.AreEqual(0, game.PlayerCount);
             foreach (var item in players)
             {
@@ -147,6 +128,7 @@ namespace FivesUnitTest
             Assert.IsTrue(TimerDriver.IsContainTimer(game.timer));
             Assert.AreEqual(2, game.PlayerCount);
             game.Stop();
+            Assert.IsFalse(game.IsRunning);
             Assert.AreEqual(0, game.PlayerCount);
             foreach (var item in players)
             {

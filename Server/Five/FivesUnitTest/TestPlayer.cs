@@ -48,6 +48,22 @@ namespace FivesUnitTest
                 player.Play(0, 0);
             });
         }
-        
+        [Test]
+        public void testOutLine()
+        {
+            var player = new Player();
+            Assert.DoesNotThrow(() =>
+            {
+                player.OutLine();
+            });
+        }
+        [Test]
+        public void testOutLineInGame()
+        {
+            player.notifier = new NetNotifier(new LogSocket(), player);
+            player.OutLine();
+            Assert.IsInstanceOf<NoneNotifier>(player.notifier);
+            Assert.IsFalse(game.ContainPlayer(player));
+        }
     }
 }

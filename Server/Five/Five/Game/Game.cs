@@ -19,6 +19,8 @@ namespace Five
         private int _count = 0;
         public int PlayerCount { get => _count; }
         public IEnumerable<Player> Players { get => players.Values; }
+        public bool IsRunning { get; private set; }
+        private IOutLineable startOut;
 
         public Game()
         {
@@ -27,6 +29,7 @@ namespace Five
             timer = new LoopTimer(30);
             chessboard = new Chessboard(15, 15);
             gameNotifier = new GameNotifier(this);
+            startOut = new StartOutLineable(this);
         }
 
         public bool isFull()
@@ -34,15 +37,17 @@ namespace Five
             return PlayerCount >= maxPlayer;
         }
 
-
         public bool Join(Player player)
         {
-            if(TryDistributeIdentity(out var playerId))
+            if (TryDistributeIdentity(out var playerId))
             {
                 player.GameId = Id;
-                player.playable = new WaitGamePlayable();
                 player.PlayerId = playerId;
                 players.TryAdd(player.PlayerId, player);
+
+                player.playable = new WaitGamePlayable();
+                player.outlineable = new StopOutLineable(this, player);
+
                 return true;
             }
             return false;
@@ -58,10 +63,6 @@ namespace Five
             return true;
         }
 
-        public bool isStarted()
-        {
-            return isFull();
-        }
 
         public Player GetPlayer(int index)
         {
@@ -71,9 +72,11 @@ namespace Five
 
         public void Remove(Player player)
         {
-            players.TryRemove(player.PlayerId, out var p);
-            Interlocked.Decrement(ref _count);
-            player.Reset();
+            if(players.TryRemove(player.PlayerId, out var p))
+            {
+                Interlocked.Decrement(ref _count);
+                player.Reset();
+            }
         }
 
         public void Start()
@@ -83,6 +86,7 @@ namespace Five
             foreach (var item in players.Values)
             {
                 item.Start(chess++);
+                item.outlineable = startOut;
             }
             turn.Start();
             gameNotifier.NotifyStart();
@@ -90,6 +94,7 @@ namespace Five
             TimerDriver.Start(timer);
             timer.onTime -= NextPlayer;
             timer.onTime += NextPlayer;
+            IsRunning = true;
         }
         private void TurnPlayer()
         {
@@ -126,6 +131,7 @@ namespace Five
             players.Clear();
             Interlocked.Exchange(ref _count, 0);
             TimerDriver.Stop(timer);
+            IsRunning = false;
         }
 
         public void Stop()
