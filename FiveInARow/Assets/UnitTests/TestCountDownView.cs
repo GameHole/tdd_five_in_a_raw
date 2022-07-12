@@ -9,28 +9,34 @@ namespace UnitTests
     class TestCountDownView
     {
         CountDownView count;
-        Transform parent;
         [SetUp]
         public void SetUp()
         {
-            parent = PrefabHelper.Instantiate<Transform>("UI/Canvas");
             count = new CountDownView(10);
-            count.Join(parent);
+            count.Join(PrefabHelper.Instantiate<Transform>("UI/Canvas"));
         }
         [Test]
         public void testCountDownView()
         {
             Assert.AreEqual(10, count.Time);
-            Assert.AreEqual(parent,count.View.transform.parent);
             Assert.IsTrue(count.View.activeSelf);
             Assert.AreEqual("10",count.TimeTxt);
+
+        }
+        [Test]
+        public void testViewPosirion()
+        {
+            var rectTran = count.View.transform.Find("View").GetComponent<RectTransform>();
+            Assert.AreEqual(new Vector2(0.5f, 1f), rectTran.anchorMin);
+            Assert.AreEqual(new Vector2(0.5f, 1f), rectTran.anchorMax);
+            Assert.AreEqual(new Vector2(0f, -71f), rectTran.anchoredPosition);
         }
         [Test]
         public void testText()
         {
             count.TimeTxt = "1";
             Assert.AreEqual("1", count.TimeTxt);
-            Assert.AreEqual("1", count.View.transform.Find("CountDownTxt").GetComponent<Text>().text);
+            Assert.AreEqual("1", count.View.GetComponentInChildren<Text>().text);
         }
         [Test]
         public void testSetTime()

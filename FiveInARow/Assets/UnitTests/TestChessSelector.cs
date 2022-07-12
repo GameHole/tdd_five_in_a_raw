@@ -4,10 +4,14 @@ using UnityEngine;
 
 namespace UnitTests
 {
-    class TestChessSelector
+    class TestChessSelector:IRay
     {
         ChessSelectorView selector;
         PositionConvertor convertor;
+        public Ray GetRay()
+        {
+            return new Ray(new Vector3(), Vector3.up);
+        }
         [SetUp]
         public void SetUp()
         {
@@ -39,6 +43,16 @@ namespace UnitTests
             Assert.AreEqual(pos, selector.SelectedPosition);
         }
         [Test]
+        public void testNotCastPlace()
+        {
+            selector = new ChessSelectorView(this, new BoardRaycastor(15, 15));
+            selector.Start();
+            bool isPlaced = false;
+            selector.onPlace += (p) => isPlaced = true;
+            selector.Place();
+            Assert.IsFalse(isPlaced);
+        }
+        [Test]
         public void testStop()
         {
             selector.Start();
@@ -58,5 +72,7 @@ namespace UnitTests
             selector.Start();
             Assert.IsTrue(selector.IsRun);
         }
+
+        
     }
 }

@@ -9,6 +9,7 @@ namespace Five
         internal GameObject chessPreview;
         internal Vector2Int remotePos;
         private IRay ray;
+        private bool isCasting;
         public ChessSelectorActor(ChessSelectorView selector, IRay ray, BoardRaycastor castor)
         {
             this.selector = selector;
@@ -19,17 +20,18 @@ namespace Five
 
         public void Place()
         {
-            selector.onPlace?.Invoke(remotePos);
+            if (isCasting)
+                selector.onPlace?.Invoke(remotePos);
         }
 
         public void Update()
         {
-            bool active = castor.Raycast(ray.GetRay(), out remotePos);
-            if (active)
+            isCasting = castor.Raycast(ray.GetRay(), out remotePos);
+            if (isCasting)
             {
                 chessPreview.transform.position = castor.convertor.ToLocalPosition(remotePos);
             }
-            chessPreview.SetActive(active);
+            chessPreview.SetActive(isCasting);
         }
     }
 }

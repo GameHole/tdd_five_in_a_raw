@@ -11,7 +11,9 @@ namespace Five
         protected override void TypeSetted()
         {
             bg.color = TypeToColor(bg.color.a);
-            text.color = OneMinus(bg.color);
+            var color = OneMinus(bg.color);
+            color.a = text.color.a;
+            text.color = color;
         }
         private Color OneMinus(Color color)
         {

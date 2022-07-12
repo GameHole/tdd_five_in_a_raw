@@ -8,7 +8,7 @@ public class TestGrade : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        new ChessSelectorView(new CameraRay(Camera.main),new BoardRaycastor(15,15));
+        new GradingView(15, 20);
     }
 
     // Update is called once per frame

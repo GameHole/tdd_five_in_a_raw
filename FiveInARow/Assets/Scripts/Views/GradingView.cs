@@ -9,14 +9,25 @@ namespace Five
         public int height { get; set; } = 15;
         public List<Transform> griddingH { get; set; } = new List<Transform>();
         public List<Transform> griddingV { get; set; } = new List<Transform>();
-        public float gradingWidth { get; private set; } = 0.015f;
+        public float gradingWidth { get; private set; } = 0.03f;
+        public Transform BG { get;private set; }
+
         private Transform parent;
         public GradingView(int width, int height):base()
         {
             this.width = width;
             this.height = height;
+            InitBg();
             DrawGrading();
         }
+
+        private void InitBg()
+        {
+            BG = View.transform.Find("BG");
+            BG.position = new Vector3(width * 0.5f, -0.001f, height * 0.5f);
+            BG.localScale = new Vector3(width + 1f, 1, height + 1f);
+        }
+
         private void DrawGrading()
         {
             parent = View.transform.Find("Gradings");

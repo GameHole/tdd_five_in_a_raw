@@ -18,7 +18,7 @@ namespace Five
             get
             {
                 if (!_text)
-                    _text = View.transform.Find("CountDownTxt").GetComponent<Text>();
+                    _text = View.GetComponentInChildren<Text>();
                 return _text;
             }
         }
