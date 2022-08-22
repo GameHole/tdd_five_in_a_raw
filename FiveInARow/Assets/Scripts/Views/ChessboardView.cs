@@ -31,7 +31,9 @@ namespace Five
                 throw new PositionPlacedChessException(pos);
             }
             var clone = Object.Instantiate(chessPrefab,View.transform);
-            clone.transform.position = convertor.ToLocalPosition(pos);
+            var remotePos = convertor.ToLocalPosition(pos);
+            remotePos.y = -0.072f;
+            clone.transform.position = remotePos;
             clone.ChessType = chessType;
             chess[pos] = clone;
         }
