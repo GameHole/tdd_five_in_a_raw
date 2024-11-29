@@ -13,7 +13,7 @@ namespace FivesUnitTest
         [Test]
         public async Task testServer()
         {
-            var server = new Server("127.0.0.1", 10000);
+            var server = new Server("127.0.0.1", TestApp.port);
             TcpSocket ssocket = null;
             server.onAccept += (socket) =>
             {
@@ -23,7 +23,7 @@ namespace FivesUnitTest
             await Task.Delay(200);
             Assert.IsTrue(server.IsRun);
             var client = new TcpSocket(new SerializerRegister());
-            client.Connect("127.0.0.1", 10000);
+            client.Connect("127.0.0.1", TestApp.port);
             await Task.Delay(200);
             Assert.AreEqual(1, server.sockets.Count);
             server.Stop();

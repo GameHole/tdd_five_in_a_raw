@@ -12,10 +12,11 @@ namespace FivesUnitTest
     {
         App app;
         TcpSocket[] sockets;
+        public static readonly int port = 11000;
         [SetUp]
         public void SetUp()
         {
-            app = new App(new Server("127.0.0.1", 10000));
+            app = new App(new Server("127.0.0.1", port));
             app.StartAsync();
             var reg = new SerializerRegister();
             sockets = new TcpSocket[2];
@@ -45,7 +46,7 @@ namespace FivesUnitTest
         public async Task testRun()
         {
             await Task.Delay(100);
-            sockets[0].Connect("127.0.0.1", 10000);
+            sockets[0].Connect("127.0.0.1", port);
             await Task.Delay(100);
             Assert.AreEqual(1, app.mgr.clients.Count);
             var log = "";
@@ -64,7 +65,7 @@ namespace FivesUnitTest
             await Task.Delay(100);
             for (int i = 0; i < sockets.Length; i++)
             {
-                sockets[i].Connect("127.0.0.1", 10000);
+                sockets[i].Connect("127.0.0.1", port);
             }
             ConcurrentQueue<Message>[] messages = MakeMessageQeueus();
             for (int i = 0; i < 2; i++)
@@ -206,7 +207,7 @@ namespace FivesUnitTest
             await Task.Delay(100);
             for (int i = 0; i < sockets.Length; i++)
             {
-                sockets[i].Connect("127.0.0.1", 10000);
+                sockets[i].Connect("127.0.0.1", port);
             }
             for (int i = 0; i < sockets.Length; i++)
             {

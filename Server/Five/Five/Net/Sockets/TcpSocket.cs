@@ -26,7 +26,7 @@ namespace Five
         }
        
 
-        protected void RecvAsync()
+        public void RecvAsync()
         {
             isVailed = true;
             Task.Factory.StartNew(() =>

@@ -47,7 +47,9 @@ namespace Five
             while (IsRun)
             {
                 var client = socket.Accept();
-                var tcp = new TcpServerSocket(client, this,new SerializerRegister());
+                var tcp = new TcpSocket(client,new SerializerRegister());
+                tcp.RecvAsync();
+                tcp.onClose += () => sockets.Remove(tcp);
                 sockets.Add(tcp);
             }
         }

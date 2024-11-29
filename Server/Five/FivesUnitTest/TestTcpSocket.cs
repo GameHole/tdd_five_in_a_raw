@@ -14,7 +14,7 @@ namespace FivesUnitTest
         [SetUp]
         public void SetUp()
         {
-            server = new Server("127.0.0.1", 10000);
+            server = new Server("127.0.0.1", TestApp.port);
             socket = new TcpSocket(new SerializerRegister());
             server.StartAsync();
         }
@@ -81,7 +81,7 @@ namespace FivesUnitTest
             TcpSocket ssocket = null;
             server.onAccept += (socket) => ssocket = socket;
             await Task.Delay(200);
-            socket.Connect("127.0.0.1", 10000);
+            socket.Connect("127.0.0.1", TestApp.port);
             await Task.Delay(200);
             var log = "";
             ssocket.onRecv = (msg) => log += $"msg:{msg.opcode}";
@@ -96,10 +96,10 @@ namespace FivesUnitTest
             server.onAccept += (socket) => ssocket = socket;
             var socket = new TcpSocket(new SerializerRegister());
             await Task.Delay(200);
-            socket.Connect("127.0.0.1", 10000);
+            socket.Connect("127.0.0.1", TestApp.port);
             await Task.Delay(200);
             var log = "";
-            ssocket.onClose = () => log += $"close";
+            ssocket.onClose += () => log += $"close";
             socket.Close();
             await Task.Delay(100);
             Assert.AreEqual("close", log);
