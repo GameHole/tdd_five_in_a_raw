@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Five
 {
-    public class ClientMgr
+    public class ClientMgr: IApp
     {
         private Matching matching;
         public ConcurrentList<Client> clients { get; private set; }
@@ -14,12 +14,17 @@ namespace Five
             this.matching = matching;
             clients = new ConcurrentList<Client>();
         }
-        public void onAccept(ASocket socket)
+        public void Invoke(ASocket socket)
         {
             var client = new Client(socket, matching);
             register.Regist(client);
             clients.Add(client);
             socket.onClose += () => clients.Remove(client);
+        }
+
+        public void Stop()
+        {
+            clients.Clear();
         }
     }
 }

@@ -10,12 +10,14 @@ namespace FivesUnitTest
     class TestTcpSocket
     {
         Server server;
+        private TAccepter accepter;
         TcpSocket socket;
         [SetUp]
         public void SetUp()
         {
-            server = new Server("127.0.0.1", TestApp.port);
             socket = new TcpSocket(new SerializerRegister());
+            accepter = new TAccepter();
+            server = new Server("127.0.0.1", TestApp.port, accepter);
             server.StartAsync();
         }
         [TearDown]
@@ -78,13 +80,11 @@ namespace FivesUnitTest
         [Test]
         public async Task testSend()
         {
-            TcpSocket ssocket = null;
-            server.onAccept += (socket) => ssocket = socket;
             await Task.Delay(200);
             socket.Connect("127.0.0.1", TestApp.port);
             await Task.Delay(200);
             var log = "";
-            ssocket.onRecv = (msg) => log += $"msg:{msg.opcode}";
+            accepter.ssocket.onRecv = (msg) => log += $"msg:{msg.opcode}";
             socket.Send(new Message(MessageCode.RequestMatch));
             await Task.Delay(100);
             Assert.AreEqual("msg:1", log);
@@ -92,22 +92,20 @@ namespace FivesUnitTest
         [Test]
         public async Task testClose()
         {
-            TcpSocket ssocket = null;
-            server.onAccept += (socket) => ssocket = socket;
             var socket = new TcpSocket(new SerializerRegister());
             await Task.Delay(200);
             socket.Connect("127.0.0.1", TestApp.port);
             await Task.Delay(200);
             var log = "";
-            ssocket.onClose += () => log += $"close";
+            accepter.ssocket.onClose += () => log += $"close";
             socket.Close();
             await Task.Delay(100);
             Assert.AreEqual("close", log);
-            Assert.IsFalse(server.sockets.Contains(ssocket));
-            Assert.IsFalse(ssocket.isVailed);
+            Assert.IsFalse(server.sockets.Contains(accepter.ssocket));
+            Assert.IsFalse(accepter.ssocket.isVailed);
             Assert.Throws<ObjectDisposedException>(()=>
             {
-                ssocket.Send(new Message(1));
+                accepter.ssocket.Send(new Message(1));
             });
         }
     }

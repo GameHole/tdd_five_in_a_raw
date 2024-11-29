@@ -10,14 +10,16 @@ namespace FivesUnitTest
 {
     class TestApp
     {
+        private Server server;
         App app;
         TcpSocket[] sockets;
         public static readonly int port = 11000;
         [SetUp]
         public void SetUp()
         {
-            app = new App(new Server("127.0.0.1", port));
-            app.StartAsync();
+            app = new App();
+            server = new Server("127.0.0.1", port, app);
+            server.StartAsync();
             var reg = new SerializerRegister();
             sockets = new TcpSocket[2];
             for (int i = 0; i < sockets.Length; i++)
@@ -32,15 +34,14 @@ namespace FivesUnitTest
             {
                 sockets[i].Close();
             }
-            app.Stop();
+            server.Stop();
         }
         [Test]
         public void testApp()
         {
-            Assert.NotNull(app.server);
             Assert.NotNull(app.mgr);
             Assert.NotNull(app.matching);
-            Assert.NotNull(app.server.onAccept);
+            Assert.AreSame(server.app, app);
         }
         [Test]
         public async Task testRun()
@@ -54,10 +55,10 @@ namespace FivesUnitTest
             sockets[0].Send(new Message(MessageCode.RequestMatch));
             await Task.Delay(100);
             Assert.AreEqual($"msg:{MessageCode.GetResponseCode(MessageCode.RequestMatch)}", log);
-            app.Stop();
+            server.Stop();
             Assert.AreEqual(0, app.matching.GameCount);
             Assert.AreEqual(0, app.mgr.clients.Count);
-            Assert.IsFalse(app.server.IsRun);
+            Assert.IsFalse(server.IsRun);
         }
         [Test]
         public async Task testGameFlow()

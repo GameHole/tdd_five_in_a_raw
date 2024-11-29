@@ -24,7 +24,7 @@ namespace FivesUnitTest
         {
             var log= new LogRequestRegister();
             mgr.register = log;
-            mgr.onAccept(new LogSocket());
+            mgr.Invoke(new LogSocket());
             Assert.AreEqual(1, mgr.clients.Count);
             Assert.IsTrue(log.isRun);
         }
@@ -33,7 +33,7 @@ namespace FivesUnitTest
         {
             Client client = null;
             mgr.clients.onAdd += (c) => client = c;
-            mgr.onAccept(new LogSocket());
+            mgr.Invoke(new LogSocket());
             mgr.clients.Remove(client);
             Assert.AreEqual(0, mgr.clients.Count);
         }
@@ -41,7 +41,7 @@ namespace FivesUnitTest
         public void testSocketClose()
         {
             var scket = new LogSocket();
-            mgr.onAccept(scket);
+            mgr.Invoke(scket);
             scket.Close();
             Assert.AreEqual(0, mgr.clients.Count);
         }

@@ -4,33 +4,25 @@ using System.Text;
 
 namespace Five
 {
-    public class App
+    public class App:IApp
     {
-        public Server server { get; private set; }
         public ClientMgr mgr { get; private set; }
         public Matching matching { get; private set; }
 
-        public App(Server server)
+        public App()
         {
-            this.server = server;
             matching = new Matching();
             mgr = new ClientMgr(matching);
-            server.onAccept += mgr.onAccept;
-        }
-
-        public void Start()
-        {
-            server.Start();
-        }
-        public void StartAsync()
-        {
-            server.StartAsync();
         }
         public void Stop()
         {
-            mgr.clients.Clear();
-            server.Stop();
+            mgr.Stop();
             matching.Clear();
+        }
+
+        public void Invoke(ASocket socket)
+        {
+            mgr.Invoke(socket); 
         }
     }
 }

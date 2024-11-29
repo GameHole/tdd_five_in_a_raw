@@ -8,18 +8,23 @@ using System.Threading.Tasks;
 
 namespace Five
 {
+   public interface IApp
+    {
+        void Invoke(ASocket socket);
+        void Stop();
+    }
     public class Server
     {
         public Socket socket { get;private set; }
         public ConcurrentList<TcpSocket> sockets { get; private set; }
-        public Action<TcpSocket> onAccept;
         public bool IsRun { get; private set; }
-        public Server(string ip,int port)
+        public IApp app { get; }
+        public Server(string ip,int port,IApp app)
         {
+            this.app = app;
             socket = new Socket(SocketType.Stream,ProtocolType.Tcp);
             socket.Bind(new IPEndPoint(IPAddress.Parse(ip), port));
             sockets = new ConcurrentList<TcpSocket>();
-            sockets.onAdd = (s) => onAccept?.Invoke(s);
         }
         public virtual void Stop()
         {
@@ -30,6 +35,7 @@ namespace Five
             sockets.Clear();
             socket.Close();
             IsRun = false;
+            app.Stop();
         }
 
         public void StartAsync()
@@ -51,6 +57,7 @@ namespace Five
                 tcp.RecvAsync();
                 tcp.onClose += () => sockets.Remove(tcp);
                 sockets.Add(tcp);
+                app.Invoke(tcp);
             }
         }
     }
