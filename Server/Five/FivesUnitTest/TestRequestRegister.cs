@@ -12,7 +12,8 @@ namespace FivesUnitTest
         [SetUp]
         public void SetUp()
         {
-            client = new Client(new LogSocket(), new Matching());
+            client = new Client();
+            client.Init(new LogSocket());
             new RequestRegister().Regist(client);
         }
         [Test]

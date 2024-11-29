@@ -2,6 +2,7 @@
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace FivesUnitTest
@@ -24,9 +25,23 @@ namespace FivesUnitTest
         {
             var log= new LogRequestRegister();
             mgr.register = log;
-            mgr.Invoke(new LogSocket());
+            var socket = new LogSocket();
+            mgr.Invoke(socket);
             Assert.AreEqual(1, mgr.clients.Count);
-            Assert.IsTrue(log.isRun);
+            var client = mgr.clients.First();
+            Assert.AreSame(client,log.client);
+            Assert.AreSame(mgr, log.mgr);
+            Assert.NotNull(client.matcher);
+            Assert.NotNull(client.processer);
+            Assert.AreSame(socket,client.socket);
+            Assert.AreEqual(1, mgr.matchers.Count);
+            var matcher = mgr.matchers[client];
+            Assert.AreEqual(typeof(NetNotifier), matcher.Player.notifier.GetType());
+
+            var logP = new LogPlayer();
+            matcher.Player = logP;
+            socket.onClose.Invoke();
+            Assert.AreEqual("OutLine ", logP.log);
         }
         [Test]
         public void testRemove()
@@ -44,6 +59,7 @@ namespace FivesUnitTest
             mgr.Invoke(scket);
             scket.Close();
             Assert.AreEqual(0, mgr.clients.Count);
+            Assert.AreEqual(0, mgr.matchers.Count);
         }
     }
 }

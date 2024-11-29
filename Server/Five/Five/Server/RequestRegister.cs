@@ -6,7 +6,7 @@ namespace Five
 {
     public class RequestRegister
     {
-        public virtual void Regist(Client client)
+        public virtual void Regist(Client client,ClientMgr mgr)
         {
             var array = new RequestProcesser[]
             {

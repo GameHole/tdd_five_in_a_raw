@@ -58,6 +58,7 @@ namespace FivesUnitTest
             server.Stop();
             Assert.AreEqual(0, app.matching.GameCount);
             Assert.AreEqual(0, app.mgr.clients.Count);
+            Assert.AreEqual(0, app.mgr.matchers.Count);
             Assert.IsFalse(server.IsRun);
         }
         [Test]

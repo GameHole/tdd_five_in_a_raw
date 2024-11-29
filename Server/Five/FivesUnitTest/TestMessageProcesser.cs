@@ -11,7 +11,7 @@ namespace FivesUnitTest
         LogSocket logSocket;
         LogMatcher logMatcher;
         LogPlayer logPlayer;
-        LogClient client;
+        MessageProcesser msgProcesser;
         LogProcesser logProcesser;
         [SetUp]
         public void SetUp()
@@ -21,14 +21,14 @@ namespace FivesUnitTest
             logMatcher = new LogMatcher(new Matching());
             logPlayer = new LogPlayer();
             logMatcher.Player = logPlayer;
-            client = new LogClient(logSocket, logProcesser);
+            msgProcesser = new MessageProcesser(logProcesser);
         }
         [Test]
         public void testRunProcess()
         {
             var processer = new LogProcesser();
-            client.Processers.Add(processer.OpCode,processer);
-            client.Process(new Message(processer.OpCode));
+            msgProcesser.Processers.Add(processer.OpCode,processer);
+            msgProcesser.Process(new Message(processer.OpCode));
             Assert.AreEqual("Process", processer.log);
         }
         [Test]
@@ -79,14 +79,13 @@ namespace FivesUnitTest
         [Test]
         public void testProcessUnkonwnMessage()
         {
-            client.Process(new Message(999));
+            msgProcesser.Process(new Message(999));
             Assert.AreEqual("Process", logProcesser.log);
         }
         [Test]
         public void testRecvForProcess()
         {
-            logSocket.onRecv(new Message(1));
-            Assert.AreEqual("Process", client.log);
+            Assert.IsNull(logSocket.onRecv);
         }
     }
 }

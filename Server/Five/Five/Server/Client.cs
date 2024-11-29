@@ -6,16 +6,19 @@ namespace Five
 {
     public class Client
     {
-        public ASocket socket { get; }
-        public Matcher matcher { get; }
-        public MessageProcesser processer { get; }
-        public Client(ASocket socket, Matching matching)
+        public Matcher matcher { get; set; }
+
+        public ASocket socket { get; private set; }
+        public MessageProcesser processer { get; private set; }
+        public void Init(ASocket socket)
         {
             this.socket = socket;
-            matcher = new Matcher(matching);
-            matcher.Player.notifier = new NetNotifier(socket, matcher.Player);
-            processer = new MessageProcesser(socket, new OpCodeErrorResponseProcesser(socket));
-            socket.onClose += () => matcher.Player.OutLine();
+            processer = new MessageProcesser(new OpCodeErrorResponseProcesser(socket));
+            socket.onRecv = onRecv;
+        }
+        void onRecv(Message message)
+        {
+            processer.Process(message);
         }
     }
 }

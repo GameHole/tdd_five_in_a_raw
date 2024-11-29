@@ -9,10 +9,9 @@ namespace Five
     {
         public MessageContainer<IProcesser> Processers { get; private set; }
         public IProcesser defaultProcesser { get;}
-        public MessageProcesser(ASocket socket, IProcesser defaultProcesser)
+        public MessageProcesser(IProcesser defaultProcesser)
         {
             this.defaultProcesser = defaultProcesser;
-            socket.onRecv = Process;
             Processers = new MessageContainer<IProcesser>();
         }
         public virtual void Process(Message message)

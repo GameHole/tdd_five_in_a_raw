@@ -12,27 +12,15 @@ namespace FivesUnitTest
         [SetUp]
         public void SetUp()
         {
-            client = new Client(new LogSocket(), new Matching());
+            client = new Client();
+            client.Init(new LogSocket());
         }
         [Test]
         public void testClient()
         {
-            Assert.NotNull(client.matcher);
+            Assert.IsNull(client.matcher);
             Assert.NotNull(client.processer);
             Assert.NotNull(client.socket);
-        }
-        [Test]
-        public void testNotifier()
-        {
-            Assert.AreEqual(typeof(NetNotifier), client.matcher.Player.notifier.GetType());
-        }
-        [Test]
-        public void testClose()
-        {
-            var log = new LogPlayer();
-            client.matcher.Player = log;
-            client.socket.onClose.Invoke();
-            Assert.AreEqual("OutLine ", log.log);
         }
     }
 }
