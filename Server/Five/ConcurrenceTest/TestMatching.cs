@@ -15,6 +15,7 @@ namespace ConcurrenceTest
         {
             var matching = new Matching();
             var mgr = new ClientMgr(matching);
+            mgr.rsp = new ClientRsp(new RequestRegister(mgr));
             List<LogSocket> sockets = new List<LogSocket>(10000);
             List<LogMatcher> matchers = new List<LogMatcher>(10000);
             for (int i = 0; i < 10000; i++)
@@ -46,6 +47,7 @@ namespace ConcurrenceTest
         {
             var matching = new Matching();
             var mgr = new ClientMgr(matching);
+            mgr.rsp = new ClientRsp(new RequestRegister(mgr));
             List<LogSocket> sockets = new List<LogSocket>(10000);
             List<LogMatcher> matchers = new List<LogMatcher>(10000);
             for (int i = 0; i < 10000; i++)
@@ -71,6 +73,7 @@ namespace ConcurrenceTest
         {
             var matching = new Matching();
             var mgr = new ClientMgr(matching);
+            mgr.rsp = new ClientRsp(new RequestRegister(mgr));
             List<LogSocket> sockets = new List<LogSocket>(10000);
             List<LogMatcher> matchers = new List<LogMatcher>(10000);
             for (int i = 0; i < 10000; i++)

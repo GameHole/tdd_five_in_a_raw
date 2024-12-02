@@ -8,17 +8,17 @@ using System.Threading.Tasks;
 
 namespace FivesUnitTest
 {
-    class TAccepter : IApp
+    class TAccepter : App
     {
         public TcpSocket ssocket = null;
         internal int stopCount;
 
-        public void Invoke(ASocket socket)
+        public override void Invoke(ASocket socket)
         {
             ssocket = socket as TcpSocket;
         }
 
-        public void Stop()
+        public override void Stop()
         {
             stopCount++;
         }

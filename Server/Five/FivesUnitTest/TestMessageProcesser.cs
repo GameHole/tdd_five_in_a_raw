@@ -30,7 +30,7 @@ namespace FivesUnitTest
         public void testProcessMessage()
         {
             var mgr = new ClientMgr(new Matching());
-
+            mgr.rsp = new ClientRsp(new RequestRegister(mgr));
             LogMatcher logMatcher = new LogMatcher();
             LogPlayer logPlayer = new LogPlayer();
             logMatcher.Player = logPlayer;
