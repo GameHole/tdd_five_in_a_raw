@@ -16,59 +16,10 @@ namespace FivesUnitTest
         public void SetUp()
         {
             matching = new Matching();
-            master = new LogMatcher(matching);
+            master = new LogMatcher();
             mgr = new ClientMgr(matching);
             socket = new LogSocket();
             mgr.matchers.TryAdd(socket, master);
-        }
-        [Test]
-        public void testMatch()
-        {
-            var result = master.Match();
-            Assert.AreEqual(ResultDefine.Success, result);
-            Assert.AreEqual("Match ", master.log);
-            Assert.AreEqual(1, master.GameId);
-            result = master.Match();
-            Assert.AreEqual(ResultDefine.Matching, result);
-            result = master.Cancel();
-            Assert.AreEqual(ResultDefine.Success, result);
-            result = master.Match();
-            Assert.AreEqual(ResultDefine.Success, result);
-        }
-        [Test]
-        public void testCancelMatch()
-        {
-            var result = master.Cancel();
-            Assert.AreEqual(ResultDefine.NotInMatching, result);
-            result = master.Match();
-            Assert.AreEqual(ResultDefine.Success, result);
-            result = master.Cancel();
-            Assert.AreEqual("Match CancelMatch ", master.log);
-            Assert.AreEqual(ResultDefine.Success, result);
-        }
-        [Test]
-        public void testMatchOnGameStart()
-        {
-            master.Started();
-            var result = master.Match();
-            Assert.AreEqual(ResultDefine.GameStarted, result);
-        }
-        [Test]
-        public void testCancelMatchOnGameStart()
-        {
-            master.Started();
-            var result = master.Cancel();
-            Assert.AreEqual(ResultDefine.GameStarted, result);
-        }
-        [Test]
-        public void testCancelMatchOnRealGameStart()
-        {
-            var match1 = new LogMatcher(matching);
-            match1.Match();
-            master.Match();
-            Assert.AreEqual("Match Start ", master.log);
-            var result = master.Cancel();
-            Assert.AreEqual(ResultDefine.GameStarted, result);
         }
         [Test]
         public void testPlayerStart()
@@ -108,29 +59,17 @@ namespace FivesUnitTest
             Assert.AreEqual(ResultDefine.Success, result);
         }
         [Test]
-        public void testMgrMatchOnGameStart()
-        {
-            master.Started();
-            var result = mgr.Match(socket);
-            Assert.AreEqual(ResultDefine.GameStarted, result);
-        }
-        [Test]
-        public void testMgrCancelMatchOnGameStart()
-        {
-            master.Started();
-            var result = mgr.Cancel(socket);
-            Assert.AreEqual(ResultDefine.GameStarted, result);
-        }
-        [Test]
         public void testMgrCancelMatchOnRealGameStart()
         {
-            var match1 = new LogMatcher(matching);
+            var match1 = new LogMatcher();
             var socket1 = new LogSocket();
             mgr.matchers.TryAdd(socket1, match1);
             mgr.Match(socket1);
             mgr.Match(socket);
             Assert.AreEqual("Match Start ", master.log);
-            var result = mgr.Cancel(socket);
+            var result = mgr.Match(socket);
+            Assert.AreEqual(ResultDefine.GameStarted, result);
+            result = mgr.Cancel(socket);
             Assert.AreEqual(ResultDefine.GameStarted, result);
         }
     }

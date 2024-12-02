@@ -9,7 +9,7 @@ namespace Five
         public INotifier notifier;
         internal IPlayable playable;
         internal IOutLineable outlineable;
-        public int GameId { get; internal set; }
+        public int GameId { get; internal set; } = -1;
         public int chess { get; private set; }
         public int PlayerId { get; internal set; }
         public event Action onStart;

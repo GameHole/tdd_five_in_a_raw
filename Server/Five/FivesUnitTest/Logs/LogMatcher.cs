@@ -8,12 +8,6 @@ namespace FivesUnitTest
     public class LogMatcher : Matcher
     {
         public string log = "";
-        public LogMatcher():base(null)
-        {
-        }
-        public LogMatcher(Matching matching) : base(matching)
-        {
-        }
 
         public override void Started()
         {

@@ -11,17 +11,23 @@ namespace ConcurrenceTest
     class TestMatching
     {
         [Test]
-        public async Task testMatch()
+        public async Task testMgrMatch()
         {
             var matching = new Matching();
+            var mgr = new ClientMgr(matching);
+            List<LogSocket> sockets = new List<LogSocket>(10000);
             List<LogMatcher> matchers = new List<LogMatcher>(10000);
             for (int i = 0; i < 10000; i++)
             {
-                matchers.Add(new LogMatcher(matching));
+                var socket = new LogSocket();
+                var m = new LogMatcher();
+                sockets.Add(socket);
+                matchers.Add(m);
+                mgr.matchers.TryAdd(socket, m);
             }
-            await Repeat.RepeatAsync(matchers, (log) =>
+            await Repeat.RepeatAsync(sockets, (log) =>
             {
-                log.Match();
+                mgr.Match(log);
             });
             Assert.AreEqual(5000, matching.GameCount);
             for (int i = 1; i <= 5000; i++)
@@ -30,24 +36,58 @@ namespace ConcurrenceTest
                 Assert.AreEqual(i, game.Id);
                 Assert.AreEqual(game.maxPlayer, game.PlayerCount);
             }
-            for (int i = 0; i < matchers.Count; i++)
+            for (int i = 0; i < sockets.Count; i++)
             {
-                Assert.AreEqual("Match Start ", matchers[i].log);
+                Assert.AreEqual("Match Start ",matchers[i].log);
             }
         }
         [Test]
-        public async Task testCancelMatch()
+        public async Task testMgrCancelMatch()
         {
             var matching = new Matching();
+            var mgr = new ClientMgr(matching);
+            List<LogSocket> sockets = new List<LogSocket>(10000);
             List<LogMatcher> matchers = new List<LogMatcher>(10000);
             for (int i = 0; i < 10000; i++)
             {
-                matchers.Add(new LogMatcher(matching));
+                var socket = new LogSocket();
+                var m = new LogMatcher();
+                sockets.Add(socket);
+                matchers.Add(m);
+                mgr.matchers.TryAdd(socket, m);
             }
-            await Repeat.RepeatAsync(matchers, (log) =>
+            await Repeat.RepeatAsync(sockets, (log) =>
             {
-                log.Match();
-                log.Cancel();
+                mgr.Match(log);
+                mgr.Cancel(log);
+            });
+            for (int i = 0; i < matchers.Count; i++)
+            {
+                Assert.IsTrue(isCancelRunning(matchers[i]));
+            }
+        }
+        [Test]
+        public async Task testMgrCancelMatchAsync()
+        {
+            var matching = new Matching();
+            var mgr = new ClientMgr(matching);
+            List<LogSocket> sockets = new List<LogSocket>(10000);
+            List<LogMatcher> matchers = new List<LogMatcher>(10000);
+            for (int i = 0; i < 10000; i++)
+            {
+                var socket = new LogSocket();
+                var m = new LogMatcher();
+                sockets.Add(socket);
+                matchers.Add(m);
+                mgr.matchers.TryAdd(socket, m);
+            }
+            await Repeat.RepeatAsync(sockets, (log) =>
+            {
+                mgr.Match(log);
+            });
+            await Repeat.RepeatAsync(sockets, (log) =>
+            {
+                mgr.Cancel(log);
             });
             for (int i = 0; i < matchers.Count; i++)
             {

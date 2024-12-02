@@ -9,17 +9,27 @@ namespace Five
         ConcurrentDictionary<int,Game> games = new ConcurrentDictionary<int, Game>();
         public int GameCount { get=> games.Count;}
 
-        public void Match(Matcher master)
+        public Result Match(Matcher master)
         {
             lock (games)
             {
-                var game = FindNotStartGame();
-                game.Join(master.Player);
-                master.Matched();
-                if (game.isFull())
+                var game = GetGame(master.GameId);
+                if (game == null)
                 {
-                    game.Start();
+                    game = FindNotStartGame();
+                    game.Join(master.Player);
+                    master.Matched();
+                    if (game.isFull())
+                    {
+                        game.Start();
+                    }
+                    return ResultDefine.Success;
                 }
+                if (game.IsRunning)
+                {
+                    return ResultDefine.GameStarted;
+                }
+                return ResultDefine.Matching;
             }
         }
 

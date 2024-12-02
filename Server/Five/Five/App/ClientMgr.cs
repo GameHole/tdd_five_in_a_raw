@@ -19,13 +19,13 @@ namespace Five
         }
         public void Invoke(ASocket socket)
         {
-            var client = new Client();
-            client.Init(socket);
-            
-            var matcher = new Matcher(matching);
+            var matcher = new Matcher();
             matcher.Player.notifier = new NetNotifier(socket, matcher.Player);
             matchers.TryAdd(socket, matcher);
 
+
+            var client = new Client();
+            client.Init(socket);
             register.Regist(client,this);
 
             clients.Add(client);
@@ -47,13 +47,13 @@ namespace Five
         public Result Match(ASocket socket)
         {
             var matcher = matchers[socket];
-            return matcher.matchable.Match(matcher);
+            return matching.Match(matcher);
         }
 
         public Result Cancel(ASocket socket)
         {
             var matcher = matchers[socket];
-            return matcher.matchable.Cancel(matcher);
+            return matching.Cancel(matcher);
         }
         public Result Play(int x, int y, ASocket sok)
         {

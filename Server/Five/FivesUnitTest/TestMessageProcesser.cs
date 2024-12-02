@@ -31,7 +31,7 @@ namespace FivesUnitTest
         {
             var mgr = new ClientMgr(new Matching());
 
-            LogMatcher logMatcher = new LogMatcher(new Matching());
+            LogMatcher logMatcher = new LogMatcher();
             LogPlayer logPlayer = new LogPlayer();
             logMatcher.Player = logPlayer;
             mgr.matchers.TryAdd(logSocket, logMatcher);
