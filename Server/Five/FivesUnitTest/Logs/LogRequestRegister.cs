@@ -4,10 +4,16 @@ namespace FivesUnitTest
     internal class LogRequestRegister:RequestRegister
     {
         public bool isRun;
-        public override void Regist(Client client)
+        internal object mgr;
+
+        public object client;
+
+        public override void Regist(Client client,ClientMgr mgr)
         {
-            base.Regist(client);
+            base.Regist(client, mgr);
             isRun = true;
+            this.client = client;
+            this.mgr = mgr;
         }
     }
 }

@@ -6,8 +6,6 @@ namespace Five
 {
     public class Client
     {
-        public Matcher matcher { get; set; }
-
         public ASocket socket { get; private set; }
         public MessageProcesser processer { get; private set; }
         public void Init(ASocket socket)

@@ -16,7 +16,7 @@ namespace Five
             };
             foreach (var item in array)
             {
-                item.Init(client.socket, client.matcher);
+                item.Init(client.socket, mgr.matchers[client]);
                 client.processer.Processers.Add(item.OpCode,item);
             }
         }

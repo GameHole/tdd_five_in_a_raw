@@ -18,7 +18,6 @@ namespace FivesUnitTest
         [Test]
         public void testClient()
         {
-            Assert.IsNull(client.matcher);
             Assert.NotNull(client.processer);
             Assert.NotNull(client.socket);
         }

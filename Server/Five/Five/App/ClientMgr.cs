@@ -25,7 +25,6 @@ namespace Five
             var matcher = new Matcher(matching);
             matcher.Player.notifier = new NetNotifier(socket, matcher.Player);
             matchers.TryAdd(client, matcher);
-            client.matcher = matcher;
 
             register.Regist(client,this);
 

@@ -31,7 +31,9 @@ namespace FivesUnitTest
             var client = mgr.clients.First();
             Assert.AreSame(client,log.client);
             Assert.AreSame(mgr, log.mgr);
-            Assert.NotNull(client.matcher);
+            Assert.IsTrue(client.processer.Processers.Contains(MessageCode.RequestMatch));
+            Assert.IsTrue(client.processer.Processers.Contains(MessageCode.RequestCancelMatch));
+            Assert.IsTrue(client.processer.Processers.Contains(MessageCode.RequestPlay));
             Assert.NotNull(client.processer);
             Assert.AreSame(socket,client.socket);
             Assert.AreEqual(1, mgr.matchers.Count);
