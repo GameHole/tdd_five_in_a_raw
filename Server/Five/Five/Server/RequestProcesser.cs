@@ -2,15 +2,15 @@
 {
     public abstract class RequestProcesser : IProcesser
     {
-        ASocket socket;
-        protected Matcher matcher;
+        protected ASocket socket;
+        protected ClientMgr mgr;
 
         public abstract int OpCode { get; }
 
-        public void Init(ASocket socket, Matcher matcher)
+        public void Init(ASocket socket, ClientMgr matcher)
         {
             this.socket = socket;
-            this.matcher = matcher;
+            this.mgr = matcher;
         }
         protected abstract Response ProcessContant(Message message);
 

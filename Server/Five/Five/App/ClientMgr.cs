@@ -6,16 +6,16 @@ namespace Five
 {
     public class ClientMgr
     {
-        private Matching matching;
+        public Matching matching { get; }
         public ConcurrentList<Client> clients { get; private set; }
-        public ConcurrentDictionary<Client, Matcher> matchers { get; }
+        public ConcurrentDictionary<ASocket, Matcher> matchers { get; }
 
         public RequestRegister register = new RequestRegister();
         public ClientMgr(Matching matching)
         {
             this.matching = matching;
             clients = new ConcurrentList<Client>();
-            matchers = new ConcurrentDictionary<Client, Matcher>();
+            matchers = new ConcurrentDictionary<ASocket, Matcher>();
         }
         public void Invoke(ASocket socket)
         {
@@ -24,7 +24,7 @@ namespace Five
             
             var matcher = new Matcher(matching);
             matcher.Player.notifier = new NetNotifier(socket, matcher.Player);
-            matchers.TryAdd(client, matcher);
+            matchers.TryAdd(socket, matcher);
 
             register.Regist(client,this);
 
@@ -34,7 +34,7 @@ namespace Five
             {
                 matcher.Player.OutLine();
                 clients.Remove(client);
-                matchers.TryRemove(client,out var c);
+                matchers.TryRemove(socket, out var c);
             };
         }
 
@@ -42,6 +42,22 @@ namespace Five
         {
             clients.Clear();
             matchers.Clear();
+        }
+
+        public Result Match(ASocket socket)
+        {
+            var matcher = matchers[socket];
+            return matcher.matchable.Match(matcher);
+        }
+
+        public Result Cancel(ASocket socket)
+        {
+            var matcher = matchers[socket];
+            return matcher.matchable.Cancel(matcher);
+        }
+        public Result Play(int x, int y, ASocket sok)
+        {
+            return matchers[sok].Player.Play(x, y);
         }
     }
 }

@@ -6,7 +6,7 @@
 
         protected override Response ProcessContant(Message message)
         {
-            return new Response().SetInfo(message, matcher.Cancel());
+            return new Response().SetInfo(message, mgr.Cancel(socket));
         }
     }
 }

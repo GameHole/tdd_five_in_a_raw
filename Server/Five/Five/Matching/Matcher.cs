@@ -7,7 +7,7 @@ namespace Five
     public class Matcher
     {
         public Player Player { get; set; }
-        private IMatchable matchable;
+        public IMatchable matchable { get;private set; }
         Dictionary<Type, IMatchable> kv = new Dictionary<Type, IMatchable>();
         void Add<T>(T item) where T : IMatchable
         {

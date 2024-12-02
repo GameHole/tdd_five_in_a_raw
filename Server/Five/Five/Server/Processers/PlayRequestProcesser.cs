@@ -10,7 +10,10 @@ namespace Five
 
         protected override Response ProcessContant(PlayMessage message)
         {
-            return new Response().SetInfo(message, matcher.Player.Play(message.x, message.y));
+            int x = message.x;
+            int y = message.y;
+            var sok = socket;
+            return new Response().SetInfo(message, mgr.Play(x, y, sok));
         }
     }
 }

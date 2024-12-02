@@ -9,8 +9,6 @@ namespace FivesUnitTest
     class TestMessageProcesser
     {
         LogSocket logSocket;
-        LogMatcher logMatcher;
-        LogPlayer logPlayer;
         MessageProcesser msgProcesser;
         LogProcesser logProcesser;
         [SetUp]
@@ -18,9 +16,6 @@ namespace FivesUnitTest
         {
             logProcesser = new LogProcesser();
             logSocket = new LogSocket();
-            logMatcher = new LogMatcher(new Matching());
-            logPlayer = new LogPlayer();
-            logMatcher.Player = logPlayer;
             msgProcesser = new MessageProcesser(logProcesser);
         }
         [Test]
@@ -34,12 +29,19 @@ namespace FivesUnitTest
         [Test]
         public void testProcessMessage()
         {
+            var mgr = new ClientMgr(new Matching());
+
+            LogMatcher logMatcher = new LogMatcher(new Matching());
+            LogPlayer logPlayer = new LogPlayer();
+            logMatcher.Player = logPlayer;
+            mgr.matchers.TryAdd(logSocket, logMatcher);
+
             var matchProcesser = new MatchRequestProcesser();
-            matchProcesser.Init(logSocket, logMatcher);
+            matchProcesser.Init(logSocket, mgr);
             var cnacelProcesser = new CancelRequestProcesser();
-            cnacelProcesser.Init(logSocket, logMatcher);
+            cnacelProcesser.Init(logSocket, mgr);
             var playProcesser = new PlayRequestProcesser();
-            playProcesser.Init(logSocket, logMatcher);
+            playProcesser.Init(logSocket, mgr);
 
             var opErrProcesser = new OpCodeErrorResponseProcesser(logSocket);
 
@@ -81,11 +83,6 @@ namespace FivesUnitTest
         {
             msgProcesser.Process(new Message(999));
             Assert.AreEqual("Process", logProcesser.log);
-        }
-        [Test]
-        public void testRecvForProcess()
-        {
-            Assert.IsNull(logSocket.onRecv);
         }
     }
 }

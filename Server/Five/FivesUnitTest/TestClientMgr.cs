@@ -37,7 +37,7 @@ namespace FivesUnitTest
             Assert.NotNull(client.processer);
             Assert.AreSame(socket,client.socket);
             Assert.AreEqual(1, mgr.matchers.Count);
-            var matcher = mgr.matchers[client];
+            var matcher = mgr.matchers[socket];
             Assert.AreEqual(typeof(NetNotifier), matcher.Player.notifier.GetType());
 
             var logP = new LogPlayer();
