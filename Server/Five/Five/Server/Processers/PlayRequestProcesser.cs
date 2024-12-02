@@ -8,7 +8,7 @@ namespace Five
     {
         public override int OpCode => MessageCode.RequestPlay;
 
-        protected override Response ProcessContant(PlayMessage message)
+        protected override Response ProcessContant(ASocket socket, PlayMessage message)
         {
             int x = message.x;
             int y = message.y;

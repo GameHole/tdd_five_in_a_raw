@@ -14,12 +14,12 @@ namespace Five
             this.defaultProcesser = defaultProcesser;
             Processers = new MessageContainer<IProcesser>();
         }
-        public virtual void Process(Message message)
+        public virtual void Process(ASocket socket,Message message)
         {
             if (Processers.TryGetValue(message.opcode, out var processer))
-                processer.Process(message);
+                processer.Process(socket,message);
             else
-                defaultProcesser.Process(message);
+                defaultProcesser.Process(socket,message);
         }
     }
 }

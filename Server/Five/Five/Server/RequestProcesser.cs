@@ -2,29 +2,27 @@
 {
     public abstract class RequestProcesser : IProcesser
     {
-        protected ASocket socket;
         protected ClientMgr mgr;
 
         public abstract int OpCode { get; }
 
-        public void Init(ASocket socket, ClientMgr matcher)
+        public void Init(ClientMgr matcher)
         {
-            this.socket = socket;
             this.mgr = matcher;
         }
-        protected abstract Response ProcessContant(Message message);
+        protected abstract Response ProcessContant(ASocket socket,Message message);
 
-        public void Process(Message message)
+        public void Process(ASocket socket, Message message)
         {
-            socket.Send(ProcessContant(message));
+            socket.Send(ProcessContant(socket,message));
         }
     }
     public abstract class RequestProcesser<T>: RequestProcesser where T:Message
     {
-        protected override Response ProcessContant(Message message)
+        protected override Response ProcessContant(ASocket socket, Message message)
         {
-           return ProcessContant(message as T);
+           return ProcessContant(socket,message as T);
         }
-        protected abstract Response ProcessContant(T message);
+        protected abstract Response ProcessContant(ASocket socket, T message);
     }
 }

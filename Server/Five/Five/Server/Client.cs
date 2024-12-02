@@ -16,7 +16,7 @@ namespace Five
         }
         void onRecv(Message message)
         {
-            processer.Process(message);
+            processer.Process(socket,message);
         }
     }
 }

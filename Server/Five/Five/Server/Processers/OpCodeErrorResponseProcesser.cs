@@ -12,7 +12,8 @@ namespace Five
         {
             this.socket = socket;
         }
-        public void Process(Message message)
+
+        public void Process(ASocket socket, Message message)
         {
             socket.Send(new OpCodeErrorMessage(message.opcode));
         }

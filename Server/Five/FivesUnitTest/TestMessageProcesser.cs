@@ -23,8 +23,11 @@ namespace FivesUnitTest
         {
             var processer = new LogProcesser();
             msgProcesser.Processers.Add(processer.OpCode,processer);
-            msgProcesser.Process(new Message(processer.OpCode));
+            var msg = new Message(processer.OpCode);
+            msgProcesser.Process(logSocket, msg);
             Assert.AreEqual("Process", processer.log);
+            Assert.AreEqual(logSocket, processer.socket);
+            Assert.AreEqual(msg, processer.msg);
         }
         [Test]
         public void testProcessMessage()
@@ -36,30 +39,30 @@ namespace FivesUnitTest
             mgr.matchers.TryAdd(logSocket, logMatcher);
 
             var matchProcesser = new MatchRequestProcesser();
-            matchProcesser.Init(logSocket, mgr);
+            matchProcesser.Init(mgr);
             var cnacelProcesser = new CancelRequestProcesser();
-            cnacelProcesser.Init(logSocket, mgr);
+            cnacelProcesser.Init(mgr);
             var playProcesser = new PlayRequestProcesser();
-            playProcesser.Init(logSocket, mgr);
+            playProcesser.Init(mgr);
 
             var opErrProcesser = new OpCodeErrorResponseProcesser(logSocket);
 
-            matchProcesser.Process(new Message(MessageCode.RequestMatch));
+            matchProcesser.Process(logSocket,new Message(MessageCode.RequestMatch));
             Assert.AreEqual("Match ", logMatcher.log);
             Assert.AreEqual("Send opcode:2 result:0", logSocket.log);
 
-            cnacelProcesser.Process(new Message(MessageCode.RequestCancelMatch));
+            cnacelProcesser.Process(logSocket,new Message(MessageCode.RequestCancelMatch));
 
             Assert.AreEqual("Match CancelMatch ", logMatcher.log);
             Assert.AreEqual("Send opcode:4 result:0", logSocket.log);
 
             var message = new PlayRequest { x = 1, y = 2 };
-            playProcesser.Process(message);
+            playProcesser.Process(logSocket,message);
 
             Assert.AreEqual($"Play({message.x},{message.y}) ", logPlayer.log);
             Assert.AreEqual("Send opcode:6 result:29999", logSocket.log);
 
-            opErrProcesser.Process(new Message(200));
+            opErrProcesser.Process(logSocket,new Message(200));
             Assert.AreEqual("Send opcode:-10000 unknown opcode:200", logSocket.log);
         }
         [Test]
@@ -68,7 +71,7 @@ namespace FivesUnitTest
             var play = new PlayRequestProcesser();
             var ex = Assert.Throws<NullReferenceException>(() =>
             {
-                play.Process(new Message(MessageCode.RequestPlay));
+                play.Process(logSocket,new Message(MessageCode.RequestPlay));
             });
         }
         [Test]
@@ -80,7 +83,7 @@ namespace FivesUnitTest
         [Test]
         public void testProcessUnkonwnMessage()
         {
-            msgProcesser.Process(new Message(999));
+            msgProcesser.Process(logSocket,new Message(999));
             Assert.AreEqual("Process", logProcesser.log);
         }
     }

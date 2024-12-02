@@ -5,21 +5,23 @@ namespace FivesUnitTest
 {
     class TReqProc : RequestProcesser
     {
+        internal object msgSock;
+
         public override int OpCode => -1;
 
-        public object Client => socket;
+        public object Client;
 
         public object Mgr => mgr;
 
-        protected override Response ProcessContant(Message message)
+        protected override Response ProcessContant(ASocket socket, Message message)
         {
-            throw new System.NotImplementedException();
+            msgSock = socket;
+            return new Response();
         }
     }
     internal class LogRequestRegister:RequestRegister
     {
         public bool isRun;
-        internal object mgr;
 
         public object client;
         public TReqProc test = new TReqProc();
