@@ -18,7 +18,6 @@ namespace FivesUnitTest
             matching = new Matching();
             master = new LogMatcher();
             mgr = new ClientMgr(matching);
-            mgr.rsp = new ClientRsp(new RequestRegister(mgr));
             socket = new LogSocket();
             mgr.matchers.TryAdd(socket, master);
         }
