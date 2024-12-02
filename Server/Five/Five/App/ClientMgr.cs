@@ -37,7 +37,6 @@ namespace Five
         public Matching matching { get; }
         public ConcurrentDictionary<ASocket, Matcher> matchers { get; }
 
-        public ClientRsp rsp { get; set; }
         public ClientMgr(Matching matching)
         {
             this.matching = matching;
