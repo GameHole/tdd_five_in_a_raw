@@ -4,26 +4,6 @@ using System.Text;
 
 namespace Five
 {
-    public class ClientRsp
-    {
-        public RequestRegister register { get; }
-
-        public MessageProcesser processer { get; }
-
-        public ClientRsp(RequestRegister register)
-        {
-            this.register = register;
-            processer = new MessageProcesser(new OpCodeErrorResponseProcesser());
-            register.Regist(processer);
-        }
-        public void Invoke(ASocket socket)
-        {
-            socket.onRecv = (message) =>
-            {
-                processer.Process(socket, message);
-            };
-        }
-    }
     public class ClientMgr
     {
         public Matching matching { get; }

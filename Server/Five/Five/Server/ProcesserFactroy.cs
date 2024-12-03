@@ -4,25 +4,30 @@ using System.Text;
 
 namespace Five
 {
-    public class RequestRegister
+    public class ProcesserFactroy
     {
         private readonly ClientMgr mgr;
 
-        public RequestRegister(ClientMgr mgr)
+        public ProcesserFactroy(ClientMgr mgr)
         {
             this.mgr = mgr;
         }
-        public virtual void Regist(MessageProcesser processer)
+        public virtual MessageProcesser Factroy()
         {
-            var array = NewArray();
+            MessageProcesser processer = new MessageProcesser(new OpCodeErrorResponseProcesser());
+            var array = NewProcessers();
+            foreach (var item in array)
+            {
+               processer.Processers.Add(item.OpCode, item);
+            }
             foreach (var item in array)
             {
                 item.Init(mgr);
-                processer.Processers.Add(item.OpCode, item);
             }
+            return processer;
         }
 
-        protected virtual RequestProcesser[] NewArray()
+        protected virtual RequestProcesser[] NewProcessers()
         {
             return new RequestProcesser[]
             {

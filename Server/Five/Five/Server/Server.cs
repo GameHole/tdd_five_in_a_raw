@@ -14,11 +14,12 @@ namespace Five
         public ConcurrentList<TcpSocket> sockets { get; private set; }
         public bool IsRun { get; private set; }
         public App app { get; }
-        public ClientRsp rsp { get; }
-        public Server(string ip,int port,App app)
+        public MessageProcesser processer { get; }
+
+        public Server(string ip,int port,App app, ProcesserFactroy factroy)
         {
             this.app = app;
-            rsp = new ClientRsp(new RequestRegister(app.mgr));
+            processer = factroy.Factroy();
             socket = new Socket(SocketType.Stream,ProtocolType.Tcp);
             socket.Bind(new IPEndPoint(IPAddress.Parse(ip), port));
             sockets = new ConcurrentList<TcpSocket>();
@@ -55,7 +56,10 @@ namespace Five
                 tcp.onClose += () => sockets.Remove(tcp);
                 sockets.Add(tcp);
                 app.Invoke(tcp);
-                rsp.Invoke(tcp);
+                tcp.onRecv = (message) =>
+                {
+                    processer.Process(tcp, message);
+                };
             }
         }
     }

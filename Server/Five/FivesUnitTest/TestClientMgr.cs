@@ -10,14 +10,11 @@ namespace FivesUnitTest
     class TestClientMgr
     {
         private LogRequestRegister log;
-        private ClientRsp rsp;
         ClientMgr mgr;
         [SetUp]
         public void SetUp()
         {
             mgr = new ClientMgr(new Matching());
-            log = new LogRequestRegister(mgr);
-            rsp = new ClientRsp(log);
         }
         [Test]
         public void testClientMgr()
@@ -40,29 +37,7 @@ namespace FivesUnitTest
             Assert.AreEqual("OutLine ", logP.log);
             Assert.AreEqual(0, mgr.matchers.Count);
         }
-        [Test]
-        public void testClientRsp()
-        {
-            Assert.AreEqual(typeof(OpCodeErrorResponseProcesser),rsp.processer.defaultProcesser.GetType());
-            Assert.IsTrue(rsp.processer.Processers.Contains(MessageCode.RequestMatch));
-            Assert.IsTrue(rsp.processer.Processers.Contains(MessageCode.RequestCancelMatch));
-            Assert.IsTrue(rsp.processer.Processers.Contains(MessageCode.RequestPlay));
-            Assert.IsTrue(rsp.processer.Processers.Contains(-1));
-        }
-        [Test]
-        public void testonAccept()
-        {
-            var socket = new LogSocket();
-            rsp.Invoke(socket);
-
-            Assert.IsNull(log.test.Client);
-            Assert.AreSame(mgr, log.test.Mgr);
-           
-            socket.onRecv(new Message { opcode=-1});
-            Assert.AreSame(socket, log.test.msgSock);
-
-            Assert.IsNull( socket.onClose);
-        }
+       
         [Test]
         public void testSocketClose()
         {

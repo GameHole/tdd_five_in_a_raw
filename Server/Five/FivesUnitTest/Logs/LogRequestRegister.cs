@@ -19,26 +19,26 @@ namespace FivesUnitTest
             return new Response();
         }
     }
-    internal class LogRequestRegister:RequestRegister
+    internal class LogRequestRegister:ProcesserFactroy
     {
-        public bool isRun;
 
-        public object client;
         public TReqProc test = new TReqProc();
+        internal object processer;
+
         public LogRequestRegister(ClientMgr mgr) : base(mgr)
         {
         }
-        protected override RequestProcesser[] NewArray()
+        protected override RequestProcesser[] NewProcessers()
         {
-            List<RequestProcesser> list = new List<RequestProcesser>(base.NewArray());
+            List<RequestProcesser> list = new List<RequestProcesser>(base.NewProcessers());
             list.Add(test);
             return list.ToArray();
         }
-        public override void Regist(MessageProcesser processer)
+        public override MessageProcesser Factroy()
         {
-            base.Regist(processer);
-            isRun = true;
-            this.client = processer;
+            var t = base.Factroy();
+            this.processer = t;
+            return t;
         }
     }
 }

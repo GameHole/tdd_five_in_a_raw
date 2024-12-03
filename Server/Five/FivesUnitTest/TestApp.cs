@@ -13,13 +13,15 @@ namespace FivesUnitTest
     {
         private Server server;
         App app;
+        private LogRequestRegister log;
         TcpSocket[] sockets;
         public static readonly int port = 11000;
         [SetUp]
         public void SetUp()
         {
             app = new App();
-            server = new Server("127.0.0.1", port, app);
+            log = new LogRequestRegister(app.mgr);
+            server = new Server("127.0.0.1", port, app, log);
             server.StartAsync();
             var reg = new SerializerRegister();
             sockets = new TcpSocket[2];
@@ -41,9 +43,34 @@ namespace FivesUnitTest
         public void testApp()
         {
             Assert.NotNull(app.mgr);
-            Assert.NotNull(server.rsp);
             Assert.NotNull(app.matching);
             Assert.AreSame(server.app, app);
+        }
+        [Test]
+        public void testClientRsp()
+        {
+            Assert.AreSame(server.processer, log.processer);
+            Assert.AreEqual(typeof(OpCodeErrorResponseProcesser), server.processer.defaultProcesser.GetType());
+            Assert.IsTrue(server.processer.Processers.Contains(MessageCode.RequestMatch));
+            Assert.IsTrue(server.processer.Processers.Contains(MessageCode.RequestCancelMatch));
+            Assert.IsTrue(server.processer.Processers.Contains(MessageCode.RequestPlay));
+            Assert.IsTrue(server.processer.Processers.Contains(-1));
+        }
+        [Test]
+        public async Task testonAccept()
+        {
+            await Task.Delay(100);
+            sockets[0].Connect("127.0.0.1", port);
+            await Task.Delay(100);
+            var socket = server.sockets.First();
+            Assert.NotNull(socket.onRecv);
+
+            Assert.IsNull(log.test.Client);
+            Assert.AreSame(app.mgr, log.test.Mgr);
+
+            socket.onRecv(new Message { opcode = -1 });
+            Assert.AreSame(socket, log.test.msgSock);
+
         }
         [Test]
         public async Task testRun()
@@ -51,7 +78,6 @@ namespace FivesUnitTest
             await Task.Delay(100);
             sockets[0].Connect("127.0.0.1", port);
             await Task.Delay(100);
-            Assert.NotNull(server.sockets.First().onRecv);
             var log = "";
             sockets[0].onRecv += (msg) => log += $"msg:{msg.opcode}";
             sockets[0].Send(new Message(MessageCode.RequestMatch));
