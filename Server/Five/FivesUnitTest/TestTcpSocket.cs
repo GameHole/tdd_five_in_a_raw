@@ -17,8 +17,8 @@ namespace FivesUnitTest
         {
             socket = new TcpSocket(new SerializerRegister());
             accepter = new TAccepter();
-            var log = new LogRequestRegister(accepter.mgr);
-            server = new Server("127.0.0.1", TestApp.port, accepter, log);
+            var log = new LogRequestRegister(accepter);
+            server = new Server("127.0.0.1", TestApp.port, log);
             server.StartAsync();
         }
         [TearDown]

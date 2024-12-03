@@ -20,8 +20,8 @@ namespace FivesUnitTest
         public void SetUp()
         {
             app = new App();
-            log = new LogRequestRegister(app.mgr);
-            server = new Server("127.0.0.1", port, app, log);
+            log = new LogRequestRegister(app);
+            server = new Server("127.0.0.1", port, log);
             server.StartAsync();
             var reg = new SerializerRegister();
             sockets = new TcpSocket[2];
@@ -44,13 +44,15 @@ namespace FivesUnitTest
         {
             Assert.NotNull(app.mgr);
             Assert.NotNull(app.matching);
-            Assert.AreSame(server.app, app);
+            Assert.IsNull(server.app);
         }
         [Test]
         public void testClientRsp()
         {
             Assert.AreSame(server.processer, log.processer);
             Assert.AreEqual(typeof(OpCodeErrorResponseProcesser), server.processer.defaultProcesser.GetType());
+            Assert.AreEqual(typeof(ConnectProcesser),server.processer.connect.GetType());
+            Assert.AreEqual(typeof(ServerStopProcesser), server.processer.serverStop.GetType());
             Assert.IsTrue(server.processer.Processers.Contains(MessageCode.RequestMatch));
             Assert.IsTrue(server.processer.Processers.Contains(MessageCode.RequestCancelMatch));
             Assert.IsTrue(server.processer.Processers.Contains(MessageCode.RequestPlay));

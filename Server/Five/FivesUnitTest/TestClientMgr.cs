@@ -9,7 +9,6 @@ namespace FivesUnitTest
 {
     class TestClientMgr
     {
-        private LogRequestRegister log;
         ClientMgr mgr;
         [SetUp]
         public void SetUp()

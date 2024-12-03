@@ -16,9 +16,8 @@ namespace Five
         public App app { get; }
         public MessageProcesser processer { get; }
 
-        public Server(string ip,int port,App app, ProcesserFactroy factroy)
+        public Server(string ip,int port,ProcesserFactroy factroy)
         {
-            this.app = app;
             processer = factroy.Factroy();
             socket = new Socket(SocketType.Stream,ProtocolType.Tcp);
             socket.Bind(new IPEndPoint(IPAddress.Parse(ip), port));
@@ -33,7 +32,7 @@ namespace Five
             sockets.Clear();
             socket.Close();
             IsRun = false;
-            app.Stop();
+            processer.serverStop.Process(default,default);
         }
 
         public void StartAsync()
@@ -55,7 +54,7 @@ namespace Five
                 tcp.RecvAsync();
                 tcp.onClose += () => sockets.Remove(tcp);
                 sockets.Add(tcp);
-                app.Invoke(tcp);
+                processer.connect.Process(tcp, default);
                 tcp.onRecv = (message) =>
                 {
                     processer.Process(tcp, message);

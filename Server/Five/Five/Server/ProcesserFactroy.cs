@@ -6,15 +6,17 @@ namespace Five
 {
     public class ProcesserFactroy
     {
-        private readonly ClientMgr mgr;
+        private readonly App app;
 
-        public ProcesserFactroy(ClientMgr mgr)
+        public ProcesserFactroy(App mgr)
         {
-            this.mgr = mgr;
+            this.app = mgr;
         }
         public virtual MessageProcesser Factroy()
         {
             MessageProcesser processer = new MessageProcesser(new OpCodeErrorResponseProcesser());
+            processer.connect = new ConnectProcesser(app);
+            processer.serverStop = new ServerStopProcesser(app);
             var array = NewProcessers();
             foreach (var item in array)
             {
@@ -22,7 +24,7 @@ namespace Five
             }
             foreach (var item in array)
             {
-                item.Init(mgr);
+                item.Init(app.mgr);
             }
             return processer;
         }

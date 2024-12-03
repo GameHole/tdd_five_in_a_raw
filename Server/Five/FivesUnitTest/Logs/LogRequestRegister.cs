@@ -25,7 +25,7 @@ namespace FivesUnitTest
         public TReqProc test = new TReqProc();
         internal object processer;
 
-        public LogRequestRegister(ClientMgr mgr) : base(mgr)
+        public LogRequestRegister(App mgr) : base(mgr)
         {
         }
         protected override RequestProcesser[] NewProcessers()

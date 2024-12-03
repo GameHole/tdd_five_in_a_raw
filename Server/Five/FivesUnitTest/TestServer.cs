@@ -30,8 +30,8 @@ namespace FivesUnitTest
         public async Task testServer()
         {
             var accepter = new TAccepter();
-            var log = new LogRequestRegister(accepter.mgr);
-            var server = new Server("127.0.0.1", TestApp.port, accepter, log);
+            var log = new LogRequestRegister(accepter);
+            var server = new Server("127.0.0.1", TestApp.port, log);
             server.StartAsync();
             await Task.Delay(200);
             Assert.IsTrue(server.IsRun);
@@ -49,6 +49,5 @@ namespace FivesUnitTest
                 server.socket.Accept();
             });
         }
-        
     }
 }

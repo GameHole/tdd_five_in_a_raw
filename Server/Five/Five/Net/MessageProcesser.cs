@@ -9,6 +9,9 @@ namespace Five
     {
         public MessageContainer<IProcesser> Processers { get; private set; }
         public IProcesser defaultProcesser { get;}
+        public IProcesser connect { get; set; }
+        public IProcesser serverStop { get; set; }
+
         public MessageProcesser(IProcesser defaultProcesser)
         {
             this.defaultProcesser = defaultProcesser;
