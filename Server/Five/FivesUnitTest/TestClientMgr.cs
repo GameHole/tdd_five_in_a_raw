@@ -9,11 +9,11 @@ namespace FivesUnitTest
 {
     class TestClientMgr
     {
-        ClientMgr mgr;
+        MatcherMgr mgr;
         [SetUp]
         public void SetUp()
         {
-            mgr = new ClientMgr(new Matching());
+            mgr = new MatcherMgr(new GameMgr());
         }
         [Test]
         public void testClientMgr()

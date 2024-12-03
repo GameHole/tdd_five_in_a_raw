@@ -34,7 +34,7 @@ namespace Five
 
         public bool isFull()
         {
-            return PlayerCount >= maxPlayer;
+            return _count >= maxPlayer;
         }
 
         public bool Join(Player player)
@@ -54,7 +54,8 @@ namespace Five
         }
         bool TryDistributeIdentity(out int index)
         {
-            index = Interlocked.Increment(ref _count) - 1;
+            var count = Interlocked.Increment(ref _count);
+            index = Interlocked.Decrement(ref count);
             if (index >= maxPlayer)
             {
                 Interlocked.Decrement(ref _count);

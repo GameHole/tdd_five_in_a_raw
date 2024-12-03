@@ -9,15 +9,15 @@ namespace FivesUnitTest
     class TestMatchr
     {
         LogMatcher master;
-        private ClientMgr mgr;
+        private MatcherMgr mgr;
         private LogSocket socket;
-        Matching matching;
+        GameMgr matching;
         [SetUp]
         public void SetUp()
         {
-            matching = new Matching();
+            matching = new GameMgr();
             master = new LogMatcher();
-            mgr = new ClientMgr(matching);
+            mgr = new MatcherMgr(matching);
             socket = new LogSocket();
             mgr.matchers.TryAdd(socket, master);
         }

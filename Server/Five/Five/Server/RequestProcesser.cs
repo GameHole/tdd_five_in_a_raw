@@ -2,11 +2,11 @@
 {
     public abstract class RequestProcesser : IProcesser
     {
-        protected ClientMgr mgr;
+        protected MatcherMgr mgr;
 
         public abstract int OpCode { get; }
 
-        public void Init(ClientMgr matcher)
+        public void Init(MatcherMgr matcher)
         {
             this.mgr = matcher;
         }

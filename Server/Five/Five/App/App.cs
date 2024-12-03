@@ -6,12 +6,12 @@ namespace Five
 {
     public class App
     {
-        public ClientMgr mgr { get; private set; }
-        public Matching matching { get; private set; }
+        public MatcherMgr mgr { get; private set; }
+        public GameMgr matching { get; private set; }
         public App()
         {
-            matching = new Matching();
-            mgr = new ClientMgr(matching);
+            matching = new GameMgr();
+            mgr = new MatcherMgr(matching);
         }
         public virtual void Stop()
         {

@@ -13,8 +13,8 @@ namespace ConcurrenceTest
         [Test]
         public async Task testMgrMatch()
         {
-            var matching = new Matching();
-            var mgr = new ClientMgr(matching);
+            var matching = new GameMgr();
+            var mgr = new MatcherMgr(matching);
             List<LogSocket> sockets = new List<LogSocket>(10000);
             List<LogMatcher> matchers = new List<LogMatcher>(10000);
             for (int i = 0; i < 10000; i++)
@@ -44,8 +44,8 @@ namespace ConcurrenceTest
         [Test]
         public async Task testMgrCancelMatch()
         {
-            var matching = new Matching();
-            var mgr = new ClientMgr(matching);
+            var matching = new GameMgr();
+            var mgr = new MatcherMgr(matching);
             List<LogSocket> sockets = new List<LogSocket>(10000);
             List<LogMatcher> matchers = new List<LogMatcher>(10000);
             for (int i = 0; i < 10000; i++)
@@ -69,8 +69,8 @@ namespace ConcurrenceTest
         [Test]
         public async Task testMgrCancelMatchAsync()
         {
-            var matching = new Matching();
-            var mgr = new ClientMgr(matching);
+            var matching = new GameMgr();
+            var mgr = new MatcherMgr(matching);
             List<LogSocket> sockets = new List<LogSocket>(10000);
             List<LogMatcher> matchers = new List<LogMatcher>(10000);
             for (int i = 0; i < 10000; i++)
