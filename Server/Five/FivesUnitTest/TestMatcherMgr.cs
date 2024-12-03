@@ -7,7 +7,7 @@ using System.Text;
 
 namespace FivesUnitTest
 {
-    class TestClientMgr
+    class TestMatcherMgr
     {
         MatcherMgr mgr;
         [SetUp]
