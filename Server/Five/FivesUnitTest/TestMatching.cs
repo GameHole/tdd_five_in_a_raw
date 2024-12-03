@@ -10,12 +10,14 @@ namespace FivesUnitTest
     {
         GameMgr gameRsp;
         private MatcherMgr mgr;
+        private MatchServce servce;
 
         [SetUp]
         public void SetUp()
         {
             gameRsp = new GameMgr();
-            mgr = new MatcherMgr(gameRsp);
+            mgr = new MatcherMgr();
+            servce = new MatchServce(mgr,gameRsp);
         }
         [Test]
         public void testMatching()
@@ -28,7 +30,7 @@ namespace FivesUnitTest
             var master = new LogMatcher();
             var socket = new LogSocket();
             mgr.matchers.TryAdd(socket, master);
-            mgr.Match(socket);
+            servce.Match(socket);
             Assert.AreEqual("Match ", master.log);
             Assert.AreNotEqual(0, master.GameId);
             Assert.AreEqual(1, gameRsp.GameCount);
@@ -47,7 +49,7 @@ namespace FivesUnitTest
             }
             for (int i = 0; i < players.Length; i++)
             {
-                mgr.Match(sockets[i]);
+                servce.Match(sockets[i]);
             }
             for (int i = 0; i < players.Length; i++)
             {
@@ -67,7 +69,7 @@ namespace FivesUnitTest
             }
             for (int i = 0; i < players.Length; i++)
             {
-                mgr.Match(sockets[i]);
+                servce.Match(sockets[i]);
             }
             Assert.AreNotEqual(players[0].GameId, players[2].GameId);
         }
@@ -82,7 +84,7 @@ namespace FivesUnitTest
             var master = new LogMatcher();
             var socket = new LogSocket();
             mgr.matchers.TryAdd(socket, master);
-            mgr.Match(socket);
+            servce.Match(socket);
             var game = gameRsp.GetGame(1);
             gameRsp.Clear();
             Assert.AreEqual(0, game.PlayerCount);
@@ -94,9 +96,9 @@ namespace FivesUnitTest
             var player = new LogMatcher();
             var socket = new LogSocket();
             mgr.matchers.TryAdd(socket, player);
-            mgr.Match(socket);
+            servce.Match(socket);
             int id = player.GameId;
-            Assert.AreEqual(ResultDefine.Success, mgr.Cancel(socket)); 
+            Assert.AreEqual(ResultDefine.Success, servce.Cancel(socket)); 
             Assert.AreEqual(0, gameRsp.GetGame(id).PlayerCount);
             Assert.AreEqual("Match CancelMatch ", player.log);
         }
@@ -110,14 +112,14 @@ namespace FivesUnitTest
                 sockets[i] = new LogSocket();
                 player[i] = new LogMatcher();
                 mgr.matchers.TryAdd(sockets[i], player[i]);
-                mgr.Match(sockets[i]);
+                servce.Match(sockets[i]);
             }
             var game = gameRsp.GetGame(player[0].GameId);
-            Assert.AreEqual(ResultDefine.GameStarted, mgr.Cancel(sockets[0]));
+            Assert.AreEqual(ResultDefine.GameStarted, servce.Cancel(sockets[0]));
             Assert.AreEqual(2, game.PlayerCount);
             Assert.AreEqual("Match Start ", player[0].log);
             game.Finish(1);
-            Assert.AreEqual(ResultDefine.NotInMatching, mgr.Cancel(sockets[0]));
+            Assert.AreEqual(ResultDefine.NotInMatching, servce.Cancel(sockets[0]));
         }
         [Test]
         public void testCancelNotInGame()
@@ -125,7 +127,7 @@ namespace FivesUnitTest
             var player = new LogMatcher();
             var socket = new LogSocket();
             mgr.matchers.TryAdd(socket, player);
-            Assert.AreEqual(ResultDefine.NotInMatching, mgr.Cancel(socket));
+            Assert.AreEqual(ResultDefine.NotInMatching, servce.Cancel(socket));
         }
     }
 }

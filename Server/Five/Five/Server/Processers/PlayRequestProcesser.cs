@@ -13,7 +13,7 @@ namespace Five
             int x = message.x;
             int y = message.y;
             var sok = socket;
-            return new Response().SetInfo(message, mgr.Play(x, y, sok));
+            return new Response().SetInfo(message, app.mgr.Play(x, y, sok));
         }
     }
 }

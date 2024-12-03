@@ -13,18 +13,19 @@ namespace FivesUnitTest
         [SetUp]
         public void SetUp()
         {
-            mgr = new MatcherMgr(new GameMgr());
+            mgr = new MatcherMgr();
         }
         [Test]
         public void testClientMgr()
         {
+            Assert.IsNull(mgr.servce);
             Assert.AreEqual(0, mgr.matchers.Count);
         }
         [Test]
         public void testonAcceptMgr()
         {
             var socket = new LogSocket();
-            mgr.Invoke(socket);
+            mgr.Login(socket);
 
             Assert.AreEqual(1, mgr.matchers.Count);
             var matcher = mgr.matchers[socket];
@@ -41,7 +42,7 @@ namespace FivesUnitTest
         public void testSocketClose()
         {
             var scket = new LogSocket();
-            mgr.Invoke(scket);
+            mgr.Login(scket);
             scket.Close();
             Assert.AreEqual(0, mgr.matchers.Count);
         }

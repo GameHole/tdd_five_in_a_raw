@@ -32,11 +32,11 @@ namespace FivesUnitTest
         [Test]
         public void testProcessMessage()
         {
-            var mgr = new MatcherMgr(new GameMgr());
+            var mgr = new App();
             LogMatcher logMatcher = new LogMatcher();
             LogPlayer logPlayer = new LogPlayer();
             logMatcher.Player = logPlayer;
-            mgr.matchers.TryAdd(logSocket, logMatcher);
+            mgr.mgr.matchers.TryAdd(logSocket, logMatcher);
 
             var matchProcesser = new MatchRequestProcesser();
             matchProcesser.Init(mgr);

@@ -42,8 +42,9 @@ namespace FivesUnitTest
         [Test]
         public void testApp()
         {
+            Assert.NotNull(app.matchServce);
             Assert.NotNull(app.mgr);
-            Assert.NotNull(app.matching);
+            Assert.NotNull(app.gameRsp);
             Assert.IsNull(server.app);
         }
         [Test]
@@ -67,8 +68,7 @@ namespace FivesUnitTest
             var socket = server.sockets.First();
             Assert.NotNull(socket.onRecv);
 
-            Assert.IsNull(log.test.Client);
-            Assert.AreSame(app.mgr, log.test.Mgr);
+            Assert.AreSame(app, log.test.Mgr);
 
             socket.onRecv(new Message { opcode = -1 });
             Assert.AreSame(socket, log.test.msgSock);
@@ -86,7 +86,7 @@ namespace FivesUnitTest
             await Task.Delay(100);
             Assert.AreEqual($"msg:{MessageCode.GetResponseCode(MessageCode.RequestMatch)}", log);
             server.Stop();
-            Assert.AreEqual(0, app.matching.GameCount);
+            Assert.AreEqual(0, app.gameRsp.GameCount);
             Assert.AreEqual(0, app.mgr.matchers.Count);
             Assert.IsFalse(server.IsRun);
         }
@@ -246,7 +246,7 @@ namespace FivesUnitTest
                 sockets[i].Send(new Message(MessageCode.RequestMatch));
             }
             await Task.Delay(100);
-            var game = app.matching.GetGame(1);
+            var game = app.gameRsp.GetGame(1);
             Assert.IsTrue(game.IsRunning);
             for (int i = 0; i < sockets.Length; i++)
             {

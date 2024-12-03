@@ -6,8 +6,8 @@ namespace Five
     {
         static void Main(string[] args)
         {
-            var app = new App();
-            var server = new Server("127.0.0.1", 10000,new ProcesserFactroy(app));
+            var factroy = new ProcesserFactroy(new App());
+            var server = new Server("127.0.0.1", 10000, factroy);
             server.Start();
         }
     }

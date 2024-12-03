@@ -24,7 +24,7 @@ namespace Five
             }
             foreach (var item in array)
             {
-                item.Init(app.mgr);
+                item.Init(app);
             }
             return processer;
         }

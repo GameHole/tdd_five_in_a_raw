@@ -9,9 +9,8 @@ namespace FivesUnitTest
 
         public override int OpCode => -1;
 
-        public object Client;
 
-        public object Mgr => mgr;
+        public object Mgr => app;
 
         protected override Response ProcessContant(ASocket socket, Message message)
         {

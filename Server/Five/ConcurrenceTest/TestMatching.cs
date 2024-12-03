@@ -10,11 +10,20 @@ namespace ConcurrenceTest
 {
     class TestMatching
     {
+        private GameMgr matching;
+        private MatcherMgr mgr;
+        private MatchServce servce;
+
+        [SetUp]
+        public void set()
+        {
+            matching = new GameMgr();
+            mgr = new MatcherMgr();
+            servce = new MatchServce(mgr, matching);
+        }
         [Test]
         public async Task testMgrMatch()
         {
-            var matching = new GameMgr();
-            var mgr = new MatcherMgr(matching);
             List<LogSocket> sockets = new List<LogSocket>(10000);
             List<LogMatcher> matchers = new List<LogMatcher>(10000);
             for (int i = 0; i < 10000; i++)
@@ -27,7 +36,7 @@ namespace ConcurrenceTest
             }
             await Repeat.RepeatAsync(sockets, (log) =>
             {
-                mgr.Match(log);
+                servce.Match(log);
             });
             Assert.AreEqual(5000, matching.GameCount);
             for (int i = 1; i <= 5000; i++)
@@ -44,8 +53,6 @@ namespace ConcurrenceTest
         [Test]
         public async Task testMgrCancelMatch()
         {
-            var matching = new GameMgr();
-            var mgr = new MatcherMgr(matching);
             List<LogSocket> sockets = new List<LogSocket>(10000);
             List<LogMatcher> matchers = new List<LogMatcher>(10000);
             for (int i = 0; i < 10000; i++)
@@ -58,8 +65,8 @@ namespace ConcurrenceTest
             }
             await Repeat.RepeatAsync(sockets, (log) =>
             {
-                mgr.Match(log);
-                mgr.Cancel(log);
+                servce.Match(log);
+                servce.Cancel(log);
             });
             for (int i = 0; i < matchers.Count; i++)
             {
@@ -69,8 +76,6 @@ namespace ConcurrenceTest
         [Test]
         public async Task testMgrCancelMatchAsync()
         {
-            var matching = new GameMgr();
-            var mgr = new MatcherMgr(matching);
             List<LogSocket> sockets = new List<LogSocket>(10000);
             List<LogMatcher> matchers = new List<LogMatcher>(10000);
             for (int i = 0; i < 10000; i++)
@@ -83,11 +88,11 @@ namespace ConcurrenceTest
             }
             await Repeat.RepeatAsync(sockets, (log) =>
             {
-                mgr.Match(log);
+                servce.Match(log);
             });
             await Repeat.RepeatAsync(sockets, (log) =>
             {
-                mgr.Cancel(log);
+                servce.Cancel(log);
             });
             for (int i = 0; i < matchers.Count; i++)
             {

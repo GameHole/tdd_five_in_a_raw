@@ -10,6 +10,7 @@ namespace FivesUnitTest
     {
         LogMatcher master;
         private MatcherMgr mgr;
+        private MatchServce servce;
         private LogSocket socket;
         GameMgr matching;
         [SetUp]
@@ -17,7 +18,8 @@ namespace FivesUnitTest
         {
             matching = new GameMgr();
             master = new LogMatcher();
-            mgr = new MatcherMgr(matching);
+            mgr = new MatcherMgr();
+            servce = new MatchServce(mgr,matching);
             socket = new LogSocket();
             mgr.matchers.TryAdd(socket, master);
         }
@@ -36,25 +38,25 @@ namespace FivesUnitTest
         [Test]
         public void testMgrMatch()
         {
-            var result = mgr.Match(socket);
+            var result = servce.Match(socket);
             Assert.AreEqual(ResultDefine.Success, result);
             Assert.AreEqual("Match ", master.log);
             Assert.AreEqual(1, master.GameId);
-            result = mgr.Match(socket);
+            result = servce.Match(socket);
             Assert.AreEqual(ResultDefine.Matching, result);
-            result = mgr.Cancel(socket);
+            result = servce.Cancel(socket);
             Assert.AreEqual(ResultDefine.Success, result);
-            result = mgr.Match(socket);
+            result = servce.Match(socket);
             Assert.AreEqual(ResultDefine.Success, result);
         }
         [Test]
         public void testMgrCancelMatch()
         {
-            var result = mgr.Cancel(socket);
+            var result = servce.Cancel(socket);
             Assert.AreEqual(ResultDefine.NotInMatching, result);
-            result = mgr.Match(socket);
+            result = servce.Match(socket);
             Assert.AreEqual(ResultDefine.Success, result);
-            result = mgr.Cancel(socket);
+            result = servce.Cancel(socket);
             Assert.AreEqual("Match CancelMatch ", master.log);
             Assert.AreEqual(ResultDefine.Success, result);
         }
@@ -64,12 +66,12 @@ namespace FivesUnitTest
             var match1 = new LogMatcher();
             var socket1 = new LogSocket();
             mgr.matchers.TryAdd(socket1, match1);
-            mgr.Match(socket1);
-            mgr.Match(socket);
+            servce.Match(socket1);
+            servce.Match(socket);
             Assert.AreEqual("Match Start ", master.log);
-            var result = mgr.Match(socket);
+            var result = servce.Match(socket);
             Assert.AreEqual(ResultDefine.GameStarted, result);
-            result = mgr.Cancel(socket);
+            result = servce.Cancel(socket);
             Assert.AreEqual(ResultDefine.GameStarted, result);
         }
     }

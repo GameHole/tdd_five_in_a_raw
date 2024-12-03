@@ -63,7 +63,11 @@ namespace Five
             }
             return true;
         }
-
+        public void Leave(Matcher matcher)
+        {
+            Remove(matcher.Player);
+            matcher.Canceled();
+        }
 
         public Player GetPlayer(int index)
         {

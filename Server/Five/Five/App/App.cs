@@ -7,21 +7,24 @@ namespace Five
     public class App
     {
         public MatcherMgr mgr { get; private set; }
-        public GameMgr matching { get; private set; }
+        public GameMgr gameRsp { get; private set; }
+        public MatchServce matchServce { get; private set; }
+
         public App()
         {
-            matching = new GameMgr();
-            mgr = new MatcherMgr(matching);
+            gameRsp = new GameMgr();
+            mgr = new MatcherMgr();
+            matchServce = new MatchServce(mgr, gameRsp);
         }
         public virtual void Stop()
         {
             mgr.Stop();
-            matching.Clear();
+            gameRsp.Clear();
         }
 
         public virtual void Invoke(ASocket socket)
         {
-            mgr.Invoke(socket);
+            mgr.Login(socket);
         }
     }
 }
