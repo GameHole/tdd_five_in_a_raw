@@ -18,7 +18,6 @@ namespace FivesUnitTest
         [Test]
         public void testClientMgr()
         {
-            Assert.IsNull(mgr.servce);
             Assert.AreEqual(0, mgr.matchers.Count);
         }
         [Test]

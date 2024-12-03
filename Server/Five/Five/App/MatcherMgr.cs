@@ -7,7 +7,6 @@ namespace Five
     public class MatcherMgr
     {
         public ConcurrentDictionary<ASocket, Matcher> matchers { get; }
-        public MatchServce servce { get; }
         public MatcherMgr()
         {
             matchers = new ConcurrentDictionary<ASocket, Matcher>();
