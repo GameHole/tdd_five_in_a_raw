@@ -45,7 +45,7 @@ namespace FivesUnitTest
             var playProcesser = new PlayRequestProcesser();
             playProcesser.Init(mgr);
 
-            var opErrProcesser = new OpCodeErrorResponseProcesser(logSocket);
+            var opErrProcesser = new OpCodeErrorResponseProcesser();
 
             matchProcesser.Process(logSocket,new Message(MessageCode.RequestMatch));
             Assert.AreEqual("Match ", logMatcher.log);

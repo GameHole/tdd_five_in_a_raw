@@ -8,28 +8,20 @@ namespace Five
     {
         public RequestRegister register { get; }
 
-        public ConcurrentList<Client> clients { get; private set; }
+        public MessageProcesser processer { get; }
+
         public ClientRsp(RequestRegister register)
         {
-            clients = new ConcurrentList<Client>();
             this.register = register;
+            processer = new MessageProcesser(new OpCodeErrorResponseProcesser());
+            register.Regist(processer);
         }
         public void Invoke(ASocket socket)
         {
-            var client = new Client();
-            client.Init(socket);
-            register.Regist(client);
-
-            clients.Add(client);
-
-            socket.onClose += () =>
+            socket.onRecv = (message) =>
             {
-                clients.Remove(client);
+                processer.Process(socket, message);
             };
-        }
-        public void Stop()
-        {
-            clients.Clear();
         }
     }
     public class ClientMgr

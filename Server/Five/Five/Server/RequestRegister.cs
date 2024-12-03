@@ -12,13 +12,13 @@ namespace Five
         {
             this.mgr = mgr;
         }
-        public virtual void Regist(Client client)
+        public virtual void Regist(MessageProcesser processer)
         {
             var array = NewArray();
             foreach (var item in array)
             {
                 item.Init(mgr);
-                client.processer.Processers.Add(item.OpCode, item);
+                processer.Processers.Add(item.OpCode, item);
             }
         }
 

@@ -33,7 +33,6 @@ namespace Five
             socket.Close();
             IsRun = false;
             app.Stop();
-            rsp.Stop();
         }
 
         public void StartAsync()

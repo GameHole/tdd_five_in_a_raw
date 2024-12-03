@@ -34,11 +34,11 @@ namespace FivesUnitTest
             list.Add(test);
             return list.ToArray();
         }
-        public override void Regist(Client client)
+        public override void Regist(MessageProcesser processer)
         {
-            base.Regist(client);
+            base.Regist(processer);
             isRun = true;
-            this.client = client;
+            this.client = processer;
         }
     }
 }

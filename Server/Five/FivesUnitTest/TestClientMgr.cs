@@ -22,7 +22,6 @@ namespace FivesUnitTest
         [Test]
         public void testClientMgr()
         {
-            Assert.AreEqual(0, rsp.clients.Count);
             Assert.AreEqual(0, mgr.matchers.Count);
         }
         [Test]
@@ -42,44 +41,34 @@ namespace FivesUnitTest
             Assert.AreEqual(0, mgr.matchers.Count);
         }
         [Test]
+        public void testClientRsp()
+        {
+            Assert.AreEqual(typeof(OpCodeErrorResponseProcesser),rsp.processer.defaultProcesser.GetType());
+            Assert.IsTrue(rsp.processer.Processers.Contains(MessageCode.RequestMatch));
+            Assert.IsTrue(rsp.processer.Processers.Contains(MessageCode.RequestCancelMatch));
+            Assert.IsTrue(rsp.processer.Processers.Contains(MessageCode.RequestPlay));
+            Assert.IsTrue(rsp.processer.Processers.Contains(-1));
+        }
+        [Test]
         public void testonAccept()
         {
             var socket = new LogSocket();
             rsp.Invoke(socket);
-            Assert.AreEqual(1, rsp.clients.Count);
-            var client = rsp.clients.First();
 
             Assert.IsNull(log.test.Client);
             Assert.AreSame(mgr, log.test.Mgr);
-            Assert.IsTrue(client.processer.Processers.Contains(MessageCode.RequestMatch));
-            Assert.IsTrue(client.processer.Processers.Contains(MessageCode.RequestCancelMatch));
-            Assert.IsTrue(client.processer.Processers.Contains(MessageCode.RequestPlay));
-            Assert.IsTrue(client.processer.Processers.Contains(-1));
-            Assert.NotNull(client.processer);
-            Assert.AreSame(socket, client.socket);
+           
             socket.onRecv(new Message { opcode=-1});
             Assert.AreSame(socket, log.test.msgSock);
 
-            socket.onClose.Invoke();
-            Assert.AreEqual(0, rsp.clients.Count);
-        }
-        [Test]
-        public void testRemove()
-        {
-            Client client = null;
-            rsp.clients.onAdd += (c) => client = c;
-            rsp.Invoke(new LogSocket());
-            rsp.clients.Remove(client);
-            Assert.AreEqual(0, rsp.clients.Count);
+            Assert.IsNull( socket.onClose);
         }
         [Test]
         public void testSocketClose()
         {
             var scket = new LogSocket();
             mgr.Invoke(scket);
-            rsp.Invoke(scket);
             scket.Close();
-            Assert.AreEqual(0, rsp.clients.Count);
             Assert.AreEqual(0, mgr.matchers.Count);
         }
     }
