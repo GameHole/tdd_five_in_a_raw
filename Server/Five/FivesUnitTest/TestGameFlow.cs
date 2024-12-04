@@ -9,13 +9,15 @@ namespace FivesUnitTest
 {
     class TestGameFlow
     {
+        Room room;
         Game game;
         LogPlayer[] players;
         LogNotifier[] ntfs;
         [SetUp]
         public void SetUp()
         {
-            game = new Game();
+            room = new Game();
+            game = room.game;
             players = new LogPlayer[2];
             ntfs = new LogNotifier[2];
             for (int i = 0; i < players.Length; i++)
@@ -23,16 +25,16 @@ namespace FivesUnitTest
                 var player = LogPlayer.EmntyLog();
                 ntfs[i] = new LogNotifier();
                 player.notifier = ntfs[i];
-                game.Join(player);
+                room.Join(player);
                 players[i] = player;
             }
-            game.Start();
+            room.Start();
         }
         [Test]
         public void testGameStartRepeet()
         {
             Assert.AreEqual(0, game.turn.index);
-            game.Start();
+            room.Start();
             game.timer.Update(30);
             Assert.AreEqual(1, game.turn.index);
         }
@@ -81,8 +83,8 @@ namespace FivesUnitTest
         {
             game.chessboard.AddValue(0, 0, 1);
             game.Finish(1);
-            Assert.IsFalse(game.IsRunning);
-            Assert.AreEqual(0, game.PlayerCount);
+            Assert.IsFalse(room.IsRunning);
+            Assert.AreEqual(0, room.PlayerCount);
             foreach (var item in players)
             {
                 Assert.AreEqual(-1, item.PlayerId);
@@ -128,8 +130,8 @@ namespace FivesUnitTest
         {
             Assert.IsTrue(TimerDriver.IsContainTimer(game.timer));
             Assert.AreEqual(2, game.PlayerCount);
-            game.Stop();
-            Assert.IsFalse(game.IsRunning);
+            room.Stop();
+            Assert.IsFalse(room.IsRunning);
             Assert.AreEqual(0, game.PlayerCount);
             foreach (var item in players)
             {

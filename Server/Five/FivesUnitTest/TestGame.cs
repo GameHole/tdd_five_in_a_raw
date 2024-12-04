@@ -8,17 +8,19 @@ namespace FivesUnitTest
 {
     class TestGame
     {
+        Room room;
         Game game;
         [SetUp]
         public void SetUp()
         {
-            game = new Game();
-            game.Id = 10;
+            room = new Game();
+            room.Id = 10;
+            game = room.game;
         }
         [Test]
         public void testGame()
         {
-            Assert.AreEqual(0, game.PlayerCount);
+            Assert.AreEqual(0, room.PlayerCount);
             Assert.AreEqual(0, game.turn.index);
             Assert.AreEqual(30, game.timer.time);
             Assert.AreEqual(15, game.chessboard.width);
@@ -31,12 +33,12 @@ namespace FivesUnitTest
             for (int i = 0; i < players.Length; i++)
             {
                 players[i] = LogPlayer.EmntyLog();
-                game.Join(players[i]);
+                room.Join(players[i]);
             }
             game.turn.index = 1;
-            Assert.IsFalse(game.IsRunning);
-            game.Start();
-            Assert.IsTrue(game.IsRunning);
+            Assert.IsFalse(room.IsRunning);
+            room.Start();
+            Assert.IsTrue(room.IsRunning);
             for (int i = 0; i < players.Length; i++)
             {
                 var item = players[i];
@@ -49,60 +51,60 @@ namespace FivesUnitTest
         [Test]
         public void testGetPlayer()
         {
-            var player = game.GetPlayer(0);
+            var player = room.GetPlayer(0);
             Assert.AreEqual(null, player);
         }
         [Test]
         public void testFull()
         {
-            game.Join(new Player());
-            Assert.IsFalse(game.isFull());
+            room.Join(new Player());
+            Assert.IsFalse(room.isFull());
             var p = new Player();
-            game.Join(p);
-            Assert.IsTrue(game.isFull());
-            game.Remove(p);
-            Assert.IsFalse(game.isFull());
+            room.Join(p);
+            Assert.IsTrue(room.isFull());
+            room.Remove(p);
+            Assert.IsFalse(room.isFull());
         }
         [Test]
         public void testJoinPlayer()
         {
             var player0 = new Player();
             Assert.AreEqual(-1, player0.PlayerId);
-            Assert.IsTrue(game.Join(player0));
-            Assert.IsTrue(game.ContainPlayer(player0));
+            Assert.IsTrue(room.Join(player0));
+            Assert.IsTrue(room.ContainPlayer(player0));
             Assert.AreEqual(0, player0.PlayerId);
-            Assert.AreEqual(game.Id, player0.GameId);
-            Assert.AreEqual(1, game.PlayerCount);
-            Assert.AreEqual(player0, game.GetPlayer(player0.PlayerId));
+            Assert.AreEqual(room.Id, player0.GameId);
+            Assert.AreEqual(1, room.PlayerCount);
+            Assert.AreEqual(player0, room.GetPlayer(player0.PlayerId));
         }
         [Test]
         public void testJoinMaxPlayer()
         {
             for (int i = 0; i < 2; i++)
             {
-                Assert.IsTrue(game.Join(new LogPlayer()));
+                Assert.IsTrue(room.Join(new LogPlayer()));
             }
-            Assert.AreEqual(game.maxPlayer, game.PlayerCount);
-            Assert.IsFalse(game.Join(new LogPlayer()));
-            Assert.AreEqual(game.maxPlayer, game.PlayerCount);
+            Assert.AreEqual(room.maxPlayer, room.PlayerCount);
+            Assert.IsFalse(room.Join(new LogPlayer()));
+            Assert.AreEqual(room.maxPlayer, room.PlayerCount);
         }
         [Test]
         public void testRemovePlayer()
         {
             var player0 = new Player();
-            game.Join(player0);
-            game.Remove(player0);
+            room.Join(player0);
+            room.Remove(player0);
             Assert.AreEqual(-1, player0.PlayerId);
-            Assert.AreEqual(0, game.PlayerCount);
+            Assert.AreEqual(0, room.PlayerCount);
             Assert.AreEqual(0, player0.GameId);
-            Assert.IsFalse(game.ContainPlayer(player0));
+            Assert.IsFalse(room.ContainPlayer(player0));
         }
         [Test]
         public void testGameStartException()
         {
             var exp = Assert.Throws<GameException>(() =>
             {
-                game.Start();
+                room.Start();
             });
             Assert.AreEqual("No enough player for start", exp.Message);
         }
@@ -110,9 +112,9 @@ namespace FivesUnitTest
         public void testPlayerOutLineOnStop()
         {
             var player0 = new Player();
-            game.Join(player0);
+            room.Join(player0);
             player0.OutLine();
-            Assert.AreEqual(0, game.PlayerCount);
+            Assert.AreEqual(0, room.PlayerCount);
         }
         [Test]
         public void testPlayerOutLineOnRunning()
@@ -124,12 +126,12 @@ namespace FivesUnitTest
                 {
                     game.Join(players[i]);
                 }
-                game.Start();
+                room.Start();
                 players[0].OutLine();
-                Assert.AreEqual(game.maxPlayer, game.PlayerCount);
+                Assert.AreEqual(room.maxPlayer, room.PlayerCount);
                 players[1].OutLine();
-                Assert.AreEqual(0, game.PlayerCount);
-                Assert.IsFalse(game.IsRunning);
+                Assert.AreEqual(0, room.PlayerCount);
+                Assert.IsFalse(room.IsRunning);
             }
         }
     }

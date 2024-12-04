@@ -5,7 +5,8 @@ namespace Five
 {
     public class Game: Room,IPlayable
     {
-        
+        public override Game game => this;
+
         private GameNotifier gameNotifier;
        
         public Turn turn { get; private set; }

@@ -42,11 +42,6 @@ namespace Five
             chess = 0;
         }
 
-        public virtual void Finish()
-        {
-            Reset();
-        }
-
         public virtual void OutLine()
         {
             notifier = new NoneNotifier();

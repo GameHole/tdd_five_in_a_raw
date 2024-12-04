@@ -43,7 +43,7 @@ namespace ConcurrenceTest
             Assert.AreEqual(5000, matching.GameCount);
             for (int i = 1; i <= 5000; i++)
             {
-                var game = matching.GetGame(i);
+                var game = matching.GetRoom(i);
                 Assert.AreEqual(i, game.Id);
                 Assert.AreEqual(game.maxPlayer, game.PlayerCount);
             }

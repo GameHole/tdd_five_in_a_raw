@@ -13,7 +13,7 @@ namespace Five
         public readonly int maxPlayer = 2;
         public int PlayerCount { get => _count; }
         public bool IsRunning { get; private set; }
-
+        public virtual Game game { get; }
         public Room()
         {
             players = new ConcurrentDictionary<int, Player>();

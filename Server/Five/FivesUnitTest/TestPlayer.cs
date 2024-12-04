@@ -8,13 +8,13 @@ namespace FivesUnitTest
     class TestPlayer
     {
         Player player;
-        Game game;
+        Room room;
         [SetUp]
         public void SetUp()
         {
             player = new Player();
-            game = new Game();
-            game.Join(player);
+            room = new Game();
+            room.Join(player);
             player.Start(1);
         }
         [Test]
@@ -32,14 +32,14 @@ namespace FivesUnitTest
         public void testNotStartPlay()
         {
             player = new Player();
-            game = new Game();
-            game.Join(player);
+            room = new Room();
+            room.Join(player);
             Assert.AreEqual(ResultDefine.GameNotStart, player.Play(0, 0));
         }
         [Test]
         public void testFinish()
         {
-            player.Finish();
+            player.Reset();
             Assert.AreEqual(0, player.chess);
             Assert.AreEqual(0, player.GameId);
             Assert.AreEqual(-1, player.PlayerId);
@@ -63,7 +63,7 @@ namespace FivesUnitTest
             player.notifier = new NetNotifier(new LogSocket(), player);
             player.OutLine();
             Assert.IsInstanceOf<NoneNotifier>(player.notifier);
-            Assert.IsFalse(game.ContainPlayer(player));
+            Assert.IsFalse(room.ContainPlayer(player));
         }
     }
 }

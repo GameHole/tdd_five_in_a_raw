@@ -34,7 +34,7 @@ namespace FivesUnitTest
             Assert.AreEqual("Match ", player.log);
             Assert.AreNotEqual(0, player.GameId);
             Assert.AreEqual(1, gameRsp.GameCount);
-            Assert.AreEqual(1, gameRsp.GetGame(player.GameId).PlayerCount);
+            Assert.AreEqual(1, gameRsp.GetRoom(player.GameId).PlayerCount);
         }
         [Test]
         public void testMatchTwoPlayer()
@@ -77,7 +77,7 @@ namespace FivesUnitTest
         [Test]
         public void testGetGame()
         {
-            Assert.AreEqual(null, gameRsp.GetGame(0));
+            Assert.AreEqual(null, gameRsp.GetRoom(0));
         }
         [Test]
         public void testClear()
@@ -86,7 +86,7 @@ namespace FivesUnitTest
             var socket = new LogSocket();
             mgr.matchers.TryAdd(socket, master);
             servce.Match(socket);
-            var game = gameRsp.GetGame(1);
+            var game = gameRsp.GetRoom(1);
             gameRsp.Clear();
             Assert.AreEqual(0, game.PlayerCount);
             Assert.AreEqual(0, gameRsp.GameCount);
@@ -100,7 +100,7 @@ namespace FivesUnitTest
             servce.Match(socket);
             int id = player.GameId;
             Assert.AreEqual(ResultDefine.Success, servce.Cancel(socket)); 
-            Assert.AreEqual(0, gameRsp.GetGame(id).PlayerCount);
+            Assert.AreEqual(0, gameRsp.GetRoom(id).PlayerCount);
             Assert.AreEqual("Match Reset CancelMatch ", player.log);
         }
         [Test]
@@ -116,11 +116,11 @@ namespace FivesUnitTest
                 mgr.matchers.TryAdd(sockets[i], p);
                 servce.Match(sockets[i]);
             }
-            var game = gameRsp.GetGame(player[0].GameId);
+            var room = gameRsp.GetRoom(player[0].GameId);
             Assert.AreEqual(ResultDefine.GameStarted, servce.Cancel(sockets[0]));
-            Assert.AreEqual(2, game.PlayerCount);
+            Assert.AreEqual(2, room.PlayerCount);
             Assert.AreEqual("Match Start ", player[0].log);
-            game.Finish(1);
+            room.game.Finish(1);
             Assert.AreEqual(ResultDefine.NotInMatching, servce.Cancel(sockets[0]));
         }
         [Test]

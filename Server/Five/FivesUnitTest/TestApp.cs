@@ -246,7 +246,7 @@ namespace FivesUnitTest
                 sockets[i].Send(new Message(MessageCode.RequestMatch));
             }
             await Task.Delay(100);
-            var game = app.gameRsp.GetGame(1);
+            var game = app.gameRsp.GetRoom(1);
             Assert.IsTrue(game.IsRunning);
             for (int i = 0; i < sockets.Length; i++)
             {
