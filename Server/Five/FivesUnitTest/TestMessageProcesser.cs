@@ -33,7 +33,7 @@ namespace FivesUnitTest
         public void testProcessMessage()
         {
             var mgr = new App();
-            LogPlayer logPlayer = new LogPlayer();
+            LogPlayer logPlayer = LogPlayer.EmntyLog();
             mgr.mgr.matchers.TryAdd(logSocket, logPlayer);
 
             var matchProcesser = new MatchRequestProcesser();
@@ -51,13 +51,13 @@ namespace FivesUnitTest
 
             cnacelProcesser.Process(logSocket,new Message(MessageCode.RequestCancelMatch));
 
-            Assert.AreEqual("Match CancelMatch ", logPlayer.log);
+            Assert.AreEqual("Match Reset CancelMatch ", logPlayer.log);
             Assert.AreEqual("Send opcode:4 result:0", logSocket.log);
 
             var message = new PlayRequest { x = 1, y = 2 };
             playProcesser.Process(logSocket,message);
 
-            Assert.AreEqual($"Match CancelMatch Play({message.x},{message.y}) ", logPlayer.log);
+            Assert.AreEqual($"Match Reset CancelMatch Play({message.x},{message.y}) ", logPlayer.log);
             Assert.AreEqual("Send opcode:6 result:29999", logSocket.log);
 
             opErrProcesser.Process(logSocket,new Message(200));

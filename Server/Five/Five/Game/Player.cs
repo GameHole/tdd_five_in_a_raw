@@ -12,8 +12,6 @@ namespace Five
         public int GameId { get; internal set; } = -1;
         public int chess { get; private set; }
         public int PlayerId { get; internal set; }
-        public event Action onStart;
-        public event Action onFinish;
         public Player()
         {
             Reset();
@@ -30,7 +28,6 @@ namespace Five
         public virtual void Start(int chess)
         {
             this.chess = chess;
-            onStart?.Invoke();
         }
         public virtual Result Play(int x,int y)
         {
@@ -48,7 +45,6 @@ namespace Five
         public virtual void Finish()
         {
             Reset();
-            onFinish?.Invoke();
         }
 
         public virtual void OutLine()

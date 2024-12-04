@@ -27,7 +27,7 @@ namespace ConcurrenceTest
             for (int i = 0; i < 10000; i++)
             {
                 var socket = new LogSocket();
-                var p = new LogPlayer();
+                var p = LogPlayer.EmntyLog();
                 sockets.Add(socket);
                 players.Add(p);
                 mgr.matchers.TryAdd(socket, p);

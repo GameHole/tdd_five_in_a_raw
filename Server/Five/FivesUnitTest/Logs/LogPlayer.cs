@@ -7,8 +7,7 @@ namespace FivesUnitTest
 {
     public class LogPlayer : Player
     {
-        public string log = "";
-
+        public string log;
         public override void Match()
         {
             base.Match();
@@ -29,15 +28,22 @@ namespace FivesUnitTest
             log += $"Play({x},{y}) ";
             return base.Play(x, y);
         }
-        public override void Finish()
+        public override void Reset()
         {
-            base.Finish();
-            log += $"Finish ";
+            base.Reset();
+            log += $"Reset ";
         }
         public override void OutLine()
         {
             base.OutLine();
             log += "OutLine ";
+        }
+
+        public static LogPlayer EmntyLog()
+        {
+            var player = new LogPlayer();
+            player.log = "";
+            return player;
         }
     }
 }

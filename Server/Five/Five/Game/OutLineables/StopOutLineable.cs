@@ -2,9 +2,9 @@
 {
     class StopOutLineable : IOutLineable
     {
-        private Game game;
+        private Room game;
         private Player player;
-        public StopOutLineable(Game game,Player player)
+        public StopOutLineable(Room game,Player player)
         {
             this.game = game;
             this.player = player;

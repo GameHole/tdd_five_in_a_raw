@@ -17,7 +17,7 @@ namespace FivesUnitTest
         public void SetUp()
         {
             matching = new GameMgr();
-            player = new LogPlayer();
+            player = LogPlayer.EmntyLog();
             mgr = new MatcherMgr();
             servce = new MatchServce(mgr,matching);
             socket = new LogSocket();
@@ -45,7 +45,7 @@ namespace FivesUnitTest
             result = servce.Match(socket);
             Assert.AreEqual(ResultDefine.Success, result);
             result = servce.Cancel(socket);
-            Assert.AreEqual("Match CancelMatch ", player.log);
+            Assert.AreEqual("Match Reset CancelMatch ", player.log);
             Assert.AreEqual(ResultDefine.Success, result);
         }
         [Test]

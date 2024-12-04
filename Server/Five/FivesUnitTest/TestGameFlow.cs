@@ -20,7 +20,7 @@ namespace FivesUnitTest
             ntfs = new LogNotifier[2];
             for (int i = 0; i < players.Length; i++)
             {
-                var player = new LogPlayer();
+                var player = LogPlayer.EmntyLog();
                 ntfs[i] = new LogNotifier();
                 player.notifier = ntfs[i];
                 game.Join(player);
@@ -66,11 +66,11 @@ namespace FivesUnitTest
             game.chessboard.AddValue(2, 0, chess);
             game.chessboard.AddValue(3, 0, chess);
             players[0].Play(4, 0);
-            Assert.AreEqual("Start Play(4,0) Finish ", players[0].log);
-            Assert.AreEqual("Start Finish ", players[1].log);
+            Assert.AreEqual("Start Play(4,0) Reset ", players[0].log);
+            Assert.AreEqual("Start Reset ", players[1].log);
             Assert.AreEqual(0, game.turn.index);
             players[1].Play(10, 10);
-            Assert.AreEqual("Start Play(4,0) Finish ", players[0].log);
+            Assert.AreEqual("Start Play(4,0) Reset ", players[0].log);
             Assert.AreEqual(0, game.turn.index);
             Assert.AreEqual(0, game.chessboard.GetValue(10,10));
             await Task.Delay(1100);
@@ -86,6 +86,7 @@ namespace FivesUnitTest
             foreach (var item in players)
             {
                 Assert.AreEqual(-1, item.PlayerId);
+                Assert.AreEqual(0, item.GameId);
             }
             Assert.IsFalse(TimerDriver.IsContainTimer(game.timer));
             Assert.AreEqual(0, game.chessboard.Count);

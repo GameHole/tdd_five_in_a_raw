@@ -27,7 +27,7 @@ namespace FivesUnitTest
         [Test]
         public void testMatchOnePlayer()
         {
-            var player = new LogPlayer();
+            var player = LogPlayer.EmntyLog();
             var socket = new LogSocket();
             mgr.matchers.TryAdd(socket, player);
             servce.Match(socket);
@@ -43,7 +43,7 @@ namespace FivesUnitTest
             var sockets = new LogSocket[2];
             for (int i = 0; i < players.Length; i++)
             {
-                var p = new LogPlayer();
+                var p = LogPlayer.EmntyLog();
                 players[i] = p;
                 sockets[i] = new LogSocket();
                 mgr.matchers.TryAdd(sockets[i], p);
@@ -94,14 +94,14 @@ namespace FivesUnitTest
         [Test]
         public void testCancel()
         {
-            var player = new LogPlayer();
+            var player = LogPlayer.EmntyLog();
             var socket = new LogSocket();
             mgr.matchers.TryAdd(socket, player);
             servce.Match(socket);
             int id = player.GameId;
             Assert.AreEqual(ResultDefine.Success, servce.Cancel(socket)); 
             Assert.AreEqual(0, gameRsp.GetGame(id).PlayerCount);
-            Assert.AreEqual("Match CancelMatch ", player.log);
+            Assert.AreEqual("Match Reset CancelMatch ", player.log);
         }
         [Test]
         public void testCancelOnGameStart()
@@ -111,7 +111,7 @@ namespace FivesUnitTest
             for (int i = 0; i < player.Length; i++)
             {
                 sockets[i] = new LogSocket();
-                var p = new LogPlayer();
+                var p = LogPlayer.EmntyLog();
                 player[i] = p;
                 mgr.matchers.TryAdd(sockets[i], p);
                 servce.Match(sockets[i]);

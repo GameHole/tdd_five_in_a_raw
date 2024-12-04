@@ -30,7 +30,7 @@ namespace FivesUnitTest
             var players = new LogPlayer[2];
             for (int i = 0; i < players.Length; i++)
             {
-                players[i] = new LogPlayer();
+                players[i] = LogPlayer.EmntyLog();
                 game.Join(players[i]);
             }
             game.turn.index = 1;
