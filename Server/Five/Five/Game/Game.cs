@@ -3,40 +3,29 @@ using System.Text;
 
 namespace Five
 {
-    public class Game: Room,IPlayable
+    public class Game:IPlayable
     {
-        public override Game game => this;
-
         private GameNotifier gameNotifier;
        
         public Turn turn { get; private set; }
         public LoopTimer timer { get; private set; }
         public Chessboard chessboard { get; private set; }
-        private IOutLineable startOut;
-
-        public Game()
+        private IRoom room;
+        public Game(IRoom room)
         {
-            turn = new Turn(maxPlayer);
+            turn = new Turn(room.maxPlayer);
             timer = new LoopTimer(30);
             chessboard = new Chessboard(15, 15);
-            gameNotifier = new GameNotifier(this);
-            startOut = new StartOutLineable(this);
-        }
-        public override void Start()
-        {
-            base.Start();
-
-            GameStart();
-
+            gameNotifier = new GameNotifier(room);
+            this.room = room;
         }
 
-        private void GameStart()
+        public void Start()
         {
             var chess = 1;
-            foreach (var item in Players)
+            foreach (var item in room.Players)
             {
                 item.Start(chess++);
-                item.outlineable = startOut;
             }
             turn.Start();
             gameNotifier.NotifyStart();
@@ -48,7 +37,7 @@ namespace Five
 
         private void TurnPlayer()
         {
-            foreach (var item in Players)
+            foreach (var item in room.Players)
             {
                 if (item.PlayerId == turn.index)
                     item.playable = this;
@@ -68,15 +57,10 @@ namespace Five
         public void Finish(int id)
         {
             gameNotifier.NotifyFinish(id);
-            Stop();
-        }
-        public override void Stop()
-        {
-            base.Stop();
-            GameStop();
+            room.Stop();
         }
 
-        private void GameStop()
+        public void Stop()
         {
             chessboard.Clear();
             TimerDriver.Stop(timer);

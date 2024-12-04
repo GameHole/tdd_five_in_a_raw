@@ -16,7 +16,7 @@
             var players = mgr.matchers[socket];
             lock (gameRsp.lcoker)
             {
-                var game = gameRsp.GetRoom(players.GameId);
+                var game = gameRsp.GetRoom(players.RoomId);
                 if (game == null)
                 {
                     return ResultDefine.NotInMatching;
@@ -35,7 +35,7 @@
             var player = mgr.matchers[socket];
             lock (gameRsp.lcoker)
             {
-                var game = gameRsp.GetRoom(player.GameId);
+                var game = gameRsp.GetRoom(player.RoomId);
                 if (game == null)
                 {
                     game = FindNotStartGame();

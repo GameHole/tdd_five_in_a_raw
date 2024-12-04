@@ -4,8 +4,8 @@ namespace Five
 {
     class GameNotifier
     {
-        private Game game;
-        public GameNotifier(Game game)
+        private IRoom game;
+        public GameNotifier(IRoom game)
         {
             this.game = game;
         }

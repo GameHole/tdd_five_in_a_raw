@@ -32,9 +32,9 @@ namespace FivesUnitTest
             mgr.matchers.TryAdd(socket, player);
             servce.Match(socket);
             Assert.AreEqual("Match ", player.log);
-            Assert.AreNotEqual(0, player.GameId);
+            Assert.AreNotEqual(0, player.RoomId);
             Assert.AreEqual(1, gameRsp.GameCount);
-            Assert.AreEqual(1, gameRsp.GetRoom(player.GameId).PlayerCount);
+            Assert.AreEqual(1, gameRsp.GetRoom(player.RoomId).PlayerCount);
         }
         [Test]
         public void testMatchTwoPlayer()
@@ -72,7 +72,7 @@ namespace FivesUnitTest
             {
                 servce.Match(sockets[i]);
             }
-            Assert.AreNotEqual(players[0].GameId, players[2].GameId);
+            Assert.AreNotEqual(players[0].RoomId, players[2].RoomId);
         }
         [Test]
         public void testGetGame()
@@ -98,7 +98,7 @@ namespace FivesUnitTest
             var socket = new LogSocket();
             mgr.matchers.TryAdd(socket, player);
             servce.Match(socket);
-            int id = player.GameId;
+            int id = player.RoomId;
             Assert.AreEqual(ResultDefine.Success, servce.Cancel(socket)); 
             Assert.AreEqual(0, gameRsp.GetRoom(id).PlayerCount);
             Assert.AreEqual("Match Reset CancelMatch ", player.log);
@@ -116,7 +116,7 @@ namespace FivesUnitTest
                 mgr.matchers.TryAdd(sockets[i], p);
                 servce.Match(sockets[i]);
             }
-            var room = gameRsp.GetRoom(player[0].GameId);
+            var room = gameRsp.GetRoom(player[0].RoomId);
             Assert.AreEqual(ResultDefine.GameStarted, servce.Cancel(sockets[0]));
             Assert.AreEqual(2, room.PlayerCount);
             Assert.AreEqual("Match Start ", player[0].log);

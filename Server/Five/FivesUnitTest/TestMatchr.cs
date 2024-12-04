@@ -29,7 +29,7 @@ namespace FivesUnitTest
             var result = servce.Match(socket);
             Assert.AreEqual(ResultDefine.Success, result);
             Assert.AreEqual("Match ", player.log);
-            Assert.AreEqual(1, player.GameId);
+            Assert.AreEqual(1, player.RoomId);
             result = servce.Match(socket);
             Assert.AreEqual(ResultDefine.Matching, result);
             result = servce.Cancel(socket);

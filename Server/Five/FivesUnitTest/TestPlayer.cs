@@ -13,7 +13,7 @@ namespace FivesUnitTest
         public void SetUp()
         {
             player = new Player();
-            room = new Game();
+            room = new Room();
             room.Join(player);
             player.Start(1);
         }
@@ -41,7 +41,7 @@ namespace FivesUnitTest
         {
             player.Reset();
             Assert.AreEqual(0, player.chess);
-            Assert.AreEqual(0, player.GameId);
+            Assert.AreEqual(0, player.RoomId);
             Assert.AreEqual(-1, player.PlayerId);
             Assert.DoesNotThrow(() =>
             {

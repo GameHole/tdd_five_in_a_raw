@@ -13,7 +13,7 @@ namespace FivesUnitTest
         [SetUp]
         public void SetUp()
         {
-            room = new Game();
+            room = new Room();
             room.Id = 10;
             game = room.game;
         }
@@ -73,7 +73,7 @@ namespace FivesUnitTest
             Assert.IsTrue(room.Join(player0));
             Assert.IsTrue(room.ContainPlayer(player0));
             Assert.AreEqual(0, player0.PlayerId);
-            Assert.AreEqual(room.Id, player0.GameId);
+            Assert.AreEqual(room.Id, player0.RoomId);
             Assert.AreEqual(1, room.PlayerCount);
             Assert.AreEqual(player0, room.GetPlayer(player0.PlayerId));
         }
@@ -96,7 +96,7 @@ namespace FivesUnitTest
             room.Remove(player0);
             Assert.AreEqual(-1, player0.PlayerId);
             Assert.AreEqual(0, room.PlayerCount);
-            Assert.AreEqual(0, player0.GameId);
+            Assert.AreEqual(0, player0.RoomId);
             Assert.IsFalse(room.ContainPlayer(player0));
         }
         [Test]
@@ -124,7 +124,7 @@ namespace FivesUnitTest
                 var players = new Player[] { new Player(), new Player() };
                 for (int i = 0; i < players.Length; i++)
                 {
-                    game.Join(players[i]);
+                    room.Join(players[i]);
                 }
                 room.Start();
                 players[0].OutLine();

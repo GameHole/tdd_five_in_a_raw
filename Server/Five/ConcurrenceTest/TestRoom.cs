@@ -15,7 +15,7 @@ namespace ConcurrenceTest
         [SetUp]
         public void set()
         {
-            room = new Game();
+            room = new Room();
         }
         [Test]
         public async Task testJoin()

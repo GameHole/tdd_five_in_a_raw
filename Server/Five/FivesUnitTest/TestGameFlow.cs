@@ -16,7 +16,7 @@ namespace FivesUnitTest
         [SetUp]
         public void SetUp()
         {
-            room = new Game();
+            room = new Room();
             game = room.game;
             players = new LogPlayer[2];
             ntfs = new LogNotifier[2];
@@ -88,7 +88,7 @@ namespace FivesUnitTest
             foreach (var item in players)
             {
                 Assert.AreEqual(-1, item.PlayerId);
-                Assert.AreEqual(0, item.GameId);
+                Assert.AreEqual(0, item.RoomId);
             }
             Assert.IsFalse(TimerDriver.IsContainTimer(game.timer));
             Assert.AreEqual(0, game.chessboard.Count);
@@ -129,10 +129,10 @@ namespace FivesUnitTest
         public void testStop()
         {
             Assert.IsTrue(TimerDriver.IsContainTimer(game.timer));
-            Assert.AreEqual(2, game.PlayerCount);
+            Assert.AreEqual(2, room.PlayerCount);
             room.Stop();
             Assert.IsFalse(room.IsRunning);
-            Assert.AreEqual(0, game.PlayerCount);
+            Assert.AreEqual(0, room.PlayerCount);
             foreach (var item in players)
             {
                 Assert.AreEqual(-1, item.PlayerId);

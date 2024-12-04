@@ -24,7 +24,7 @@ namespace Five
 
         public Room NewGame()
         {
-            var game = new Game();
+            var game = new Room();
             game.Id = games.Count + 1;
             games.TryAdd(game.Id,game);
             return game;
