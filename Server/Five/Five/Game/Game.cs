@@ -63,10 +63,10 @@ namespace Five
             }
             return true;
         }
-        public void Leave(Matcher matcher)
+        public void Leave(Player player)
         {
-            Remove(matcher.Player);
-            matcher.Canceled();
+            Remove(player);
+            player.CancelMatch();
         }
 
         public Player GetPlayer(int index)

@@ -13,6 +13,8 @@ namespace ConcurrenceTest
         private GameMgr matching;
         private MatcherMgr mgr;
         private MatchServce servce;
+        private List<LogSocket> sockets;
+        private List<LogPlayer> players;
 
         [SetUp]
         public void set()
@@ -20,20 +22,20 @@ namespace ConcurrenceTest
             matching = new GameMgr();
             mgr = new MatcherMgr();
             servce = new MatchServce(mgr, matching);
+            sockets = new List<LogSocket>(10000);
+            players = new List<LogPlayer>(10000);
+            for (int i = 0; i < 10000; i++)
+            {
+                var socket = new LogSocket();
+                var p = new LogPlayer();
+                sockets.Add(socket);
+                players.Add(p);
+                mgr.matchers.TryAdd(socket, p);
+            }
         }
         [Test]
         public async Task testMgrMatch()
         {
-            List<LogSocket> sockets = new List<LogSocket>(10000);
-            List<LogMatcher> matchers = new List<LogMatcher>(10000);
-            for (int i = 0; i < 10000; i++)
-            {
-                var socket = new LogSocket();
-                var m = new LogMatcher();
-                sockets.Add(socket);
-                matchers.Add(m);
-                mgr.matchers.TryAdd(socket, m);
-            }
             await Repeat.RepeatAsync(sockets, (log) =>
             {
                 servce.Match(log);
@@ -47,44 +49,34 @@ namespace ConcurrenceTest
             }
             for (int i = 0; i < sockets.Count; i++)
             {
-                Assert.AreEqual("Match Start ",matchers[i].log);
+                Assert.AreEqual("Match Start ",players[i].log);
             }
         }
         [Test]
         public async Task testMgrCancelMatch()
         {
-            List<LogSocket> sockets = new List<LogSocket>(10000);
-            List<LogMatcher> matchers = new List<LogMatcher>(10000);
-            for (int i = 0; i < 10000; i++)
-            {
-                var socket = new LogSocket();
-                var m = new LogMatcher();
-                sockets.Add(socket);
-                matchers.Add(m);
-                mgr.matchers.TryAdd(socket, m);
-            }
             await Repeat.RepeatAsync(sockets, (log) =>
             {
                 servce.Match(log);
                 servce.Cancel(log);
             });
-            for (int i = 0; i < matchers.Count; i++)
+            for (int i = 0; i < players.Count; i++)
             {
-                Assert.IsTrue(isCancelRunning(matchers[i]));
+                Assert.IsTrue(isCancelRunning(players[i]));
             }
         }
         [Test]
         public async Task testMgrCancelMatchAsync()
         {
             List<LogSocket> sockets = new List<LogSocket>(10000);
-            List<LogMatcher> matchers = new List<LogMatcher>(10000);
+            List<LogPlayer> matchers = new List<LogPlayer>(10000);
             for (int i = 0; i < 10000; i++)
             {
                 var socket = new LogSocket();
-                var m = new LogMatcher();
+                var p = new LogPlayer();
                 sockets.Add(socket);
-                matchers.Add(m);
-                mgr.matchers.TryAdd(socket, m);
+                matchers.Add(p);
+                mgr.matchers.TryAdd(socket, p);
             }
             await Repeat.RepeatAsync(sockets, (log) =>
             {
@@ -99,7 +91,7 @@ namespace ConcurrenceTest
                 Assert.IsTrue(isCancelRunning(matchers[i]));
             }
         }
-        bool isCancelRunning(LogMatcher matcher)
+        bool isCancelRunning(LogPlayer matcher)
         {
             var log = matcher.log;
             //异或表示 CancelMatch 与 Start 只能存在一个（互斥）

@@ -27,13 +27,11 @@ namespace FivesUnitTest
             mgr.Login(socket);
 
             Assert.AreEqual(1, mgr.matchers.Count);
-            var matcher = mgr.matchers[socket];
-            Assert.AreEqual(typeof(NetNotifier), matcher.Player.notifier.GetType());
+            var player = mgr.matchers[socket];
+            Assert.AreEqual(typeof(NetNotifier), player.notifier.GetType());
 
-            var logP = new LogPlayer();
-            matcher.Player = logP;
             socket.onClose.Invoke();
-            Assert.AreEqual("OutLine ", logP.log);
+            Assert.AreEqual(typeof(NoneNotifier), player.notifier.GetType());
             Assert.AreEqual(0, mgr.matchers.Count);
         }
        

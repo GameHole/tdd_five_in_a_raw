@@ -19,6 +19,14 @@ namespace Five
             Reset();
             notifier = new NoneNotifier();
         }
+        public virtual void Match()
+        {
+
+        }
+        public virtual void CancelMatch()
+        {
+
+        }
         public virtual void Start(int chess)
         {
             this.chess = chess;

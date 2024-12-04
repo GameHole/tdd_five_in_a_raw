@@ -13,10 +13,10 @@
 
         public Result Cancel(ASocket socket)
         {
-            var matcher = mgr.matchers[socket];
+            var players = mgr.matchers[socket];
             lock (gameRsp.lcoker)
             {
-                var game = gameRsp.GetGame(matcher.GameId);
+                var game = gameRsp.GetGame(players.GameId);
                 if (game == null)
                 {
                     return ResultDefine.NotInMatching;
@@ -25,22 +25,22 @@
                 {
                     return ResultDefine.GameStarted;
                 }
-                game.Leave(matcher);
+                game.Leave(players);
                 return ResultDefine.Success;
             }
         }
 
         public Result Match(ASocket socket)
         {
-            var matcher = mgr.matchers[socket];
+            var player = mgr.matchers[socket];
             lock (gameRsp.lcoker)
             {
-                var game = gameRsp.GetGame(matcher.GameId);
+                var game = gameRsp.GetGame(player.GameId);
                 if (game == null)
                 {
                     game = FindNotStartGame();
-                    game.Join(matcher.Player);
-                    matcher.Matched();
+                    game.Join(player);
+                    player.Match();
                     if (game.isFull())
                     {
                         game.Start();

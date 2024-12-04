@@ -9,7 +9,16 @@ namespace FivesUnitTest
     {
         public string log = "";
 
-
+        public override void Match()
+        {
+            base.Match();
+            log += "Match ";
+        }
+        public override void CancelMatch()
+        {
+            base.CancelMatch();
+            log += "CancelMatch ";
+        }
         public override void Start(int chess)
         {
             base.Start(chess);
