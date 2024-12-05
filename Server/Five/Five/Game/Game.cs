@@ -3,24 +3,37 @@ using System.Text;
 
 namespace Five
 {
-    public class Game:IPlayable
+    public abstract class AGame
+    {
+        protected IRoom room;
+        public virtual void Init(IRoom room)
+        {
+            this.room = room;
+        }
+
+        public abstract void Start();
+        public abstract void Stop();
+    }
+    public class Game:AGame,IPlayable
     {
         private GameNotifier gameNotifier;
        
         public Turn turn { get; private set; }
         public LoopTimer timer { get; private set; }
         public Chessboard chessboard { get; private set; }
-        private IRoom room;
-        public Game(IRoom room)
+        public Game(int boardSize,float turnTime)
         {
+            timer = new LoopTimer(turnTime);
+            chessboard = new Chessboard(boardSize, boardSize);
+        }
+        public override void Init(IRoom room)
+        {
+            base.Init(room);
             turn = new Turn(room.maxPlayer);
-            timer = new LoopTimer(30);
-            chessboard = new Chessboard(15, 15);
             gameNotifier = new GameNotifier(room);
-            this.room = room;
         }
 
-        public void Start()
+        public override void Start()
         {
             var chess = 1;
             foreach (var item in room.Players)
@@ -60,7 +73,7 @@ namespace Five
             room.Stop();
         }
 
-        public void Stop()
+        public override void Stop()
         {
             chessboard.Clear();
             TimerDriver.Stop(timer);

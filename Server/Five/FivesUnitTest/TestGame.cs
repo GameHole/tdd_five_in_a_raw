@@ -13,9 +13,9 @@ namespace FivesUnitTest
         [SetUp]
         public void SetUp()
         {
-            room = new Room();
+            room = new GameMgr().NewRoom();
             room.Id = 10;
-            game = room.game;
+            game = room.game as Game;
         }
         [Test]
         public void testGame()

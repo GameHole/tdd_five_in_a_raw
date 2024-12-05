@@ -120,7 +120,7 @@ namespace FivesUnitTest
             Assert.AreEqual(ResultDefine.GameStarted, servce.Cancel(sockets[0]));
             Assert.AreEqual(2, room.PlayerCount);
             Assert.AreEqual("Match Start ", player[0].log);
-            room.game.Finish(1);
+            (room.game as Game).Finish(1);
             Assert.AreEqual(ResultDefine.NotInMatching, servce.Cancel(sockets[0]));
         }
         [Test]

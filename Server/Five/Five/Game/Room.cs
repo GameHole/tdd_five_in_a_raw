@@ -1,4 +1,5 @@
-﻿using System.Collections.Concurrent;
+﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Threading;
 
@@ -13,6 +14,14 @@ namespace Five
         IEnumerable<Player> Players { get; }
         int maxPlayer { get; }
     }
+
+    public class GameFactroy
+    {
+        public AGame Factroy()
+        {
+            return new Game(15, 30);
+        }
+    }
     public class Room: IRoom
     {
         private ConcurrentDictionary<int, Player> players;
@@ -22,14 +31,13 @@ namespace Five
         public int maxPlayer { get; } = 2;
         public int PlayerCount { get => _count; }
         public bool IsRunning { get; private set; }
-        public Game game { get; private set; }
+        public AGame game { get; set; }
         private IOutLineable startOut;
-
-        public Room()
+        public Room(AGame game)
         {
+            this.game = game;
             players = new ConcurrentDictionary<int, Player>();
             startOut = new StartOutLineable(this);
-            game = new Game(this);
         }
 
         public bool Join(Player player)

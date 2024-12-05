@@ -11,7 +11,7 @@ namespace Five
         ConcurrentDictionary<int, Room> games = new ConcurrentDictionary<int, Room>();
         public int GameCount { get=> games.Count;}
         public object lcoker => games;
-
+        private GameFactroy factroy = new GameFactroy();
 
         public void Clear()
         {
@@ -22,12 +22,14 @@ namespace Five
             games.Clear();
         }
 
-        public Room NewGame()
+        public Room NewRoom()
         {
-            var game = new Room();
-            game.Id = games.Count + 1;
-            games.TryAdd(game.Id,game);
-            return game;
+            var game = factroy.Factroy();
+            var room = new Room(game);
+            game.Init(room);
+            room.Id = games.Count + 1;
+            games.TryAdd(room.Id,room);
+            return room;
         }
 
         public Room GetRoom(int id)

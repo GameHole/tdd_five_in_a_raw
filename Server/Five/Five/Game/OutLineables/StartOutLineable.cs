@@ -4,19 +4,19 @@ namespace Five
 {
     internal class StartOutLineable : IOutLineable
     {
-        private Room game;
+        private Room room;
 
-        public StartOutLineable(Room game)
+        public StartOutLineable(Room room)
         {
-            this.game = game;
+            this.room = room;
         }
         int outlinePlayerCount;
         public void OutLine()
         {
             Interlocked.Increment(ref outlinePlayerCount);
-            if (outlinePlayerCount == game.maxPlayer)
+            if (outlinePlayerCount == room.maxPlayer)
             {
-                game.Stop();
+                room.Stop();
                 Interlocked.Exchange(ref outlinePlayerCount, 0);
             }
         }

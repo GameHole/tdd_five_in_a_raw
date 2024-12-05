@@ -63,7 +63,7 @@
                     return item;
                 }
             }
-            return gameRsp.NewGame();
+            return gameRsp.NewRoom();
         }
     }
 }
