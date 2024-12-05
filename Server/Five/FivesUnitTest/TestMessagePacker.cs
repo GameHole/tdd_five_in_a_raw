@@ -27,14 +27,14 @@ namespace FivesUnitTest
             {
                 packer.Pack(stream);
             }
-            Assert.AreEqual(12* count, packer.stream.Count);
+            Assert.AreEqual(12* count, packer.recevingStream.Count);
             for (int i = 0; i < count; i++)
             {
-                int mark = packer.stream.Read<int>();
+                int mark = packer.recevingStream.Read<int>();
                 Assert.AreEqual(proto.proto, mark);
-                int len = packer.stream.Read<int>();
+                int len = packer.recevingStream.Read<int>();
                 Assert.AreEqual(4, len);
-                int message = packer.stream.Read<int>();
+                int message = packer.recevingStream.Read<int>();
                 Assert.AreEqual(1, message);
             }
         }
@@ -61,8 +61,8 @@ namespace FivesUnitTest
         public void testUnpackInsertedSomeInvalidData()
         {
             packer.Pack(stream);
-            packer.stream.Write<int>(1);
-            packer.stream.Write<int>(3);
+            packer.recevingStream.Write<int>(1);
+            packer.recevingStream.Write<int>(3);
             packer.Pack(stream);
             for (int i = 0; i < 2; i++)
             {
@@ -73,33 +73,33 @@ namespace FivesUnitTest
         [Test]
         public void testUnpackWithBrokenProto()
         {
-            packer.stream.Write<short>(20);
+            packer.recevingStream.Write<short>(20);
             Assert.IsFalse(packer.Unpack(out ByteStream outstream));
-            Assert.AreEqual(0, packer.stream.Index);
+            Assert.AreEqual(0, packer.recevingStream.Index);
         }
         [Test]
         public void testUnpackWithNoLength()
         {
-            proto.Write(packer.stream);
+            proto.Write(packer.recevingStream);
             Assert.IsFalse(packer.Unpack(out ByteStream outstream));
-            Assert.AreEqual(0, packer.stream.Index);
+            Assert.AreEqual(0, packer.recevingStream.Index);
         }
         [Test]
         public void testUnpackWithBrokenLength()
         {
-            proto.Write(packer.stream);
-            packer.stream.Write<short>(0);
+            proto.Write(packer.recevingStream);
+            packer.recevingStream.Write<short>(0);
             Assert.IsFalse(packer.Unpack(out ByteStream outstream));
-            Assert.AreEqual(0, packer.stream.Index);
+            Assert.AreEqual(0, packer.recevingStream.Index);
         }
         [Test]
         public void testUnpackWithBrokenData()
         {
-            proto.Write(packer.stream);
-            packer.stream.Write<int>(3);
-            packer.stream.Write<short>(2);
+            proto.Write(packer.recevingStream);
+            packer.recevingStream.Write<int>(3);
+            packer.recevingStream.Write<short>(2);
             Assert.IsFalse(packer.Unpack(out ByteStream outstream));
-            Assert.AreEqual(0, packer.stream.Index);
+            Assert.AreEqual(0, packer.recevingStream.Index);
         }
     }
 }

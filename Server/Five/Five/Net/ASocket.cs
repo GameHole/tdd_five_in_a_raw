@@ -12,5 +12,9 @@ namespace Five
         public abstract void Connect(string ip, int port);
         public abstract void Send(Message message);
         public abstract void Close();
+        internal virtual void Release()
+        {
+            isVailed = false;
+        }
     }
 }

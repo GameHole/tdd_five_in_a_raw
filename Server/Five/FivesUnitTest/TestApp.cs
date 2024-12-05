@@ -4,6 +4,7 @@ using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -19,15 +20,15 @@ namespace FivesUnitTest
         [SetUp]
         public void SetUp()
         {
+            var factroy = new NetFactroy(new SerializerRegister());
             app = new App();
             log = new LogRequestRegister(app);
-            server = new Server("127.0.0.1", port, log);
+            server = factroy.NewServer("127.0.0.1", port, log);
             server.StartAsync();
-            var reg = new SerializerRegister();
             sockets = new TcpSocket[2];
             for (int i = 0; i < sockets.Length; i++)
             {
-                sockets[i] = new TcpSocket(reg);
+                sockets[i] = factroy.NewClient();
             }
         }
         [TearDown]
@@ -45,7 +46,6 @@ namespace FivesUnitTest
             Assert.NotNull(app.matchServce);
             Assert.NotNull(app.mgr);
             Assert.NotNull(app.gameRsp);
-            Assert.IsNull(server.app);
         }
         [Test]
         public void testClientRsp()

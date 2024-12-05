@@ -2,6 +2,7 @@
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
+using System.Net;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
@@ -25,17 +26,31 @@ namespace FivesUnitTest
     }
     class TestServer
     {
+        private TAccepter accepter;
+        private LogRequestRegister log;
+        private Server server;
+        private TcpSocket client;
 
+        [SetUp]
+        public void set()
+        {
+            var factroy = new NetFactroy(new SerializerRegister());
+            accepter = new TAccepter();
+            log = new LogRequestRegister(accepter);
+            server = factroy.NewServer("127.0.0.1", TestApp.port, log);
+            client = factroy.NewClient();
+        }
+        [TearDown]
+        public void tear()
+        {
+            server.Stop();
+        }
         [Test]
         public async Task testServer()
         {
-            var accepter = new TAccepter();
-            var log = new LogRequestRegister(accepter);
-            var server = new Server("127.0.0.1", TestApp.port, log);
             server.StartAsync();
             await Task.Delay(200);
             Assert.IsTrue(server.IsRun);
-            var client = new TcpSocket(new SerializerRegister());
             client.Connect("127.0.0.1", TestApp.port);
             await Task.Delay(200);
             Assert.AreEqual(1, server.sockets.Count);
@@ -48,6 +63,11 @@ namespace FivesUnitTest
             {
                 server.socket.Accept();
             });
+        }
+        [Test]
+        public void testSocket()
+        {
+            Assert.IsInstanceOf<NetTcpSocket>(server.socket);
         }
     }
 }

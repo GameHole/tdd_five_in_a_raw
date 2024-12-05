@@ -2,6 +2,7 @@
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -15,10 +16,11 @@ namespace FivesUnitTest
         [SetUp]
         public void SetUp()
         {
-            socket = new TcpSocket(new SerializerRegister());
+            var factroy = new NetFactroy(new SerializerRegister());
+            socket = factroy.NewClient();
             accepter = new TAccepter();
             var log = new LogRequestRegister(accepter);
-            server = new Server("127.0.0.1", TestApp.port, log);
+            server = factroy.NewServer("127.0.0.1", TestApp.port, log);// new Server(net, log);
             server.StartAsync();
         }
         [TearDown]
@@ -27,6 +29,11 @@ namespace FivesUnitTest
             socket.Close();
             await Task.Delay(100);
             server.Stop();
+        }
+        [Test]
+        public void testSocket()
+        {
+            Assert.IsInstanceOf<NetTcpSocket>(socket.socket);
         }
         [Test]
         public void testRecv()
@@ -49,13 +56,13 @@ namespace FivesUnitTest
             serizer.Serialize(new Message(1), stream);
             socket.packer.Pack(stream);
             var proto = new Proto();
-            proto.Write(socket.packer.stream);
-            socket.packer.stream.Write<int>(5);
-            socket.packer.stream.Write<short>(1);
+            proto.Write(socket.packer.recevingStream);
+            socket.packer.recevingStream.Write<int>(5);
+            socket.packer.recevingStream.Write<short>(1);
             socket.Recv();
-            Assert.AreEqual(0,socket.packer.stream.Index);
-            Assert.AreEqual(10, socket.packer.stream.Count);
-            Assert.IsTrue(proto.IsVailed(socket.packer.stream));
+            Assert.AreEqual(0,socket.packer.recevingStream.Index);
+            Assert.AreEqual(10, socket.packer.recevingStream.Count);
+            Assert.IsTrue(proto.IsVailed(socket.packer.recevingStream));
         }
         [Test]
         public void testRecvMessage()
@@ -73,7 +80,7 @@ namespace FivesUnitTest
             {
                 socket.packer.Pack(serStream[i]);
             }
-            Assert.AreEqual(12*3, socket.packer.stream.Count);
+            Assert.AreEqual(12*3, socket.packer.recevingStream.Count);
             socket.Recv();
             Assert.AreEqual($"msg:1msg:1msg:1", log);
 
@@ -93,7 +100,6 @@ namespace FivesUnitTest
         [Test]
         public async Task testClose()
         {
-            var socket = new TcpSocket(new SerializerRegister());
             await Task.Delay(200);
             socket.Connect("127.0.0.1", TestApp.port);
             await Task.Delay(200);

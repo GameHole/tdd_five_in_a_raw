@@ -10,18 +10,16 @@ namespace Five
 {
     public class Server
     {
-        public Socket socket { get;private set; }
-        public ConcurrentList<TcpSocket> sockets { get; private set; }
+        public ANetSocket socket { get;private set; }
+        public ConcurrentList<ASocket> sockets { get; private set; }
         public bool IsRun { get; private set; }
-        public App app { get; }
         public MessageProcesser processer { get; }
-
-        public Server(string ip,int port,ProcesserFactroy factroy)
+        private SerializerRegister serializer = new SerializerRegister();
+        public Server(ANetSocket socket,ProcesserFactroy factroy)
         {
             processer = factroy.Factroy();
-            socket = new Socket(SocketType.Stream,ProtocolType.Tcp);
-            socket.Bind(new IPEndPoint(IPAddress.Parse(ip), port));
-            sockets = new ConcurrentList<TcpSocket>();
+            this.socket = socket;
+            sockets = new ConcurrentList<ASocket>();
         }
         public virtual void Stop()
         {
@@ -50,7 +48,7 @@ namespace Five
             while (IsRun)
             {
                 var client = socket.Accept();
-                var tcp = new TcpSocket(client,new SerializerRegister());
+                var tcp = new TcpSocket(client, serializer);
                 tcp.RecvAsync();
                 tcp.onClose += () => sockets.Remove(tcp);
                 sockets.Add(tcp);

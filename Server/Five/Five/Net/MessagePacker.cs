@@ -11,14 +11,14 @@ namespace Five
         public MessagePacker(Proto proto, int cap = 12)
         {
             this.proto = proto;
-            stream = new ByteStream(cap);
+            recevingStream = new ByteStream(cap);
         }
 
-        public ByteStream stream { get; private set; }
+        public ByteStream recevingStream { get; private set; }
 
         public void Pack(ByteStream byteStream)
         {
-            PackInternal(stream, byteStream);
+            PackInternal(recevingStream, byteStream);
         }
         private void PackInternal(ByteStream stream,ByteStream msgStream)
         {
@@ -28,9 +28,9 @@ namespace Five
         }
         bool ContainProto()
         {
-            for (; stream.Index < stream.Count; stream.Index++)
+            for (; recevingStream.Index < recevingStream.Count; recevingStream.Index++)
             {
-                if (proto.IsVailed(stream))
+                if (proto.IsVailed(recevingStream))
                     return true;
             }
             return false;
@@ -38,10 +38,10 @@ namespace Five
         bool isIntact(out int length)
         {
             length = 0;
-            if(stream.GetLastCount() > sizeof(int))
+            if(recevingStream.GetLastCount() > sizeof(int))
             {
-                length = stream.Read<int>();
-                if (length <= stream.GetLastCount())
+                length = recevingStream.Read<int>();
+                if (length <= recevingStream.GetLastCount())
                     return true;
             }
             return false ;
@@ -49,18 +49,18 @@ namespace Five
         public bool Unpack(out ByteStream outStream)
         {
             outStream = default;
-            var orgionIndex = stream.Index;
+            var orgionIndex = recevingStream.Index;
             if (ContainProto())
             {
-                stream.Index += proto.ByteSize;
+                recevingStream.Index += proto.ByteSize;
                 if (isIntact(out int len))
                 {
-                    outStream = new ByteStream(stream.Bytes, stream.Index, stream.Index + len);
-                    stream.Index += len;
+                    outStream = new ByteStream(recevingStream.Bytes, recevingStream.Index, recevingStream.Index + len);
+                    recevingStream.Index += len;
                     return true;
                 }
             }
-            stream.Index = orgionIndex;
+            recevingStream.Index = orgionIndex;
             return false;
         }
 
@@ -72,10 +72,10 @@ namespace Five
         }
         public void MoveBrokenBytesToHead()
         {
-            int last = stream.GetLastCount();
-            Array.Copy(stream.Bytes, stream.Index, stream.Bytes, 0, last);
-            stream.Index = 0;
-            stream.Count = last;
+            int last = recevingStream.GetLastCount();
+            Array.Copy(recevingStream.Bytes, recevingStream.Index, recevingStream.Bytes, 0, last);
+            recevingStream.Index = 0;
+            recevingStream.Count = last;
         }
     }
 }

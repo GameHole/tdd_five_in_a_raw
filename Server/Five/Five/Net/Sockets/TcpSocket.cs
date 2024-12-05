@@ -10,14 +10,10 @@ namespace Five
     public class TcpSocket : ASocket
     {
         protected MessageSerializer serializer = new MessageSerializer();
-        private Socket socket;
+        public ANetSocket socket { get; }
         public MessagePacker packer { get; private set; }
-        public TcpSocket(SerializerRegister register) :this(new Socket(SocketType.Stream, ProtocolType.Tcp),register)
-        {
-            socket.Bind(new IPEndPoint(IPAddress.Any, 0));
-        }
 
-        public TcpSocket(Socket socket, SerializerRegister register)
+        public TcpSocket(ANetSocket socket, SerializerRegister register)
         {
             this.socket = socket;
             register.Regist(serializer);
@@ -33,7 +29,7 @@ namespace Five
             {
                 while (isVailed)
                 {
-                    var stream = packer.stream;
+                    var stream = packer.recevingStream;
                     int count = socket.Receive(stream.Bytes, stream.Count, stream.GetLastCapacity(),SocketFlags.None);
                     stream.Count += count;
                     if (count == 0)
@@ -48,9 +44,9 @@ namespace Five
             });
         }
 
-        internal void Release()
+        internal override void Release()
         {
-            isVailed = false;
+            base.Release();
             socket.Close();
         }
 
