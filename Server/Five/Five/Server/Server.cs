@@ -11,7 +11,7 @@ namespace Five
     public class Server
     {
         public ANetSocket socket { get;private set; }
-        public ConcurrentList<ASocket> sockets { get; private set; }
+        public ConcurrentList<AClient> sockets { get; private set; }
         public bool IsRun { get; private set; }
         public MessageProcesser processer { get; }
         private SerializerRegister serializer = new SerializerRegister();
@@ -19,7 +19,7 @@ namespace Five
         {
             processer = factroy.Factroy();
             this.socket = socket;
-            sockets = new ConcurrentList<ASocket>();
+            sockets = new ConcurrentList<AClient>();
         }
         public virtual void Stop()
         {
@@ -48,7 +48,7 @@ namespace Five
             while (IsRun)
             {
                 var client = socket.Accept();
-                var tcp = new TcpSocket(client, serializer);
+                var tcp = new DefaultClient(client, serializer);
                 tcp.RecvAsync();
                 tcp.onClose += () => sockets.Remove(tcp);
                 sockets.Add(tcp);

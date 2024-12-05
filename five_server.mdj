@@ -213,7 +213,7 @@
 											"top": 1761,
 											"width": 207,
 											"height": 13,
-											"text": "+Login(socket: ASocket)",
+											"text": "+Login(socket: AClient)",
 											"horizontalAlignment": 0
 										}
 									],
@@ -740,7 +740,7 @@
 											"top": 1176,
 											"width": 242.9345703125,
 											"height": 13,
-											"text": "+Login(socket: ASocket)",
+											"text": "+Login(socket: AClient)",
 											"horizontalAlignment": 0
 										},
 										{
@@ -777,7 +777,7 @@
 											"top": 902,
 											"width": 242.9345703125,
 											"height": 13,
-											"text": "+Match(socket: ASocket): Result",
+											"text": "+Match(socket: AClient): Result",
 											"horizontalAlignment": 0
 										},
 										{
@@ -796,7 +796,7 @@
 											"top": 902,
 											"width": 242.9345703125,
 											"height": 13,
-											"text": "+Cancel(socket: ASocket): Result",
+											"text": "+Cancel(socket: AClient): Result",
 											"horizontalAlignment": 0
 										},
 										{
@@ -2290,7 +2290,7 @@
 											"top": 703,
 											"width": 182.44140625,
 											"height": 13,
-											"text": "TcpSocket"
+											"text": "DefaultClient"
 										},
 										{
 											"_type": "LabelView",
@@ -2891,7 +2891,7 @@
 											"top": 807,
 											"width": 182.44140625,
 											"height": 13,
-											"text": "ASocket"
+											"text": "AClient"
 										},
 										{
 											"_type": "LabelView",
@@ -12791,7 +12791,7 @@
 											"top": 2216,
 											"width": 298.7685546875,
 											"height": 13,
-											"text": "+Process(n socket: ASocket, message: Message)",
+											"text": "+Process(n socket: AClient, message: Message)",
 											"horizontalAlignment": 0
 										}
 									],
@@ -13017,7 +13017,7 @@
 											"top": 1605,
 											"width": 286.9111328125,
 											"height": 13,
-											"text": "+Process(socket: ASocket, message: Message)",
+											"text": "+Process(socket: AClient, message: Message)",
 											"horizontalAlignment": 0
 										}
 									],
@@ -14397,7 +14397,7 @@
 											"top": 1775,
 											"width": 401.8544921875,
 											"height": 13,
-											"text": "+Process(socket: ASocket, message: Message)",
+											"text": "+Process(socket: AClient, message: Message)",
 											"horizontalAlignment": 0
 										},
 										{
@@ -14415,7 +14415,7 @@
 											"top": 1790,
 											"width": 401.8544921875,
 											"height": 13,
-											"text": "#ProcessContant(socket: ASocket, message: Message): Response",
+											"text": "#ProcessContant(socket: AClient, message: Message): Response",
 											"horizontalAlignment": 0
 										}
 									],
@@ -20598,7 +20598,7 @@
 											"top": 1608,
 											"width": 202.59521484375,
 											"height": 13,
-											"text": "+Cancel(socket: ASocket): Result",
+											"text": "+Cancel(socket: AClient): Result",
 											"horizontalAlignment": 0
 										},
 										{
@@ -20616,7 +20616,7 @@
 											"top": 1623,
 											"width": 202.59521484375,
 											"height": 13,
-											"text": "+Match(socket: ASocket): Result",
+											"text": "+Match(socket: AClient): Result",
 											"horizontalAlignment": 0
 										},
 										{
@@ -24946,7 +24946,7 @@
 											"visible": false,
 											"font": "Arial;13;0",
 											"parentStyle": true,
-											"width": 73.67724609375,
+											"width": 82.3798828125,
 											"height": 13,
 											"text": "(from Model)"
 										},
@@ -25408,7 +25408,7 @@
 											"parentStyle": true,
 											"left": -32,
 											"top": -64,
-											"width": 73.67724609375,
+											"width": 82.3798828125,
 											"height": 13,
 											"text": "(from Model)"
 										},
@@ -25790,7 +25790,7 @@
 											"parentStyle": true,
 											"left": -96,
 											"top": -96,
-											"width": 73.67724609375,
+											"width": 82.3798828125,
 											"height": 13,
 											"text": "(from Model)"
 										},
@@ -25887,7 +25887,7 @@
 											"top": 2575,
 											"width": 199,
 											"height": 13,
-											"text": "+NewClient(): TcpSocket",
+											"text": "+NewClient(): DefaultClient",
 											"horizontalAlignment": 0
 										}
 									],
@@ -26456,8 +26456,8 @@
 									"visible": false,
 									"font": "Arial;13;0",
 									"parentStyle": false,
-									"left": 631,
-									"top": 1541,
+									"left": 632,
+									"top": 1598,
 									"height": 13,
 									"alpha": 1.5707963267948966,
 									"distance": 15,
@@ -26478,8 +26478,8 @@
 									"visible": null,
 									"font": "Arial;13;0",
 									"parentStyle": false,
-									"left": 646,
-									"top": 1541,
+									"left": 647,
+									"top": 1598,
 									"height": 13,
 									"alpha": 1.5707963267948966,
 									"distance": 30,
@@ -26500,8 +26500,8 @@
 									"visible": false,
 									"font": "Arial;13;0",
 									"parentStyle": false,
-									"left": 601,
-									"top": 1542,
+									"left": 603,
+									"top": 1597,
 									"height": 13,
 									"alpha": -1.5707963267948966,
 									"distance": 15,
@@ -26522,8 +26522,8 @@
 									"visible": false,
 									"font": "Arial;13;0",
 									"parentStyle": false,
-									"left": 631,
-									"top": 597,
+									"left": 635,
+									"top": 709,
 									"height": 13,
 									"alpha": 0.5235987755982988,
 									"distance": 30,
@@ -26544,8 +26544,8 @@
 									"visible": false,
 									"font": "Arial;13;0",
 									"parentStyle": false,
-									"left": 645,
-									"top": 600,
+									"left": 649,
+									"top": 711,
 									"height": 13,
 									"alpha": 0.7853981633974483,
 									"distance": 40,
@@ -26566,8 +26566,8 @@
 									"visible": false,
 									"font": "Arial;13;0",
 									"parentStyle": false,
-									"left": 604,
-									"top": 593,
+									"left": 608,
+									"top": 704,
 									"height": 13,
 									"alpha": -0.5235987755982988,
 									"distance": 25,
@@ -26676,10 +26676,10 @@
 								"$ref": "AAAAAAGTlhQ5mMUku0c="
 							},
 							"tail": {
-								"$ref": "AAAAAAGTcb87HcTYGxQ="
+								"$ref": "AAAAAAGTccFJDgSWodQ="
 							},
 							"lineStyle": 1,
-							"points": "617:578;616:2519",
+							"points": "621:689;616:2519",
 							"showVisibility": true,
 							"nameLabel": {
 								"$ref": "AAAAAAGTlhvI0Tb+uFg="
@@ -28025,7 +28025,7 @@
 					"_parent": {
 						"$ref": "AAAAAAFF+qBWK6M3Z8Y="
 					},
-					"name": "TcpSocket",
+					"name": "DefaultClient",
 					"ownedElements": [
 						{
 							"_type": "UMLAssociation",
@@ -28244,7 +28244,7 @@
 					"_parent": {
 						"$ref": "AAAAAAFF+qBWK6M3Z8Y="
 					},
-					"name": "ASocket",
+					"name": "AClient",
 					"ownedElements": [
 						{
 							"_type": "UMLAssociation",
@@ -28591,7 +28591,7 @@
 									"$ref": "AAAAAAGTlhvI0Tb5XsM="
 								},
 								"reference": {
-									"$ref": "AAAAAAGTcb87HcTWAdA="
+									"$ref": "AAAAAAGTccFJDgSUyZU="
 								},
 								"navigable": "navigable"
 							},

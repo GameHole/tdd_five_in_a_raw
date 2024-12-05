@@ -22,7 +22,7 @@ namespace Five
             gameRsp.Clear();
         }
 
-        public virtual void Invoke(ASocket socket)
+        public virtual void Invoke(AClient socket)
         {
             mgr.Login(socket);
         }

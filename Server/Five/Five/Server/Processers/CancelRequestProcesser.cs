@@ -4,7 +4,7 @@
     {
         public override int OpCode => MessageCode.RequestCancelMatch;
 
-        protected override Response ProcessContant(ASocket socket, Message message)
+        protected override Response ProcessContant(AClient socket, Message message)
         {
             return new Response().SetInfo(message, app.matchServce.Cancel(socket));
         }

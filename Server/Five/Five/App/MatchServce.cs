@@ -11,7 +11,7 @@
             this.gameRsp = gameRsp;
         }
 
-        public Result Cancel(ASocket socket)
+        public Result Cancel(AClient socket)
         {
             var players = mgr.matchers[socket];
             lock (gameRsp.lcoker)
@@ -30,7 +30,7 @@
             }
         }
 
-        public Result Match(ASocket socket)
+        public Result Match(AClient socket)
         {
             var player = mgr.matchers[socket];
             lock (gameRsp.lcoker)

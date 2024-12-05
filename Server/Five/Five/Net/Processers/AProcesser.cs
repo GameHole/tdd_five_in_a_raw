@@ -7,7 +7,7 @@ namespace Five
         public abstract int OpCode { get; }
 
 
-        public void Process(ASocket socket, Message message)
+        public void Process(AClient socket, Message message)
         {
             ProcessContent(message as T);
         }

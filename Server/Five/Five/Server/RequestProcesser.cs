@@ -10,19 +10,19 @@
         {
             this.app = app;
         }
-        protected abstract Response ProcessContant(ASocket socket,Message message);
+        protected abstract Response ProcessContant(AClient socket,Message message);
 
-        public void Process(ASocket socket, Message message)
+        public void Process(AClient socket, Message message)
         {
             socket.Send(ProcessContant(socket,message));
         }
     }
     public abstract class RequestProcesser<T>: RequestProcesser where T:Message
     {
-        protected override Response ProcessContant(ASocket socket, Message message)
+        protected override Response ProcessContant(AClient socket, Message message)
         {
            return ProcessContant(socket,message as T);
         }
-        protected abstract Response ProcessContant(ASocket socket, T message);
+        protected abstract Response ProcessContant(AClient socket, T message);
     }
 }

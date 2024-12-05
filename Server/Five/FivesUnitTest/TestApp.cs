@@ -15,7 +15,7 @@ namespace FivesUnitTest
         private Server server;
         App app;
         private LogRequestRegister log;
-        TcpSocket[] sockets;
+        Five.DefaultClient[] sockets;
         public static readonly int port = 11000;
         [SetUp]
         public void SetUp()
@@ -25,7 +25,7 @@ namespace FivesUnitTest
             log = new LogRequestRegister(app);
             server = factroy.NewServer("127.0.0.1", port, log);
             server.StartAsync();
-            sockets = new TcpSocket[2];
+            sockets = new Five.DefaultClient[2];
             for (int i = 0; i < sockets.Length; i++)
             {
                 sockets[i] = factroy.NewClient();

@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Five
 {
-    public abstract class ASocket
+    public abstract class AClient
     {
         public Action<Message> onRecv;
         public Action onClose;

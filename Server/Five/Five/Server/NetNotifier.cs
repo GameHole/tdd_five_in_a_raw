@@ -6,9 +6,9 @@ namespace Five
 {
     public class NetNotifier : INotifier
     {
-        private ASocket socket;
+        private AClient socket;
         private Player player;
-        public NetNotifier(ASocket socket,Player player)
+        public NetNotifier(AClient socket,Player player)
         {
             this.socket = socket;
             this.player = player;

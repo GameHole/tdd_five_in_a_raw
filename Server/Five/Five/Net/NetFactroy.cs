@@ -14,11 +14,11 @@ namespace Five
             this.register = register;
         }
 
-        public TcpSocket NewClient()
+        public DefaultClient NewClient()
         {
             var socket = new NetTcpSocket();
             socket.Bind(new IPEndPoint(IPAddress.Any, 0));
-            var client = new TcpSocket(socket, register);
+            var client = new DefaultClient(socket, register);
             return client;
         }
 

@@ -12,7 +12,7 @@ namespace FivesUnitTest
 
         public object Mgr => app;
 
-        protected override Response ProcessContant(ASocket socket, Message message)
+        protected override Response ProcessContant(AClient socket, Message message)
         {
             msgSock = socket;
             return new Response();

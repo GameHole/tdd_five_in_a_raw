@@ -11,12 +11,12 @@ namespace FivesUnitTest
 {
     class TAccepter : App
     {
-        public TcpSocket ssocket = null;
+        public Five.DefaultClient ssocket = null;
         internal int stopCount;
 
-        public override void Invoke(ASocket socket)
+        public override void Invoke(AClient socket)
         {
-            ssocket = socket as TcpSocket;
+            ssocket = socket as Five.DefaultClient;
         }
 
         public override void Stop()
@@ -29,7 +29,7 @@ namespace FivesUnitTest
         private TAccepter accepter;
         private LogRequestRegister log;
         private Server server;
-        private TcpSocket client;
+        private Five.DefaultClient client;
 
         [SetUp]
         public void set()

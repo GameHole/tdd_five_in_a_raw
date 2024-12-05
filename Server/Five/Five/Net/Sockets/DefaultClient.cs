@@ -7,21 +7,19 @@ using System.Threading.Tasks;
 
 namespace Five
 {
-    public class TcpSocket : ASocket
+    public class DefaultClient : AClient
     {
         protected MessageSerializer serializer = new MessageSerializer();
         public ANetSocket socket { get; }
         public MessagePacker packer { get; private set; }
 
-        public TcpSocket(ANetSocket socket, SerializerRegister register)
+        public DefaultClient(ANetSocket socket, SerializerRegister register)
         {
             this.socket = socket;
             register.Regist(serializer);
             var proto = new Proto();
             packer = new MessagePacker(proto, 2048);
         }
-       
-
         public void RecvAsync()
         {
             isVailed = true;

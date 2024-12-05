@@ -6,18 +6,18 @@ namespace Five
 {
     public class MatcherMgr
     {
-        public ConcurrentDictionary<ASocket, Player> matchers { get; }
+        public ConcurrentDictionary<AClient, Player> matchers { get; }
         public MatcherMgr()
         {
-            matchers = new ConcurrentDictionary<ASocket, Player>();
+            matchers = new ConcurrentDictionary<AClient, Player>();
         }
-        public void Login(ASocket socket)
+        public void Login(AClient socket)
         {
             Player player = NewMatcher(socket);
             player.notifier = new NetNotifier(socket, player);
             matchers.TryAdd(socket, player);
         }
-        private Player NewMatcher(ASocket socket)
+        private Player NewMatcher(AClient socket)
         {
             var player = new Player();
             socket.onClose += () =>
@@ -32,7 +32,7 @@ namespace Five
         {
             matchers.Clear();
         }
-        public Result Play(int x, int y, ASocket sok)
+        public Result Play(int x, int y, AClient sok)
         {
             return matchers[sok].Play(x, y);
         }

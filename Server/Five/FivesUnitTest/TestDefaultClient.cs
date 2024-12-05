@@ -8,11 +8,11 @@ using System.Threading.Tasks;
 
 namespace FivesUnitTest
 {
-    class TestTcpSocket
+    class TestDefaultClient
     {
         Server server;
         private TAccepter accepter;
-        TcpSocket socket;
+        Five.DefaultClient socket;
         [SetUp]
         public void SetUp()
         {

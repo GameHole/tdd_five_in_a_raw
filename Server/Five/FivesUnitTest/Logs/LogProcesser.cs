@@ -10,7 +10,7 @@ namespace FivesUnitTest
 
         public int OpCode => 10000;
 
-        public void Process(ASocket socket, Message message)
+        public void Process(AClient socket, Message message)
         {
             log = "Process";
             this.socket = socket;
