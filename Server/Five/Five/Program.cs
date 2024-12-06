@@ -7,10 +7,9 @@ namespace Five
     {
         static void Main(string[] args)
         {
-            var factroy = new ProcesserFactroy(new App());
-            var socket = new NetTcpSocket();
-            socket.Bind(new IPEndPoint(IPAddress.Parse("127.0.0.1"), 10000));
-            var server = new Server(socket, factroy);
+            var factroy = new NetFactroy(new SerializerRegister());
+            var processFactroy = new ProcesserFactroy(new App());
+            var server = factroy.NewServer("127.0.0.1", 10000, processFactroy);
             server.Start();
         }
     }

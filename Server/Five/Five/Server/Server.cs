@@ -12,14 +12,18 @@ namespace Five
     {
         public ANetSocket socket { get;private set; }
         public ConcurrentList<AClient> sockets { get; private set; }
+
+
         public bool IsRun { get; private set; }
         public MessageProcesser processer { get; }
-        private SerializerRegister serializer = new SerializerRegister();
-        public Server(ANetSocket socket,ProcesserFactroy factroy)
+        private MessageSerializer serializer;
+
+        public Server(ANetSocket socket,ProcesserFactroy factroy, MessageSerializer serializer)
         {
             processer = factroy.Factroy();
             this.socket = socket;
             sockets = new ConcurrentList<AClient>();
+            this.serializer = serializer;
         }
         public virtual void Stop()
         {

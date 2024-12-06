@@ -18,7 +18,9 @@ namespace Five
         {
             var socket = new NetTcpSocket();
             socket.Bind(new IPEndPoint(IPAddress.Any, 0));
-            var client = new DefaultClient(socket, register);
+            var serializer = new MessageSerializer();
+            register.Regist(serializer);
+            var client = new DefaultClient(socket, serializer);
             return client;
         }
 
@@ -26,7 +28,9 @@ namespace Five
         {
             var net = new NetTcpSocket();
             net.Bind(new IPEndPoint(IPAddress.Parse(ip), port));
-            return new Server(net, factroy);
+            var serializer = new MessageSerializer();
+            register.Regist(serializer);
+            return new Server(net, factroy, serializer);
         }
     }
 }

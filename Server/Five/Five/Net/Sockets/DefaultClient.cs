@@ -9,14 +9,15 @@ namespace Five
 {
     public class DefaultClient : AClient
     {
-        protected MessageSerializer serializer = new MessageSerializer();
+        protected MessageSerializer serializer;
         public ANetSocket socket { get; }
         public MessagePacker packer { get; private set; }
 
-        public DefaultClient(ANetSocket socket, SerializerRegister register)
+        public DefaultClient(ANetSocket socket, MessageSerializer serializer)
         {
             this.socket = socket;
-            register.Regist(serializer);
+            this.serializer = serializer;
+          
             var proto = new Proto();
             packer = new MessagePacker(proto, 2048);
         }
