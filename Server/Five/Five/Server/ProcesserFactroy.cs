@@ -6,9 +6,9 @@ namespace Five
 {
     public class ProcesserFactroy
     {
-        private readonly App app;
+        private readonly MatchServce app;
 
-        public ProcesserFactroy(App mgr)
+        public ProcesserFactroy(MatchServce mgr)
         {
             this.app = mgr;
         }

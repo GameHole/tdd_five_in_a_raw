@@ -30,7 +30,7 @@ namespace Five
             net.Bind(new IPEndPoint(IPAddress.Parse(ip), port));
             var serializer = new MessageSerializer();
             register.Regist(serializer);
-            return new Server(net, factroy, serializer);
+            return new Server(net, factroy.Factroy(), serializer);
         }
     }
 }

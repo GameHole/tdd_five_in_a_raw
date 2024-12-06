@@ -10,7 +10,7 @@ namespace FivesUnitTest
         public override int OpCode => -1;
 
 
-        public object Mgr => app;
+        public object Mgr => servce;
 
         protected override Response ProcessContant(AClient socket, Message message)
         {
@@ -24,7 +24,7 @@ namespace FivesUnitTest
         public TReqProc test = new TReqProc();
         internal object processer;
 
-        public LogRequestRegister(App mgr) : base(mgr)
+        public LogRequestRegister(MatchServce mgr) : base(mgr)
         {
         }
         protected override RequestProcesser[] NewProcessers()

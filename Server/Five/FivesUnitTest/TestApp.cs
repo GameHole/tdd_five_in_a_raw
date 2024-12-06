@@ -14,6 +14,7 @@ namespace FivesUnitTest
     {
         private Server server;
         App app;
+        private MatchServce servce;
         private LogRequestRegister log;
         Five.DefaultClient[] sockets;
         public static readonly int port = 11000;
@@ -22,7 +23,8 @@ namespace FivesUnitTest
         {
             var factroy = new NetFactroy(new SerializerRegister());
             app = new App();
-            log = new LogRequestRegister(app);
+            servce = new MatchServce(app,new GameFactroy());
+            log = new LogRequestRegister(servce);
             server = factroy.NewServer("127.0.0.1", port, log);
             server.StartAsync();
             sockets = new Five.DefaultClient[2];
@@ -43,7 +45,6 @@ namespace FivesUnitTest
         [Test]
         public void testApp()
         {
-            Assert.NotNull(app.matchServce);
             Assert.NotNull(app.mgr);
             Assert.NotNull(app.gameRsp);
         }
@@ -68,7 +69,7 @@ namespace FivesUnitTest
             var socket = server.sockets.First();
             Assert.NotNull(socket.onRecv);
 
-            Assert.AreSame(app, log.test.Mgr);
+            Assert.AreSame(servce, log.test.Mgr);
 
             socket.onRecv(new Message { opcode = -1 });
             Assert.AreSame(socket, log.test.msgSock);

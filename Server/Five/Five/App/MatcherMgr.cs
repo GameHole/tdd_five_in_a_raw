@@ -32,9 +32,6 @@ namespace Five
         {
             matchers.Clear();
         }
-        public Result Play(int x, int y, AClient sok)
-        {
-            return matchers[sok].Play(x, y);
-        }
+        
     }
 }

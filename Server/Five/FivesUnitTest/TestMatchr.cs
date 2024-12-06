@@ -12,14 +12,13 @@ namespace FivesUnitTest
         private MatcherMgr mgr;
         private MatchServce servce;
         private LogSocket socket;
-        GameMgr matching;
         [SetUp]
         public void SetUp()
         {
-            matching = new GameMgr();
             player = LogPlayer.EmntyLog();
-            mgr = new MatcherMgr();
-            servce = new MatchServce(mgr,matching);
+            var app = new App();
+            mgr = app.mgr;
+            servce = new MatchServce(app, new GameFactroy());
             socket = new LogSocket();
             mgr.matchers.TryAdd(socket, player);
         }

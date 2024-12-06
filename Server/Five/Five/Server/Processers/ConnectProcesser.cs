@@ -6,9 +6,9 @@ namespace Five
 {
     public class ConnectProcesser : IProcesser
     {
-        private App app;
+        private MatchServce app;
 
-        public ConnectProcesser(App app)
+        public ConnectProcesser(MatchServce app)
         {
             this.app = app;
         }
@@ -17,7 +17,7 @@ namespace Five
 
         public void Process(AClient socket, Message message)
         {
-            app.Invoke(socket);
+            app.Login(socket);
         }
     }
 }

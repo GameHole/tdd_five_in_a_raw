@@ -1,14 +1,20 @@
-﻿namespace Five
+﻿using System;
+
+namespace Five
 {
     public class MatchServce
     {
         private MatcherMgr mgr;
         private GameMgr gameRsp;
+        private App app;
+        private GameFactroy factroy;
 
-        public MatchServce(MatcherMgr mgr, GameMgr gameRsp)
+        public MatchServce(App app,GameFactroy factroy)
         {
-            this.mgr = mgr;
-            this.gameRsp = gameRsp;
+            this.mgr = app.mgr;
+            this.gameRsp = app.gameRsp;
+            this.app = app;
+            this.factroy = factroy;
         }
 
         public Result Cancel(AClient socket)
@@ -63,7 +69,22 @@
                     return item;
                 }
             }
-            return gameRsp.NewRoom();
+            var game = factroy.Factroy();
+            return gameRsp.NewRoom(game);
+        }
+        public Result Play(int x, int y, AClient sok)
+        {
+            return mgr.matchers[sok].Play(x, y);
+        }
+
+        public void Stop()
+        {
+            app.Stop();
+        }
+
+        public void Login(AClient socket)
+        {
+            app.Login(socket);
         }
     }
 }

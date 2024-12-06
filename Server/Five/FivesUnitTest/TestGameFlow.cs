@@ -16,8 +16,8 @@ namespace FivesUnitTest
         [SetUp]
         public void SetUp()
         {
-            room = new GameMgr().NewRoom();
-            game = room.game as Game;
+            game = new GameFactroy().Factroy() as Game;
+            room = new GameMgr().NewRoom(game);
             players = new LogPlayer[2];
             ntfs = new LogNotifier[2];
             for (int i = 0; i < players.Length; i++)

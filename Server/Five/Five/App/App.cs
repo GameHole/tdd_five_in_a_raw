@@ -8,13 +8,11 @@ namespace Five
     {
         public MatcherMgr mgr { get; private set; }
         public GameMgr gameRsp { get; private set; }
-        public MatchServce matchServce { get; private set; }
 
         public App()
         {
             gameRsp = new GameMgr();
             mgr = new MatcherMgr();
-            matchServce = new MatchServce(mgr, gameRsp);
         }
         public virtual void Stop()
         {
@@ -22,7 +20,7 @@ namespace Five
             gameRsp.Clear();
         }
 
-        public virtual void Invoke(AClient socket)
+        public virtual void Login(AClient socket)
         {
             mgr.Login(socket);
         }

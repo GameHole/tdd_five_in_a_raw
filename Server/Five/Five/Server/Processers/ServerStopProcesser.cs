@@ -6,9 +6,9 @@ namespace Five
 {
     public class ServerStopProcesser : IProcesser
     {
-        private App app;
+        private MatchServce app;
 
-        public ServerStopProcesser(App app)
+        public ServerStopProcesser(MatchServce app)
         {
             this.app = app;
         }

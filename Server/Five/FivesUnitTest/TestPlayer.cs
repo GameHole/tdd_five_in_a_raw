@@ -13,7 +13,7 @@ namespace FivesUnitTest
         public void SetUp()
         {
             player = new Player();
-            room = new GameMgr().NewRoom();
+            room = new GameMgr().NewRoom(new GameFactroy().Factroy());
             room.Join(player);
             player.Start(1);
         }
@@ -32,7 +32,7 @@ namespace FivesUnitTest
         public void testNotStartPlay()
         {
             player = new Player();
-            room = new GameMgr().NewRoom();
+            room = new GameMgr().NewRoom(new GameFactroy().Factroy());
             room.Join(player);
             Assert.AreEqual(ResultDefine.GameNotStart, player.Play(0, 0));
         }

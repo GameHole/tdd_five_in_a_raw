@@ -6,7 +6,7 @@
 
         protected override Response ProcessContant(AClient socket, Message message)
         {
-            return new Response().SetInfo(message, app.matchServce.Match(socket));
+            return new Response().SetInfo(message, servce.Match(socket));
         }
     }
 }

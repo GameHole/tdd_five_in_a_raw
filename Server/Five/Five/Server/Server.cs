@@ -18,9 +18,9 @@ namespace Five
         public MessageProcesser processer { get; }
         private MessageSerializer serializer;
 
-        public Server(ANetSocket socket,ProcesserFactroy factroy, MessageSerializer serializer)
+        public Server(ANetSocket socket, MessageProcesser processer, MessageSerializer serializer)
         {
-            processer = factroy.Factroy();
+            this.processer = processer;
             this.socket = socket;
             sockets = new ConcurrentList<AClient>();
             this.serializer = serializer;

@@ -33,15 +33,16 @@ namespace FivesUnitTest
         public void testProcessMessage()
         {
             var mgr = new App();
+            var svc = new MatchServce(mgr,new GameFactroy());
             LogPlayer logPlayer = LogPlayer.EmntyLog();
             mgr.mgr.matchers.TryAdd(logSocket, logPlayer);
 
             var matchProcesser = new MatchRequestProcesser();
-            matchProcesser.Init(mgr);
+            matchProcesser.Init(svc);
             var cnacelProcesser = new CancelRequestProcesser();
-            cnacelProcesser.Init(mgr);
+            cnacelProcesser.Init(svc);
             var playProcesser = new PlayRequestProcesser();
-            playProcesser.Init(mgr);
+            playProcesser.Init(svc);
 
             var opErrProcesser = new OpCodeErrorResponseProcesser();
 

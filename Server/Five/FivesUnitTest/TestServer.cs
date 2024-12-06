@@ -14,7 +14,7 @@ namespace FivesUnitTest
         public Five.DefaultClient ssocket = null;
         internal int stopCount;
 
-        public override void Invoke(AClient socket)
+        public override void Login(AClient socket)
         {
             ssocket = socket as Five.DefaultClient;
         }
@@ -36,7 +36,7 @@ namespace FivesUnitTest
         {
             var factroy = new NetFactroy(new SerializerRegister());
             accepter = new TAccepter();
-            log = new LogRequestRegister(accepter);
+            log = new LogRequestRegister(new MatchServce( accepter,new GameFactroy()));
             server = factroy.NewServer("127.0.0.1", TestApp.port, log);
             client = factroy.NewClient();
         }

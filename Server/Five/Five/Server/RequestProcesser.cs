@@ -2,13 +2,13 @@
 {
     public abstract class RequestProcesser : IProcesser
     {
-        protected App app;
+        protected MatchServce servce;
 
         public abstract int OpCode { get; }
 
-        public void Init(App app)
+        public void Init(MatchServce app)
         {
-            this.app = app;
+            this.servce = app;
         }
         protected abstract Response ProcessContant(AClient socket,Message message);
 
