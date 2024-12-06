@@ -29,10 +29,7 @@ namespace Five
         {
             this.chess = chess;
         }
-        public virtual Result Play(int x,int y)
-        {
-            return playable.Play(x, y, this);
-        }
+       
         public virtual void Reset()
         {
             RoomId = 0;
@@ -41,7 +38,11 @@ namespace Five
             outlineable = new NoneOutLineable();
             chess = 0;
         }
-
+        //输出方法
+        public virtual Result Play(int x, int y)
+        {
+            return playable.Play(x, y, this);
+        }
         public virtual void OutLine()
         {
             notifier = new NoneNotifier();

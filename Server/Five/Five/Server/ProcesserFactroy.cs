@@ -4,7 +4,11 @@ using System.Text;
 
 namespace Five
 {
-    public class ProcesserFactroy
+    public interface IProcesserFactroy
+    {
+        MessageProcesser Factroy();
+    }
+    public class ProcesserFactroy: IProcesserFactroy
     {
         private readonly MatchServce app;
 

@@ -4,9 +4,9 @@ namespace Five
 {
     internal class StartOutLineable : IOutLineable
     {
-        private Room room;
+        private IRoom room;
 
-        public StartOutLineable(Room room)
+        public StartOutLineable(IRoom room)
         {
             this.room = room;
         }

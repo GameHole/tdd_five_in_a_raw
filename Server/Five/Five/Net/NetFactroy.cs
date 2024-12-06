@@ -24,7 +24,7 @@ namespace Five
             return client;
         }
 
-        public Server NewServer(string ip, int port, ProcesserFactroy factroy)
+        public Server NewServer(string ip, int port, IProcesserFactroy factroy)
         {
             var net = new NetTcpSocket();
             net.Bind(new IPEndPoint(IPAddress.Parse(ip), port));
