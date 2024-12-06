@@ -9,7 +9,7 @@ namespace FivesUnitTest
     class TestMatching
     {
         GameMgr gameRsp;
-        private MatcherMgr mgr;
+        private PlayerRepository mgr;
         private MatchServce servce;
 
         [SetUp]
@@ -30,7 +30,7 @@ namespace FivesUnitTest
         {
             var player = LogPlayer.EmntyLog();
             var socket = new LogSocket();
-            mgr.matchers.TryAdd(socket, player);
+            mgr.Add(socket, player);
             servce.Match(socket);
             Assert.AreEqual("Match ", player.log);
             Assert.AreNotEqual(0, player.RoomId);
@@ -47,7 +47,7 @@ namespace FivesUnitTest
                 var p = LogPlayer.EmntyLog();
                 players[i] = p;
                 sockets[i] = new LogSocket();
-                mgr.matchers.TryAdd(sockets[i], p);
+                mgr.Add(sockets[i], p);
             }
             for (int i = 0; i < players.Length; i++)
             {
@@ -67,7 +67,7 @@ namespace FivesUnitTest
             {
                 players[i] = new LogPlayer();
                 sockets[i] = new LogSocket();
-                mgr.matchers.TryAdd(sockets[i], players[i]);
+                mgr.Add(sockets[i], players[i]);
             }
             for (int i = 0; i < players.Length; i++)
             {
@@ -85,7 +85,7 @@ namespace FivesUnitTest
         {
             var master = new LogPlayer();
             var socket = new LogSocket();
-            mgr.matchers.TryAdd(socket, master);
+            mgr.Add(socket, master);
             servce.Match(socket);
             var game = gameRsp.GetRoom(1);
             gameRsp.Clear();
@@ -97,7 +97,7 @@ namespace FivesUnitTest
         {
             var player = LogPlayer.EmntyLog();
             var socket = new LogSocket();
-            mgr.matchers.TryAdd(socket, player);
+            mgr.Add(socket, player);
             servce.Match(socket);
             int id = player.RoomId;
             Assert.AreEqual(ResultDefine.Success, servce.Cancel(socket)); 
@@ -114,7 +114,7 @@ namespace FivesUnitTest
                 sockets[i] = new LogSocket();
                 var p = LogPlayer.EmntyLog();
                 player[i] = p;
-                mgr.matchers.TryAdd(sockets[i], p);
+                mgr.Add(sockets[i], p);
                 servce.Match(sockets[i]);
             }
             var room = gameRsp.GetRoom(player[0].RoomId);
@@ -129,7 +129,7 @@ namespace FivesUnitTest
         {
             var player = new LogPlayer();
             var socket = new LogSocket();
-            mgr.matchers.TryAdd(socket, player);
+            mgr.Add(socket, player);
             Assert.AreEqual(ResultDefine.NotInMatching, servce.Cancel(socket));
         }
     }

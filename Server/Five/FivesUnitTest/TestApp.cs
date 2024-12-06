@@ -88,7 +88,7 @@ namespace FivesUnitTest
             Assert.AreEqual($"msg:{MessageCode.GetResponseCode(MessageCode.RequestMatch)}", log);
             server.Stop();
             Assert.AreEqual(0, app.gameRsp.GameCount);
-            Assert.AreEqual(0, app.mgr.matchers.Count);
+            Assert.AreEqual(0, app.mgr.Count);
             Assert.IsFalse(server.IsRun);
         }
         [Test]

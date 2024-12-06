@@ -11,7 +11,7 @@ namespace ConcurrenceTest
     class TestMatching
     {
         private GameMgr matching;
-        private MatcherMgr mgr;
+        private PlayerRepository mgr;
         private MatchServce servce;
         private List<LogSocket> sockets;
         private List<LogPlayer> players;
@@ -31,7 +31,7 @@ namespace ConcurrenceTest
                 var p = LogPlayer.EmntyLog();
                 sockets.Add(socket);
                 players.Add(p);
-                mgr.matchers.TryAdd(socket, p);
+                mgr.Add(socket, p);
             }
         }
         [Test]
@@ -77,7 +77,7 @@ namespace ConcurrenceTest
                 var p = new LogPlayer();
                 sockets.Add(socket);
                 matchers.Add(p);
-                mgr.matchers.TryAdd(socket, p);
+                mgr.Add(socket, p);
             }
             await Repeat.RepeatAsync(sockets, (log) =>
             {

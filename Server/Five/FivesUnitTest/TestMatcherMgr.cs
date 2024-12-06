@@ -9,16 +9,16 @@ namespace FivesUnitTest
 {
     class TestMatcherMgr
     {
-        MatcherMgr mgr;
+        PlayerRepository mgr;
         [SetUp]
         public void SetUp()
         {
-            mgr = new MatcherMgr();
+            mgr = new PlayerRepository();
         }
         [Test]
         public void testClientMgr()
         {
-            Assert.AreEqual(0, mgr.matchers.Count);
+            Assert.AreEqual(0, mgr.Count);
         }
         [Test]
         public void testonAcceptMgr()
@@ -26,13 +26,13 @@ namespace FivesUnitTest
             var socket = new LogSocket();
             mgr.Login(socket);
 
-            Assert.AreEqual(1, mgr.matchers.Count);
-            var player = mgr.matchers[socket];
+            Assert.AreEqual(1, mgr.Count);
+            var player = mgr.FindPlayer(socket);
             Assert.AreEqual(typeof(NetNotifier), player.notifier.GetType());
 
             socket.onClose.Invoke();
             Assert.AreEqual(typeof(NoneNotifier), player.notifier.GetType());
-            Assert.AreEqual(0, mgr.matchers.Count);
+            Assert.AreEqual(0, mgr.Count);
         }
        
         [Test]
@@ -41,7 +41,7 @@ namespace FivesUnitTest
             var scket = new LogSocket();
             mgr.Login(scket);
             scket.Close();
-            Assert.AreEqual(0, mgr.matchers.Count);
+            Assert.AreEqual(0, mgr.Count);
         }
     }
 }

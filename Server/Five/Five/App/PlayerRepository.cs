@@ -4,10 +4,11 @@ using System.Text;
 
 namespace Five
 {
-    public class MatcherMgr
+    public class PlayerRepository
     {
-        public ConcurrentDictionary<AClient, Player> matchers { get; }
-        public MatcherMgr()
+        private ConcurrentDictionary<AClient, Player> matchers;
+        public int Count => matchers.Count;
+        public PlayerRepository()
         {
             matchers = new ConcurrentDictionary<AClient, Player>();
         }
@@ -15,7 +16,11 @@ namespace Five
         {
             Player player = NewMatcher(socket);
             player.notifier = new NetNotifier(socket, player);
-            matchers.TryAdd(socket, player);
+            Add(socket, player);
+        }
+        public Player FindPlayer(AClient socket)
+        {
+            return matchers[socket];
         }
         private Player NewMatcher(AClient socket)
         {
@@ -32,6 +37,10 @@ namespace Five
         {
             matchers.Clear();
         }
-        
+
+        public void Add(AClient client,Player player)
+        {
+            matchers.TryAdd(client, player);
+        }
     }
 }

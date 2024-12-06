@@ -4,7 +4,7 @@ namespace Five
 {
     public class MatchServce
     {
-        private MatcherMgr mgr;
+        private PlayerRepository mgr;
         private GameMgr gameRsp;
         private App app;
         private GameFactroy factroy;
@@ -17,12 +17,12 @@ namespace Five
             this.factroy = factroy;
         }
 
-        public Result Cancel(AClient socket)
+        public Result Cancel(AClient client)
         {
-            var players = mgr.matchers[socket];
+            var player = mgr.FindPlayer(client);
             lock (gameRsp.lcoker)
             {
-                var game = gameRsp.GetRoom(players.RoomId);
+                var game = gameRsp.GetRoom(player.RoomId);
                 if (game == null)
                 {
                     return ResultDefine.NotInMatching;
@@ -31,14 +31,14 @@ namespace Five
                 {
                     return ResultDefine.GameStarted;
                 }
-                game.Leave(players);
+                game.Leave(player);
                 return ResultDefine.Success;
             }
         }
 
-        public Result Match(AClient socket)
+        public Result Match(AClient client)
         {
-            var player = mgr.matchers[socket];
+            var player = mgr.FindPlayer(client);
             lock (gameRsp.lcoker)
             {
                 var game = gameRsp.GetRoom(player.RoomId);
@@ -72,9 +72,9 @@ namespace Five
             var game = factroy.Factroy();
             return gameRsp.NewRoom(game);
         }
-        public Result Play(int x, int y, AClient sok)
+        public Result Play(int x, int y, AClient client)
         {
-            return mgr.matchers[sok].Play(x, y);
+            return mgr.FindPlayer(client).Play(x, y);
         }
 
         public void Stop()

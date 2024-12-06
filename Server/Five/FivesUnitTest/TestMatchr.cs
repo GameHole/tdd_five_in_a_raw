@@ -9,7 +9,7 @@ namespace FivesUnitTest
     class TestMatchr
     {
         private LogPlayer player;
-        private MatcherMgr mgr;
+        private PlayerRepository mgr;
         private MatchServce servce;
         private LogSocket socket;
         [SetUp]
@@ -20,7 +20,7 @@ namespace FivesUnitTest
             mgr = app.mgr;
             servce = new MatchServce(app, new GameFactroy());
             socket = new LogSocket();
-            mgr.matchers.TryAdd(socket, player);
+            mgr.Add(socket, player);
         }
         [Test]
         public void testMgrMatch()
@@ -52,7 +52,7 @@ namespace FivesUnitTest
         {
             var player1 = new LogPlayer();
             var socket1 = new LogSocket();
-            mgr.matchers.TryAdd(socket1, player1);
+            mgr.Add(socket1, player1);
             servce.Match(socket1);
             servce.Match(socket);
             Assert.AreEqual("Match Start ", player.log);

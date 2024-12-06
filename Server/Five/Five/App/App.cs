@@ -6,13 +6,13 @@ namespace Five
 {
     public class App
     {
-        public MatcherMgr mgr { get; private set; }
+        public PlayerRepository mgr { get; private set; }
         public GameMgr gameRsp { get; private set; }
 
         public App()
         {
             gameRsp = new GameMgr();
-            mgr = new MatcherMgr();
+            mgr = new PlayerRepository();
         }
         public virtual void Stop()
         {
