@@ -9,7 +9,7 @@ namespace Five
         public PlayerRepository playerRsp { get; private set; }
         public RoomRepository roomRsp { get; private set; }
 
-        public App(GameFactroy factroy)
+        public App(IGameFactroy factroy)
         {
             roomRsp = new RoomRepository(factroy);
             playerRsp = new PlayerRepository();

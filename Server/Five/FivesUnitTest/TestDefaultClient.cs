@@ -18,7 +18,7 @@ namespace FivesUnitTest
         {
             var factroy = new NetFactroy(new SerializerRegister());
             socket = factroy.NewClient();
-            accepter = new TAccepter(new GameFactroy());
+            accepter = new TAccepter();
             var log = new LogRequestRegister(new MatchServce( accepter));
             server = factroy.NewServer("127.0.0.1", TestApp.port, log);// new Server(net, log);
             server.StartAsync();

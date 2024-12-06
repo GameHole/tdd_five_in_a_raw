@@ -11,9 +11,9 @@ namespace Five
         public int GameCount { get => games.Count; }
         public object lcoker => games;
         private ConcurrentDictionary<int, Room> games = new ConcurrentDictionary<int, Room>();
-        private GameFactroy factroy;
+        private IGameFactroy factroy;
 
-        public RoomRepository(GameFactroy factroy)
+        public RoomRepository(IGameFactroy factroy)
         {
             this.factroy = factroy;
         }

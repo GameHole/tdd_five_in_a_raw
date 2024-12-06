@@ -9,12 +9,19 @@ using System.Threading.Tasks;
 
 namespace FivesUnitTest
 {
+    class TGameFactroy : IGameFactroy
+    {
+        public AGame Factroy()
+        {
+            return new TGame();
+        }
+    }
     class TAccepter : App
     {
         public Five.DefaultClient ssocket = null;
         internal int stopCount;
 
-        public TAccepter(GameFactroy factroy) : base(factroy)
+        public TAccepter() : base(new TGameFactroy())
         {
         }
 
@@ -39,7 +46,7 @@ namespace FivesUnitTest
         public void set()
         {
             var factroy = new NetFactroy(new SerializerRegister());
-            accepter = new TAccepter(new GameFactroy());
+            accepter = new TAccepter();
             log = new LogRequestRegister(new MatchServce( accepter));
             server = factroy.NewServer("127.0.0.1", TestApp.port, log);
             client = factroy.NewClient();

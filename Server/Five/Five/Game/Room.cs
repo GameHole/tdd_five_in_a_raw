@@ -14,8 +14,11 @@ namespace Five
         IEnumerable<Player> Players { get; }
         int maxPlayer { get; }
     }
-
-    public class GameFactroy
+    public interface IGameFactroy
+    {
+        AGame Factroy();
+    }
+    public class GameFactroy: IGameFactroy
     {
         public AGame Factroy()
         {
