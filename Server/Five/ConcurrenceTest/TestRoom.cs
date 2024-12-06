@@ -15,7 +15,7 @@ namespace ConcurrenceTest
         [SetUp]
         public void set()
         {
-            room = new GameMgr().NewRoom(new GameFactroy().Factroy());
+            room = new RoomRepository().NewRoom(new TGame());
         }
         [Test]
         public async Task testJoin()

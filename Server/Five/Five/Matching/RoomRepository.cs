@@ -6,7 +6,7 @@ using System.Text;
 
 namespace Five
 {
-    public class GameMgr:IEnumerable<Room>
+    public class RoomRepository:IEnumerable<Room>
     {
         ConcurrentDictionary<int, Room> games = new ConcurrentDictionary<int, Room>();
         public int GameCount { get=> games.Count;}

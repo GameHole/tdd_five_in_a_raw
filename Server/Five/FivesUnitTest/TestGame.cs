@@ -14,7 +14,7 @@ namespace FivesUnitTest
         public void SetUp()
         {
             game = new GameFactroy().Factroy() as Game;
-            room = new GameMgr().NewRoom(game);
+            room = new RoomRepository().NewRoom(game);
             room.Id = 10;
         }
         [Test]

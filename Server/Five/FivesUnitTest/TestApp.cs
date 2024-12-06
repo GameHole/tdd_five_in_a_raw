@@ -27,7 +27,7 @@ namespace FivesUnitTest
             log = new LogRequestRegister(servce);
             server = factroy.NewServer("127.0.0.1", port, log);
             server.StartAsync();
-            sockets = new Five.DefaultClient[2];
+            sockets = new DefaultClient[2];
             for (int i = 0; i < sockets.Length; i++)
             {
                 sockets[i] = factroy.NewClient();
@@ -45,8 +45,8 @@ namespace FivesUnitTest
         [Test]
         public void testApp()
         {
-            Assert.NotNull(app.mgr);
-            Assert.NotNull(app.gameRsp);
+            Assert.NotNull(app.playerRsp);
+            Assert.NotNull(app.roomRsp);
         }
         [Test]
         public void testClientRsp()
@@ -87,8 +87,8 @@ namespace FivesUnitTest
             await Task.Delay(100);
             Assert.AreEqual($"msg:{MessageCode.GetResponseCode(MessageCode.RequestMatch)}", log);
             server.Stop();
-            Assert.AreEqual(0, app.gameRsp.GameCount);
-            Assert.AreEqual(0, app.mgr.Count);
+            Assert.AreEqual(0, app.roomRsp.GameCount);
+            Assert.AreEqual(0, app.playerRsp.Count);
             Assert.IsFalse(server.IsRun);
         }
         [Test]
@@ -247,7 +247,7 @@ namespace FivesUnitTest
                 sockets[i].Send(new Message(MessageCode.RequestMatch));
             }
             await Task.Delay(100);
-            var game = app.gameRsp.GetRoom(1);
+            var game = app.roomRsp.GetRoom(1);
             Assert.IsTrue(game.IsRunning);
             for (int i = 0; i < sockets.Length; i++)
             {

@@ -35,7 +35,7 @@ namespace FivesUnitTest
             var mgr = new App();
             var svc = new MatchServce(mgr,new GameFactroy());
             LogPlayer logPlayer = LogPlayer.EmntyLog();
-            mgr.mgr.Add(logSocket, logPlayer);
+            mgr.playerRsp.Add(logSocket, logPlayer);
 
             var matchProcesser = new MatchRequestProcesser();
             matchProcesser.Init(svc);

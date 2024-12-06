@@ -10,7 +10,7 @@ namespace ConcurrenceTest
 {
     class TestMatching
     {
-        private GameMgr matching;
+        private RoomRepository matching;
         private PlayerRepository mgr;
         private MatchServce servce;
         private List<LogSocket> sockets;
@@ -20,8 +20,8 @@ namespace ConcurrenceTest
         public void set()
         {
             var app = new App();
-            matching = app.gameRsp;
-            mgr = app.mgr;
+            matching = app.roomRsp;
+            mgr = app.playerRsp;
             servce = new MatchServce(app,new GameFactroy());
             sockets = new List<LogSocket>(10000);
             players = new List<LogPlayer>(10000);

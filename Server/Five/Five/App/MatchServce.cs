@@ -4,25 +4,21 @@ namespace Five
 {
     public class MatchServce
     {
-        private PlayerRepository mgr;
-        private GameMgr gameRsp;
         private App app;
         private GameFactroy factroy;
 
         public MatchServce(App app,GameFactroy factroy)
         {
-            this.mgr = app.mgr;
-            this.gameRsp = app.gameRsp;
             this.app = app;
             this.factroy = factroy;
         }
 
         public Result Cancel(AClient client)
         {
-            var player = mgr.FindPlayer(client);
-            lock (gameRsp.lcoker)
+            var player = app.playerRsp.FindPlayer(client);
+            lock (app.roomRsp.lcoker)
             {
-                var game = gameRsp.GetRoom(player.RoomId);
+                var game = app.roomRsp.GetRoom(player.RoomId);
                 if (game == null)
                 {
                     return ResultDefine.NotInMatching;
@@ -38,10 +34,10 @@ namespace Five
 
         public Result Match(AClient client)
         {
-            var player = mgr.FindPlayer(client);
-            lock (gameRsp.lcoker)
+            var player = app.playerRsp.FindPlayer(client);
+            lock (app.roomRsp.lcoker)
             {
-                var game = gameRsp.GetRoom(player.RoomId);
+                var game = app.roomRsp.GetRoom(player.RoomId);
                 if (game == null)
                 {
                     game = FindNotStartGame();
@@ -62,7 +58,7 @@ namespace Five
         }
         private Room FindNotStartGame()
         {
-            foreach (var item in gameRsp)
+            foreach (var item in app.roomRsp)
             {
                 if (!item.isFull())
                 {
@@ -70,11 +66,11 @@ namespace Five
                 }
             }
             var game = factroy.Factroy();
-            return gameRsp.NewRoom(game);
+            return app.roomRsp.NewRoom(game);
         }
         public Result Play(int x, int y, AClient client)
         {
-            return mgr.FindPlayer(client).Play(x, y);
+            return app.playerRsp.FindPlayer(client).Play(x, y);
         }
 
         public void Stop()

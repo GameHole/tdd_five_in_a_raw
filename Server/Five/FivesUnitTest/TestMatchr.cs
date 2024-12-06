@@ -17,7 +17,7 @@ namespace FivesUnitTest
         {
             player = LogPlayer.EmntyLog();
             var app = new App();
-            mgr = app.mgr;
+            mgr = app.playerRsp;
             servce = new MatchServce(app, new GameFactroy());
             socket = new LogSocket();
             mgr.Add(socket, player);

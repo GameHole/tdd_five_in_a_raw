@@ -8,7 +8,7 @@ namespace FivesUnitTest
 {
     class TestMatching
     {
-        GameMgr gameRsp;
+        RoomRepository gameRsp;
         private PlayerRepository mgr;
         private MatchServce servce;
 
@@ -16,8 +16,8 @@ namespace FivesUnitTest
         public void SetUp()
         {
             var app = new App();
-            gameRsp = app.gameRsp;
-            mgr = app.mgr;
+            gameRsp = app.roomRsp;
+            mgr = app.playerRsp;
             servce = new MatchServce(app,new GameFactroy());
         }
         [Test]

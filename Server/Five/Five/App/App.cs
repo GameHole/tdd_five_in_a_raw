@@ -6,23 +6,23 @@ namespace Five
 {
     public class App
     {
-        public PlayerRepository mgr { get; private set; }
-        public GameMgr gameRsp { get; private set; }
+        public PlayerRepository playerRsp { get; private set; }
+        public RoomRepository roomRsp { get; private set; }
 
         public App()
         {
-            gameRsp = new GameMgr();
-            mgr = new PlayerRepository();
+            roomRsp = new RoomRepository();
+            playerRsp = new PlayerRepository();
         }
         public virtual void Stop()
         {
-            mgr.Stop();
-            gameRsp.Clear();
+            playerRsp.Stop();
+            roomRsp.Clear();
         }
 
         public virtual void Login(AClient socket)
         {
-            mgr.Login(socket);
+            playerRsp.Login(socket);
         }
     }
 }
