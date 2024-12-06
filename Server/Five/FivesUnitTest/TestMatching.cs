@@ -15,10 +15,10 @@ namespace FivesUnitTest
         [SetUp]
         public void SetUp()
         {
-            var app = new App();
+            var app = new App(new GameFactroy());
             gameRsp = app.roomRsp;
             mgr = app.playerRsp;
-            servce = new MatchServce(app,new GameFactroy());
+            servce = new MatchServce(app);
         }
         [Test]
         public void testMatching()

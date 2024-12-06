@@ -19,10 +19,10 @@ namespace ConcurrenceTest
         [SetUp]
         public void set()
         {
-            var app = new App();
+            var app = new App( new GameFactroy());
             matching = app.roomRsp;
             mgr = app.playerRsp;
-            servce = new MatchServce(app,new GameFactroy());
+            servce = new MatchServce(app);
             sockets = new List<LogSocket>(10000);
             players = new List<LogPlayer>(10000);
             for (int i = 0; i < 10000; i++)

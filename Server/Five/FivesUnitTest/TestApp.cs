@@ -22,8 +22,8 @@ namespace FivesUnitTest
         public void SetUp()
         {
             var factroy = new NetFactroy(new SerializerRegister());
-            app = new App();
-            servce = new MatchServce(app,new GameFactroy());
+            app = new App(new GameFactroy());
+            servce = new MatchServce(app);
             log = new LogRequestRegister(servce);
             server = factroy.NewServer("127.0.0.1", port, log);
             server.StartAsync();

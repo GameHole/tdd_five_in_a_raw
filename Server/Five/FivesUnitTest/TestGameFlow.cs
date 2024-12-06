@@ -16,8 +16,8 @@ namespace FivesUnitTest
         [SetUp]
         public void SetUp()
         {
-            game = new GameFactroy().Factroy() as Game;
-            room = new RoomRepository().NewRoom(game);
+            room = new RoomRepository(new GameFactroy()).NewRoom();
+            game = room.game as Game;
             players = new LogPlayer[2];
             ntfs = new LogNotifier[2];
             for (int i = 0; i < players.Length; i++)

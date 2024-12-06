@@ -8,12 +8,14 @@ namespace FivesUnitTest
     class TestPlayer
     {
         Player player;
+        RoomRepository factroy;
         Room room;
         [SetUp]
         public void SetUp()
         {
             player = new Player();
-            room = new RoomRepository().NewRoom(new TGame());
+            factroy = new RoomRepository(new GameFactroy());
+            room = factroy.NewRoom();
             room.Join(player);
             player.Start(1);
         }
@@ -32,7 +34,7 @@ namespace FivesUnitTest
         public void testNotStartPlay()
         {
             player = new Player();
-            room = new RoomRepository().NewRoom(new TGame());
+            room = factroy.NewRoom();
             room.Join(player);
             Assert.AreEqual(ResultDefine.GameNotStart, player.Play(0, 0));
         }

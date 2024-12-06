@@ -9,9 +9,9 @@ namespace Five
         public PlayerRepository playerRsp { get; private set; }
         public RoomRepository roomRsp { get; private set; }
 
-        public App()
+        public App(GameFactroy factroy)
         {
-            roomRsp = new RoomRepository();
+            roomRsp = new RoomRepository(factroy);
             playerRsp = new PlayerRepository();
         }
         public virtual void Stop()

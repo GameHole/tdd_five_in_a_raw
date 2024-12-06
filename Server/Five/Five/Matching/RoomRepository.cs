@@ -8,9 +8,17 @@ namespace Five
 {
     public class RoomRepository:IEnumerable<Room>
     {
-        ConcurrentDictionary<int, Room> games = new ConcurrentDictionary<int, Room>();
-        public int GameCount { get=> games.Count;}
+        public int GameCount { get => games.Count; }
         public object lcoker => games;
+        private ConcurrentDictionary<int, Room> games = new ConcurrentDictionary<int, Room>();
+        private GameFactroy factroy;
+
+        public RoomRepository(GameFactroy factroy)
+        {
+            this.factroy = factroy;
+        }
+
+      
         public void Clear()
         {
             foreach (var item in games.Values)
@@ -20,8 +28,9 @@ namespace Five
             games.Clear();
         }
 
-        public Room NewRoom(AGame game)
+        public Room NewRoom()
         {
+            var game = factroy.Factroy();
             var room = new Room(game);
             game.Init(room);
             room.Id = games.Count + 1;

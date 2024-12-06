@@ -14,6 +14,10 @@ namespace FivesUnitTest
         public Five.DefaultClient ssocket = null;
         internal int stopCount;
 
+        public TAccepter(GameFactroy factroy) : base(factroy)
+        {
+        }
+
         public override void Login(AClient socket)
         {
             ssocket = socket as Five.DefaultClient;
@@ -35,8 +39,8 @@ namespace FivesUnitTest
         public void set()
         {
             var factroy = new NetFactroy(new SerializerRegister());
-            accepter = new TAccepter();
-            log = new LogRequestRegister(new MatchServce( accepter,new GameFactroy()));
+            accepter = new TAccepter(new GameFactroy());
+            log = new LogRequestRegister(new MatchServce( accepter));
             server = factroy.NewServer("127.0.0.1", TestApp.port, log);
             client = factroy.NewClient();
         }

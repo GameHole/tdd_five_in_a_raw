@@ -13,8 +13,8 @@ namespace FivesUnitTest
         [SetUp]
         public void SetUp()
         {
-            game = new GameFactroy().Factroy() as Game;
-            room = new RoomRepository().NewRoom(game);
+            room = new RoomRepository(new GameFactroy()).NewRoom();
+            game = room.game as Game;
             room.Id = 10;
         }
         [Test]

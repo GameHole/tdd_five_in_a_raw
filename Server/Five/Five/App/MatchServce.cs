@@ -5,12 +5,10 @@ namespace Five
     public class MatchServce
     {
         private App app;
-        private GameFactroy factroy;
 
-        public MatchServce(App app,GameFactroy factroy)
+        public MatchServce(App app)
         {
             this.app = app;
-            this.factroy = factroy;
         }
 
         public Result Cancel(AClient client)
@@ -65,8 +63,7 @@ namespace Five
                     return item;
                 }
             }
-            var game = factroy.Factroy();
-            return app.roomRsp.NewRoom(game);
+            return app.roomRsp.NewRoom();
         }
         public Result Play(int x, int y, AClient client)
         {
