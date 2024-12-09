@@ -4,20 +4,13 @@ using System.Text;
 
 namespace Five
 {
-    public class ServerStopProcesser : IProcesser
+    public class ServerStopProcesser : AServceProcesser
     {
-        private MatchServce app;
+        public override int OpCode { get; }
 
-        public ServerStopProcesser(MatchServce app)
+        public override void Process(AClient socket, Message message)
         {
-            this.app = app;
-        }
-
-        public int OpCode => throw new NotImplementedException();
-
-        public void Process(AClient socket, Message message)
-        {
-            app.Stop();
+            servce.Stop();
         }
     }
 }

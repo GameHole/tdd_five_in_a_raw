@@ -1,18 +1,21 @@
 ﻿namespace Five
 {
-    public abstract class RequestProcesser : IProcesser
+    public abstract class AServceProcesser : IProcesser
     {
         protected MatchServce servce;
-
-        public abstract int OpCode { get; }
-
         public void Init(MatchServce app)
         {
             this.servce = app;
         }
+        public abstract int OpCode { get; }
+
+        public abstract void Process(AClient socket, Message message);
+    }
+    public abstract class RequestProcesser : AServceProcesser
+    {
         protected abstract Response ProcessContant(AClient socket,Message message);
 
-        public void Process(AClient socket, Message message)
+        public override void Process(AClient socket, Message message)
         {
             socket.Send(ProcessContant(socket,message));
         }

@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Five
+﻿namespace Five
 {
     public interface IProcesserFactroy
     {
@@ -19,12 +15,16 @@ namespace Five
         public virtual MessageProcesser Factroy()
         {
             MessageProcesser processer = new MessageProcesser(new OpCodeErrorResponseProcesser());
-            processer.connect = new ConnectProcesser(app);
-            processer.serverStop = new ServerStopProcesser(app);
+            var connect = new ConnectProcesser();
+            connect.Init(app);
+            processer.connect = connect;
+            var stop = new ServerStopProcesser();
+            stop.Init(app);
+            processer.serverStop = stop;
             var array = NewProcessers();
             foreach (var item in array)
             {
-               processer.Processers.Add(item.OpCode, item);
+                processer.Processers.Add(item.OpCode, item);
             }
             foreach (var item in array)
             {
