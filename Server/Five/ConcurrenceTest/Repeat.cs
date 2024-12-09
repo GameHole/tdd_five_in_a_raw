@@ -7,12 +7,13 @@ namespace ConcurrenceTest
 {
     public static class Repeat
     {
-        public static async Task RepeatAsync(int count, Action action)
+        public static async Task RepeatAsync(int count, Action<int> action)
         {
             List<Task> tasks = new List<Task>();
             for (int i = 0; i < count; i++)
             {
-                var task = Task.Factory.StartNew(action);
+                int idx = i;
+                var task = Task.Factory.StartNew(()=>action(idx));
                 tasks.Add(task);
             }
             await Task.WhenAll(tasks.ToArray());

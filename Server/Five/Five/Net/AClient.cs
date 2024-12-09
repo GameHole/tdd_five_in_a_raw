@@ -6,6 +6,7 @@ namespace Five
 {
     public abstract class AClient
     {
+        public int Id { get; internal set; }
         public Action<Message> onRecv;
         public Action onClose;
         public bool isVailed { get; protected set; }

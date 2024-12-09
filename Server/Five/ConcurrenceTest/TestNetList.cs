@@ -17,7 +17,7 @@ namespace ConcurrenceTest
         [Test]
         public async Task testAdd()
         {
-            await Repeat.RepeatAsync(count, () =>
+            await Repeat.RepeatAsync(count, (i) =>
             {
                 list.Add(new object());
             });
@@ -44,7 +44,7 @@ namespace ConcurrenceTest
         public async Task testAddRemove()
         {
             list.onAdd += (c) => list.Remove(c);
-            await Repeat.RepeatAsync(count, () =>
+            await Repeat.RepeatAsync(count, (i) =>
             {
                 list.Add(new object());
             });

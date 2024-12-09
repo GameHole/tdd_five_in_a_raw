@@ -5,10 +5,11 @@ using System.Collections.Generic;
 using System.Text;
 using FivesUnitTest;
 using System.Threading.Tasks;
+using System.Threading;
 
 namespace ConcurrenceTest
 {
-    class TestMatching
+    public class TestMatching
     {
         private RoomRepository matching;
         private PlayerRepository mgr;
@@ -19,7 +20,7 @@ namespace ConcurrenceTest
         [SetUp]
         public void set()
         {
-            var app = new App( new GameFactroy());
+            var app = new App( new GameFactroy(),new IdGenrator());
             matching = app.roomRsp;
             mgr = app.playerRsp;
             servce = new MatchServce(app);
@@ -98,5 +99,23 @@ namespace ConcurrenceTest
             //异或表示 CancelMatch 与 Start 只能存在一个（互斥）
             return log.Contains("CancelMatch") ^ log.Contains("Start");
         }
+        [Test]
+        public async Task testIdGenrator()
+        {
+            var gen = new IdGenrator();
+            int count = 100000;
+            var array = new int[count];
+            await Repeat.RepeatAsync(count, (index) =>
+            {
+                array[index] = gen.Genrate();
+            });
+            Assert.AreEqual(count, gen.Seed);
+            AssertCo.AssertAllNotEqual(array);
+        }
+        
+       
+       
+        
+        
     }
 }

@@ -21,7 +21,7 @@ namespace FivesUnitTest
         public Five.DefaultClient ssocket = null;
         internal int stopCount;
 
-        public TAccepter() : base(new TGameFactroy())
+        public TAccepter() : base(new TGameFactroy(),new TIdGenrator())
         {
         }
 

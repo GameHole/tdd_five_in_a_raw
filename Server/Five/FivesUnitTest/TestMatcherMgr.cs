@@ -9,11 +9,13 @@ namespace FivesUnitTest
 {
     class TestMatcherMgr
     {
+        private TIdGenrator gen;
         PlayerRepository mgr;
         [SetUp]
         public void SetUp()
         {
-            mgr = new PlayerRepository();
+            gen = new TIdGenrator() { id=2,inviled=1 };
+            mgr = new PlayerRepository(gen);
         }
         [Test]
         public void testClientMgr()
@@ -25,7 +27,7 @@ namespace FivesUnitTest
         {
             var socket = new LogSocket();
             mgr.Login(socket);
-
+            Assert.AreEqual(2, socket.Id);
             Assert.AreEqual(1, mgr.Count);
             var player = mgr.FindPlayer(socket);
             Assert.AreEqual(typeof(NetNotifier), player.notifier.GetType());
@@ -33,8 +35,18 @@ namespace FivesUnitTest
             socket.onClose.Invoke();
             Assert.AreEqual(typeof(NoneNotifier), player.notifier.GetType());
             Assert.AreEqual(0, mgr.Count);
+            Assert.AreEqual(1, socket.Id);
         }
-       
+        [Test]
+        public void testIdGenrator()
+        {
+            var genrator = new IdGenrator();
+            Assert.AreEqual(0, genrator.InvailedId);
+            for (int i = 0; i < 2; i++)
+            {
+                Assert.AreEqual(i + 1,genrator.Genrate());
+            }
+        }
         [Test]
         public void testSocketClose()
         {

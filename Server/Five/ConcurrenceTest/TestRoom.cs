@@ -20,7 +20,7 @@ namespace ConcurrenceTest
         [Test]
         public async Task testJoin()
         {
-            await Repeat.RepeatAsync(10000, () =>
+            await Repeat.RepeatAsync(10000, (i) =>
             {
                 var player = new LogPlayer();
                 room.Join(player);
@@ -32,7 +32,7 @@ namespace ConcurrenceTest
         {
             var player = new LogPlayer();
             room.Join(player);
-            await Repeat.RepeatAsync(10000, () =>
+            await Repeat.RepeatAsync(10000, (i) =>
             {
                 room.Remove(player);
             });
@@ -43,7 +43,7 @@ namespace ConcurrenceTest
         {
             var player = new LogResetPlayer();
             room.Join(player);
-            await Repeat.RepeatAsync(10000, () =>
+            await Repeat.RepeatAsync(10000, (i) =>
             {
                 player.OutLine();
             });
@@ -58,7 +58,7 @@ namespace ConcurrenceTest
             room.Join(player);
             room.Join(player1);
             room.Start();
-            await Repeat.RepeatAsync(10000, () =>
+            await Repeat.RepeatAsync(10000, (i) =>
             {
                 player.OutLine();
                 player.OutLine();
