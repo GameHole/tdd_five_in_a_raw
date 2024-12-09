@@ -1,9 +1,5 @@
 ﻿namespace Five
 {
-    public interface IProcesserFactroy
-    {
-        MessageProcesser Factroy();
-    }
     public class ProcesserFactroy: IProcesserFactroy
     {
         private readonly MatchServce app;

@@ -5,25 +5,10 @@ using System.Threading;
 
 namespace Five
 {
-    public interface IStopable
-    {
-        void Stop();
-    }
     public interface IRoom: IStopable
     {
         IEnumerable<Player> Players { get; }
         int maxPlayer { get; }
-    }
-    public interface IGameFactroy
-    {
-        AGame Factroy();
-    }
-    public class GameFactroy: IGameFactroy
-    {
-        public AGame Factroy()
-        {
-            return new Game(15, 30);
-        }
     }
     public class Room: IRoom
     {

@@ -3,17 +3,6 @@ using System.Text;
 
 namespace Five
 {
-    public abstract class AGame
-    {
-        protected IRoom room;
-        public virtual void Init(IRoom room)
-        {
-            this.room = room;
-        }
-
-        public abstract void Start();
-        public abstract void Stop();
-    }
     public class Game:AGame,IPlayable
     {
         private GameNotifier gameNotifier;
