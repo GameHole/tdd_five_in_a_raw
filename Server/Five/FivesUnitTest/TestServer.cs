@@ -18,7 +18,7 @@ namespace FivesUnitTest
     }
     class TAccepter : App
     {
-        public Five.DefaultClient ssocket = null;
+        public Five.Client ssocket = null;
         internal int stopCount;
 
         public TAccepter() : base(new TGameFactroy(),new TIdGenrator())
@@ -27,7 +27,7 @@ namespace FivesUnitTest
 
         public override void Login(AClient socket)
         {
-            ssocket = socket as Five.DefaultClient;
+            ssocket = socket as Five.Client;
         }
 
         public override void Stop()
@@ -40,7 +40,7 @@ namespace FivesUnitTest
         private TAccepter accepter;
         private LogRequestRegister log;
         private Server server;
-        private Five.DefaultClient client;
+        private Five.Client client;
 
         [SetUp]
         public void set()
@@ -64,11 +64,11 @@ namespace FivesUnitTest
             Assert.IsTrue(server.IsRun);
             client.Connect("127.0.0.1", TestApp.port);
             await Task.Delay(200);
-            Assert.AreEqual(1, server.sockets.Count);
+            Assert.AreEqual(1, server.clients.Count);
             server.Stop();
             Assert.AreEqual(1, accepter.stopCount);
             Assert.IsFalse(server.IsRun);
-            Assert.AreEqual(0, server.sockets.Count);
+            Assert.AreEqual(0, server.clients.Count);
             Assert.IsFalse(accepter.ssocket.isVailed);
             Assert.Throws<ObjectDisposedException>(() =>
             {

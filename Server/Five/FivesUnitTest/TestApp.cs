@@ -16,7 +16,7 @@ namespace FivesUnitTest
         App app;
         private MatchServce servce;
         private LogRequestRegister log;
-        Five.DefaultClient[] sockets;
+        Five.Client[] sockets;
         public static readonly int port = 11000;
         [SetUp]
         public void SetUp()
@@ -27,7 +27,7 @@ namespace FivesUnitTest
             log = new LogRequestRegister(servce);
             server = factroy.NewServer("127.0.0.1", port, log);
             server.StartAsync();
-            sockets = new DefaultClient[2];
+            sockets = new Client[2];
             for (int i = 0; i < sockets.Length; i++)
             {
                 sockets[i] = factroy.NewClient();
@@ -66,7 +66,7 @@ namespace FivesUnitTest
             await Task.Delay(100);
             sockets[0].Connect("127.0.0.1", port);
             await Task.Delay(100);
-            var socket = server.sockets.First();
+            var socket = server.clients.First();
             Assert.NotNull(socket.onRecv);
 
             Assert.AreSame(servce, log.test.Mgr);

@@ -7,13 +7,13 @@ using System.Threading.Tasks;
 
 namespace Five
 {
-    public class DefaultClient : AClient
+    public class Client : AClient
     {
         protected MessageSerializer serializer;
         public ASocket socket { get; }
         public MessagePacker packer { get; private set; }
 
-        public DefaultClient(ASocket socket, MessageSerializer serializer)
+        public Client(ASocket socket, MessageSerializer serializer)
         {
             this.socket = socket;
             this.serializer = serializer;

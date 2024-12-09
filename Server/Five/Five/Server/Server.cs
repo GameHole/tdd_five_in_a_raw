@@ -11,7 +11,7 @@ namespace Five
     public class Server
     {
         public ASocket socket { get;private set; }
-        public ConcurrentList<AClient> sockets { get; private set; }
+        public ConcurrentList<AClient> clients { get; private set; }
 
 
         public bool IsRun { get; private set; }
@@ -22,16 +22,16 @@ namespace Five
         {
             this.processer = processer;
             this.socket = socket;
-            sockets = new ConcurrentList<AClient>();
+            clients = new ConcurrentList<AClient>();
             this.serializer = serializer;
         }
         public virtual void Stop()
         {
-            foreach (var item in sockets)
+            foreach (var item in clients)
             {
                 item.Release();
             }
-            sockets.Clear();
+            clients.Clear();
             socket.Close();
             IsRun = false;
             processer.serverStop.Process(default,default);
@@ -52,10 +52,10 @@ namespace Five
             while (IsRun)
             {
                 var client = socket.Accept();
-                var tcp = new DefaultClient(client, serializer);
+                var tcp = new Client(client, serializer);
                 tcp.RecvAsync();
-                tcp.onClose += () => sockets.Remove(tcp);
-                sockets.Add(tcp);
+                tcp.onClose += () => clients.Remove(tcp);
+                clients.Add(tcp);
                 processer.connect.Process(tcp, default);
                 tcp.onRecv = (message) =>
                 {

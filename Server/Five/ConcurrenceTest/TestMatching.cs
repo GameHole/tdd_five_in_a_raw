@@ -112,10 +112,30 @@ namespace ConcurrenceTest
             Assert.AreEqual(count, gen.Seed);
             AssertCo.AssertAllNotEqual(array);
         }
-        
-       
-       
-        
-        
+        [Test]
+        public async Task testLogin()
+        {
+            mgr.Stop();
+            List<LogSocket> sockets = new List<LogSocket>(10000);
+            for (int i = 0; i < 10000; i++)
+            {
+                var socket = new LogSocket();
+                sockets.Add(socket);
+            }
+            await Repeat.RepeatAsync(sockets, (socket) =>
+            {
+                mgr.Login(socket);
+            });
+            Assert.AreEqual(sockets.Count, mgr.Count);
+            AssertCo.AssertAllNotEqual(sockets.ToArray(),(a)=>a.Id);
+            await Repeat.RepeatAsync(sockets, (socket) =>
+            {
+                socket.Close();
+            });
+            for (int i = 0; i < sockets.Count; i++)
+            {
+                Assert.AreEqual(0, sockets[i].Id);
+            }
+        }
     }
 }

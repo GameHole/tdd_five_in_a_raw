@@ -23,13 +23,13 @@ namespace Five
             this.sockets = sockets;
         }
 
-        public DefaultClient NewClient()
+        public Client NewClient()
         {
             var socket = sockets.FactroySocket();
             socket.Bind(new IPEndPoint(IPAddress.Any, 0));
             var serializer = new MessageSerializer();
             register.Regist(serializer);
-            var client = new DefaultClient(socket, serializer);
+            var client = new Client(socket, serializer);
             return client;
         }
 

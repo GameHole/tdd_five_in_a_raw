@@ -12,7 +12,7 @@ namespace FivesUnitTest
     {
         Server server;
         private TAccepter accepter;
-        Five.DefaultClient socket;
+        Five.Client socket;
         [SetUp]
         public void SetUp()
         {
@@ -108,7 +108,7 @@ namespace FivesUnitTest
             socket.Close();
             await Task.Delay(100);
             Assert.AreEqual("close", log);
-            Assert.IsFalse(server.sockets.Contains(accepter.ssocket));
+            Assert.IsFalse(server.clients.Contains(accepter.ssocket));
             Assert.IsFalse(accepter.ssocket.isVailed);
             Assert.Throws<ObjectDisposedException>(()=>
             {
