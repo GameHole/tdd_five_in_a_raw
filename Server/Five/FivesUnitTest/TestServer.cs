@@ -16,7 +16,7 @@ namespace FivesUnitTest
             return new TGame();
         }
     }
-    class TAccepter : App
+    class TAccepter : Domain
     {
         public Five.Client ssocket = null;
         internal int stopCount;

@@ -17,7 +17,7 @@ namespace FivesUnitTest
         [SetUp]
         public void SetUp()
         {
-            var app = new App(new GameFactroy(),new TIdGenrator());
+            var app = new Domain(new GameFactroy(),new TIdGenrator());
             gameRsp = app.roomRsp;
             mgr = app.playerRsp;
             socket = new LogSocket();

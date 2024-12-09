@@ -4,9 +4,9 @@ namespace Five
 {
     public class MatchServce
     {
-        private App app;
+        private Domain app;
 
-        public MatchServce(App app)
+        public MatchServce(Domain app)
         {
             this.app = app;
         }

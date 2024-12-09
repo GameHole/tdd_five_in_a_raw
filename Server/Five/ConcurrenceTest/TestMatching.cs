@@ -20,7 +20,7 @@ namespace ConcurrenceTest
         [SetUp]
         public void set()
         {
-            var app = new App( new GameFactroy(),new IdGenrator());
+            var app = new Domain( new GameFactroy(),new IdGenrator());
             matching = app.roomRsp;
             mgr = app.playerRsp;
             servce = new MatchServce(app);

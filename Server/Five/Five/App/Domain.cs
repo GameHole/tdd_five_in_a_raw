@@ -4,12 +4,12 @@ using System.Text;
 
 namespace Five
 {
-    public class App
+    public class Domain
     {
         public PlayerRepository playerRsp { get; private set; }
         public RoomRepository roomRsp { get; private set; }
 
-        public App(IGameFactroy factroy, IdGenrator genrator)
+        public Domain(IGameFactroy factroy, IdGenrator genrator)
         {
             roomRsp = new RoomRepository(factroy);
             playerRsp = new PlayerRepository(genrator);

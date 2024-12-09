@@ -13,7 +13,7 @@ namespace FivesUnitTest
     class TestApp
     {
         private Server server;
-        App app;
+        Domain app;
         private MatchServce servce;
         private LogRequestRegister log;
         Five.Client[] sockets;
@@ -22,7 +22,7 @@ namespace FivesUnitTest
         public void SetUp()
         {
             var factroy = new NetFactroy(new SerializerRegister(),new SocketFactroy());
-            app = new App(new GameFactroy(),new IdGenrator());
+            app = new Domain(new GameFactroy(),new IdGenrator());
             servce = new MatchServce(app);
             log = new LogRequestRegister(servce);
             server = factroy.NewServer("127.0.0.1", port, log);
