@@ -10,7 +10,7 @@ namespace Five
 {
     public class Server
     {
-        public ANetSocket socket { get;private set; }
+        public ASocket socket { get;private set; }
         public ConcurrentList<AClient> sockets { get; private set; }
 
 
@@ -18,7 +18,7 @@ namespace Five
         public MessageProcesser processer { get; }
         private MessageSerializer serializer;
 
-        public Server(ANetSocket socket, MessageProcesser processer, MessageSerializer serializer)
+        public Server(ASocket socket, MessageProcesser processer, MessageSerializer serializer)
         {
             this.processer = processer;
             this.socket = socket;

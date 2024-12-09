@@ -21,7 +21,7 @@ namespace FivesUnitTest
         [SetUp]
         public void SetUp()
         {
-            var factroy = new NetFactroy(new SerializerRegister());
+            var factroy = new NetFactroy(new SerializerRegister(),new SocketFactroy());
             app = new App(new GameFactroy());
             servce = new MatchServce(app);
             log = new LogRequestRegister(servce);

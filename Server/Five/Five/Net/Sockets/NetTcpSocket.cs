@@ -4,7 +4,7 @@ using System.Net.Sockets;
 
 namespace Five
 {
-    public abstract class ANetSocket
+    public abstract class ASocket
     {
         public Socket socket { get; protected set; }
         public abstract void Bind(IPEndPoint iPEndPoint);
@@ -13,19 +13,19 @@ namespace Five
         public abstract void Send(byte[] bytes, int offset, int size, SocketFlags flags);
         public abstract void Connect(string ip, int port);
         public abstract void Disconnect(bool reuseSocket);
-        public abstract ANetSocket Accept();
+        public abstract ASocket Accept();
 
         public void Close()
         {
             socket.Close();
         }
     }
-    public class NetTcpSocket: ANetSocket
+    public class TcpSocket: ASocket
     {
-        public NetTcpSocket():this(new Socket(SocketType.Stream, ProtocolType.Tcp))
+        public TcpSocket():this(new Socket(SocketType.Stream, ProtocolType.Tcp))
         {}
 
-        public NetTcpSocket(Socket socket)
+        public TcpSocket(Socket socket)
         {
             this.socket = socket;
         }
@@ -39,9 +39,9 @@ namespace Five
             socket.Listen(backlog);
         }
 
-        public override ANetSocket Accept()
+        public override ASocket Accept()
         {
-            return new NetTcpSocket(socket.Accept());
+            return new TcpSocket(socket.Accept());
         }
 
         public override int Receive(byte[] bytes, int offset, int size, SocketFlags flags)

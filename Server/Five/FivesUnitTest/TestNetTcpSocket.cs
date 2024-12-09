@@ -11,13 +11,13 @@ namespace FivesUnitTest
 {
     internal class TestNetTcpSocket
     {
-        private NetTcpSocket test;
+        private TcpSocket test;
         private IPEndPoint remote;
 
         [SetUp]
         public void set()
         {
-            test = new NetTcpSocket();
+            test = new TcpSocket();
             remote = new IPEndPoint(IPAddress.Parse("127.0.0.1"), TestApp.port);
             test.Bind(remote);
         }
@@ -30,10 +30,10 @@ namespace FivesUnitTest
         public async Task testAccept()
         {
             test.Listen(1);
-            NetTcpSocket acc = null;
+            TcpSocket acc = null;
             Task task = Task.Factory.StartNew(() =>
             {
-                acc = test.Accept() as NetTcpSocket;
+                acc = test.Accept() as TcpSocket;
             });
             await Task.Delay(200);
             var socket = new Socket(SocketType.Stream, ProtocolType.Tcp);

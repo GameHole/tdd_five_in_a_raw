@@ -16,7 +16,7 @@ namespace FivesUnitTest
         [SetUp]
         public void SetUp()
         {
-            var factroy = new NetFactroy(new SerializerRegister());
+            var factroy = new NetFactroy(new SerializerRegister(),new SocketFactroy());
             socket = factroy.NewClient();
             accepter = new TAccepter();
             var log = new LogRequestRegister(new MatchServce( accepter));
@@ -33,7 +33,7 @@ namespace FivesUnitTest
         [Test]
         public void testSocket()
         {
-            Assert.IsInstanceOf<NetTcpSocket>(socket.socket);
+            Assert.IsInstanceOf<TcpSocket>(socket.socket);
         }
         [Test]
         public void testRecv()

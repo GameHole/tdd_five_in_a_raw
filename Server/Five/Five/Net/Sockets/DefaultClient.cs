@@ -10,10 +10,10 @@ namespace Five
     public class DefaultClient : AClient
     {
         protected MessageSerializer serializer;
-        public ANetSocket socket { get; }
+        public ASocket socket { get; }
         public MessagePacker packer { get; private set; }
 
-        public DefaultClient(ANetSocket socket, MessageSerializer serializer)
+        public DefaultClient(ASocket socket, MessageSerializer serializer)
         {
             this.socket = socket;
             this.serializer = serializer;
