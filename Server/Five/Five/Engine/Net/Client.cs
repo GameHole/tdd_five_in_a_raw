@@ -12,6 +12,7 @@ namespace Five
         protected MessageSerializer serializer;
         public ASocket socket { get; }
         public MessagePacker packer { get; private set; }
+        public MessageProcesser processer { get; set; }
 
         public Client(ASocket socket, MessageSerializer serializer)
         {
@@ -61,7 +62,8 @@ namespace Five
         {
             while (packer.Unpack(out ByteStream stream))
             {
-                onRecv?.Invoke(serializer.Deserialize(stream));
+                var msg = serializer.Deserialize(stream);
+                processer?.Process(this, msg);
             }
             packer.MoveBrokenBytesToHead();
         }

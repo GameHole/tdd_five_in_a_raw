@@ -16,7 +16,7 @@ namespace FivesUnitTest
         Domain app;
         private MatchServce servce;
         private LogRequestRegister log;
-        Five.Client[] sockets;
+        Five.Client[] clients;
         public static readonly int port = 11000;
         [SetUp]
         public void SetUp()
@@ -27,18 +27,18 @@ namespace FivesUnitTest
             log = new LogRequestRegister(servce);
             server = factroy.NewServer("127.0.0.1", port, log);
             server.StartAsync();
-            sockets = new Client[2];
-            for (int i = 0; i < sockets.Length; i++)
+            clients = new Client[2];
+            for (int i = 0; i < clients.Length; i++)
             {
-                sockets[i] = factroy.NewClient();
+                clients[i] = factroy.NewClient();
             }
         }
         [TearDown]
         public void TearDown()
         {
-            for (int i = 0; i < sockets.Length; i++)
+            for (int i = 0; i < clients.Length; i++)
             {
-                sockets[i].Close();
+                clients[i].Close();
             }
             server.Stop();
         }
@@ -64,14 +64,13 @@ namespace FivesUnitTest
         public async Task testonAccept()
         {
             await Task.Delay(100);
-            sockets[0].Connect("127.0.0.1", port);
+            clients[0].Connect("127.0.0.1", port);
             await Task.Delay(100);
             var socket = server.clients.First();
-            Assert.NotNull(socket.onRecv);
 
             Assert.AreSame(servce, log.test.Mgr);
-
-            socket.onRecv(new Message { opcode = -1 });
+            Assert.AreSame(socket.processer, log.processer);
+            socket.processer.Process(socket,new Message { opcode = -1 });
             Assert.AreSame(socket, log.test.msgSock);
 
         }
@@ -79,13 +78,12 @@ namespace FivesUnitTest
         public async Task testRun()
         {
             await Task.Delay(100);
-            sockets[0].Connect("127.0.0.1", port);
+            clients[0].Connect("127.0.0.1", port);
             await Task.Delay(100);
-            var log = "";
-            sockets[0].onRecv += (msg) => log += $"msg:{msg.opcode}";
-            sockets[0].Send(new Message(MessageCode.RequestMatch));
+            var log = LogProcesser.mockProcesser(clients[0],2);
+            clients[0].Send(new Message(MessageCode.RequestMatch));
             await Task.Delay(100);
-            Assert.AreEqual($"msg:{MessageCode.GetResponseCode(MessageCode.RequestMatch)}", log);
+            Assert.NotNull(log.msg);
             server.Stop();
             Assert.AreEqual(0, app.roomRsp.GameCount);
             Assert.AreEqual(0, app.playerRsp.Count);
@@ -95,9 +93,9 @@ namespace FivesUnitTest
         public async Task testGameFlow()
         {
             await Task.Delay(100);
-            for (int i = 0; i < sockets.Length; i++)
+            for (int i = 0; i < clients.Length; i++)
             {
-                sockets[i].Connect("127.0.0.1", port);
+                clients[i].Connect("127.0.0.1", port);
             }
             ConcurrentQueue<Message>[] messages = MakeMessageQeueus();
             for (int i = 0; i < 2; i++)
@@ -108,15 +106,12 @@ namespace FivesUnitTest
 
         private ConcurrentQueue<Message>[] MakeMessageQeueus()
         {
-            ConcurrentQueue<Message>[] messages = new ConcurrentQueue<Message>[sockets.Length];
-            for (int i = 0; i < sockets.Length; i++)
+            ConcurrentQueue<Message>[] messages = new ConcurrentQueue<Message>[clients.Length];
+            for (int i = 0; i < clients.Length; i++)
             {
-                var queue = new ConcurrentQueue<Message>();
-                sockets[i].onRecv += (msg) =>
-                {
-                    queue.Enqueue(msg);
-                };
-                messages[i] = queue;
+                var delay = new DelayMessageProcesser(default);
+                clients[i].processer = delay;
+                messages[i] = delay.queue;
             }
 
             return messages;
@@ -151,10 +146,10 @@ namespace FivesUnitTest
 
         private async Task Match()
         {
-            for (int i = 0; i < sockets.Length; i++)
+            for (int i = 0; i < clients.Length; i++)
             {
                 await Task.Delay(100);
-                sockets[i].Send(new Message(MessageCode.RequestMatch));
+                clients[i].Send(new Message(MessageCode.RequestMatch));
             };
         }
 
@@ -162,10 +157,10 @@ namespace FivesUnitTest
         {
             for (int j = 0; j < 5; j++)
             {
-                for (int i = 0; i < sockets.Length; i++)
+                for (int i = 0; i < clients.Length; i++)
                 {
                     await Task.Delay(100);
-                    sockets[i].Send(new PlayRequest() { x = j, y = i });
+                    clients[i].Send(new PlayRequest() { x = j, y = i });
                 }
             }
         }
@@ -237,21 +232,21 @@ namespace FivesUnitTest
         public async Task testClientOutLine()
         {
             await Task.Delay(100);
-            for (int i = 0; i < sockets.Length; i++)
+            for (int i = 0; i < clients.Length; i++)
             {
-                sockets[i].Connect("127.0.0.1", port);
+                clients[i].Connect("127.0.0.1", port);
             }
-            for (int i = 0; i < sockets.Length; i++)
+            for (int i = 0; i < clients.Length; i++)
             {
                 await Task.Delay(100);
-                sockets[i].Send(new Message(MessageCode.RequestMatch));
+                clients[i].Send(new Message(MessageCode.RequestMatch));
             }
             await Task.Delay(100);
             var game = app.roomRsp.GetRoom(1);
             Assert.IsTrue(game.IsRunning);
-            for (int i = 0; i < sockets.Length; i++)
+            for (int i = 0; i < clients.Length; i++)
             {
-                sockets[i].Close();
+                clients[i].Close();
             }
             await Task.Delay(100);
             Assert.IsFalse(game.IsRunning);

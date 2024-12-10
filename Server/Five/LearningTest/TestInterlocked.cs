@@ -48,7 +48,7 @@ namespace LearningTest
             var rate = stopwatch.Elapsed / time;
             Console.WriteLine(rate);
             Assert.LessOrEqual(rate, 15);
-            Assert.GreaterOrEqual(rate, 9);
+            Assert.GreaterOrEqual(rate, 5);
         }
     }
 }

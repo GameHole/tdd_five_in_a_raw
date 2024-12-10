@@ -20,5 +20,10 @@ namespace Five
         {
             return container.TryGetValue(code, out item);
         }
+
+        public void Clear()
+        {
+            container.Clear();
+        }
     }
 }

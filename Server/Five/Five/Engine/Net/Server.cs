@@ -57,10 +57,11 @@ namespace Five
                 client.onClose += () => clients.Remove(client);
                 clients.Add(client);
                 processer.connect.Process(client, default);
-                client.onRecv = (message) =>
-                {
-                    processer.Process(client, message);
-                };
+                client.processer = processer;
+                //client.onRecv = (message) =>
+                //{
+                //    processer.Process(client, message);
+                //};
             }
         }
     }
