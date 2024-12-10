@@ -2,16 +2,16 @@
 {
     class StopOutLineable : IOutLineable
     {
-        private Room game;
+        private Room room;
         private Player player;
-        public StopOutLineable(Room game,Player player)
+        public StopOutLineable(Room room,Player player)
         {
-            this.game = game;
+            this.room = room;
             this.player = player;
         }
         public void OutLine()
         {
-            game.Remove(player);
+            room.Remove(player);
         }
     }
 }
