@@ -9,10 +9,11 @@ namespace Five
 {
     public class Client : AClient
     {
-        protected MessageSerializer serializer;
+        public bool isVailed { get; protected set; }
         public ASocket socket { get; }
         public MessagePacker packer { get; private set; }
         public MessageProcesser processer { get; set; }
+        protected MessageSerializer serializer;
 
         public Client(ASocket socket, MessageSerializer serializer)
         {
@@ -44,9 +45,9 @@ namespace Five
             });
         }
 
-        internal override void Release()
+        internal void Release()
         {
-            base.Release();
+            isVailed = false;
             socket.Close();
         }
 
@@ -68,7 +69,7 @@ namespace Five
             packer.MoveBrokenBytesToHead();
         }
 
-        public override void Connect(string ip, int port)
+        public void Connect(string ip, int port)
         {
             socket.Connect(ip, port);
             RecvAsync();

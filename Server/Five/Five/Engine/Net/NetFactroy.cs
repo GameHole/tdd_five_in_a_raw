@@ -7,17 +7,17 @@ namespace Five
 {
     public class SocketFactroy
     {
-        public ASocket FactroySocket()
+        public ASocket Factroy()
         {
             return new TcpSocket();
         }
     }
     public class NetFactroy
     {
-        private SerializerRegister register;
+        private ISerializerRegister register;
         private SocketFactroy sockets;
 
-        public NetFactroy(SerializerRegister register, SocketFactroy sockets)
+        public NetFactroy(ISerializerRegister register, SocketFactroy sockets)
         {
             this.register = register;
             this.sockets = sockets;
@@ -25,22 +25,16 @@ namespace Five
 
         public Client NewClient()
         {
-            var socket = sockets.FactroySocket();
+            var socket = sockets.Factroy();
             socket.Bind(new IPEndPoint(IPAddress.Any, 0));
             var serializer = new MessageSerializer();
             register.Regist(serializer);
             var client = new Client(socket, serializer);
             return client;
         }
-
-        private ASocket FactroySocket()
-        {
-            return new TcpSocket();
-        }
-
         public Server NewServer(string ip, int port, IProcesserFactroy factroy)
         {
-            var net = sockets.FactroySocket();
+            var net = sockets.Factroy();
             net.Bind(new IPEndPoint(IPAddress.Parse(ip), port));
             var serializer = new MessageSerializer();
             register.Regist(serializer);

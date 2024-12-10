@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Five
 {
-    public class SerializerRegister
+    public class SerializerRegister: ISerializerRegister
     {
         public void Regist(MessageSerializer ser)
         {
