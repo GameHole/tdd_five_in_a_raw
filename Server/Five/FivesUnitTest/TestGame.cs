@@ -44,7 +44,7 @@ namespace FivesUnitTest
                 var item = players[i];
                 Assert.AreEqual("Start ", item.log);
                 Assert.AreEqual(i + 1, item.chess);
-                item.Play(0, i);
+                item.Commit(new PlayRequest { y=i});
                 Assert.AreEqual(item.chess, game.chessboard.GetValue(0, i));
             }
         }

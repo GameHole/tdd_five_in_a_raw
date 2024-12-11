@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Five.RTS;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -27,6 +28,7 @@ namespace Five
         {
             socket.Send(new StartNotify { playerId = player.PlayerId, infos = info });
         }
+
 
         public void Turn(int id)
         {

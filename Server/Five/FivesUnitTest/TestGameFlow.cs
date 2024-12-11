@@ -51,10 +51,10 @@ namespace FivesUnitTest
             game.timer.Update(game.timer.time);
             Assert.AreEqual(1, game.turn.index);
             Assert.AreEqual(0, game.chessboard.Count);
-            players[0].Play(0, 0);
+            players[0].Commit(new PlayRequest());
             Assert.AreEqual(0, game.chessboard.GetValue(0, 0));
             Assert.AreEqual(0, game.chessboard.Count);
-            players[1].Play(0, 0);
+            players[1].Commit(new PlayRequest());
             Assert.AreEqual(0, game.turn.index);
             Assert.AreEqual(1, game.chessboard.Count);
         }
@@ -67,11 +67,11 @@ namespace FivesUnitTest
             game.chessboard.AddValue(1, 0, chess);
             game.chessboard.AddValue(2, 0, chess);
             game.chessboard.AddValue(3, 0, chess);
-            players[0].Play(4, 0);
+            players[0].Commit(new PlayRequest { x = 4, y = 0 });
             Assert.AreEqual("Start Play(4,0) Reset ", players[0].log);
             Assert.AreEqual("Start Reset ", players[1].log);
             Assert.AreEqual(0, game.turn.index);
-            players[1].Play(10, 10);
+            players[1].Commit(new PlayRequest { x = 10, y = 10 });
             Assert.AreEqual("Start Play(4,0) Reset ", players[0].log);
             Assert.AreEqual(0, game.turn.index);
             Assert.AreEqual(0, game.chessboard.GetValue(10,10));
@@ -96,11 +96,11 @@ namespace FivesUnitTest
         [Test]
         public void testPlay()
         {
-            var result = players[0].Play(1, 0);
+            var result = players[0].Commit(new PlayRequest { x = 1 });
             Assert.AreEqual(ResultDefine.Success, result);
             Assert.AreEqual(1, game.chessboard.GetValue(1, 0));
             Assert.AreEqual(1, game.turn.index);
-            result = players[0].Play(2, 0);
+            result = players[0].Commit(new PlayRequest { x = 2 });
             Assert.AreEqual(ResultDefine.NotCurrentTurnPlayer, result);
             Assert.AreEqual(0, game.chessboard.GetValue(2, 0));
             Assert.AreEqual(1, game.turn.index);
@@ -110,7 +110,7 @@ namespace FivesUnitTest
         {
             Assert.AreEqual("Start(0,1)(1,2) Turn id:0", ntfs[0].log);
             Assert.AreEqual(ntfs[0].log, ntfs[1].log);
-            players[0].Play(1, 0);
+            players[0].Commit(new PlayRequest { x = 1, y = 0 });
             Assert.AreEqual("Start(0,1)(1,2) Turn id:0 Played(1,0)id:0 Turn id:1", ntfs[0].log);
             game.Finish(0);
             Assert.AreEqual("Start(0,1)(1,2) Turn id:0 Played(1,0)id:0 Turn id:1 Finish:0", ntfs[0].log);
@@ -120,7 +120,7 @@ namespace FivesUnitTest
         public void testPlayOnePlace()
         {
             game.chessboard.AddValue(1, 0, 2);
-            var result = players[0].Play(1, 0);
+            var result = players[0].Commit(new PlayRequest { x = 1, y = 0 });
             Assert.AreEqual(ResultDefine.AllReadyHasChess, result);
             Assert.AreEqual(2, game.chessboard.GetValue(1, 0));
             Assert.AreEqual(0, game.turn.index);

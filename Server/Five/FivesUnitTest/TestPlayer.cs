@@ -28,7 +28,7 @@ namespace FivesUnitTest
         public void testNoGamePlay()
         {
             var player = new Player();
-            Assert.AreEqual(ResultDefine.PlayerNotInTheGame, player.Play(0,0));
+            Assert.AreEqual(ResultDefine.PlayerNotInTheGame, player.Commit(new PlayRequest()));
         }
         [Test]
         public void testNotStartPlay()
@@ -36,7 +36,7 @@ namespace FivesUnitTest
             player = new Player();
             room = factroy.NewRoom();
             room.Join(player);
-            Assert.AreEqual(ResultDefine.GameNotStart, player.Play(0, 0));
+            Assert.AreEqual(ResultDefine.GameNotStart, player.Commit(new PlayRequest()));
         }
         [Test]
         public void testFinish()
@@ -47,7 +47,7 @@ namespace FivesUnitTest
             Assert.AreEqual(-1, player.PlayerId);
             Assert.DoesNotThrow(() =>
             {
-                player.Play(0, 0);
+                player.Commit(new PlayRequest());
             });
         }
         [Test]

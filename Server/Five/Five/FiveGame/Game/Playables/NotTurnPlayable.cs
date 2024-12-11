@@ -6,7 +6,7 @@ namespace Five
 {
     class NotTurnPlayable : IPlayable
     {
-        public Result Play(int x, int y, Player player)
+        public Result Commit(Message message, Player player)
         {
             return ResultDefine.NotCurrentTurnPlayer;
         }

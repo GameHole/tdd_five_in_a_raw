@@ -4,19 +4,19 @@ namespace Five
 {
     public class MatchServce
     {
-        private Domain app;
+        private Domain domain;
 
-        public MatchServce(Domain app)
+        public MatchServce(Domain domain)
         {
-            this.app = app;
+            this.domain = domain;
         }
 
         public Result Cancel(AClient client)
         {
-            var player = app.playerRsp.FindPlayer(client);
-            lock (app.roomRsp.lcoker)
+            var player = domain.playerRsp.FindPlayer(client);
+            lock (domain.roomRsp.lcoker)
             {
-                var game = app.roomRsp.GetRoom(player.RoomId);
+                var game = domain.roomRsp.GetRoom(player.RoomId);
                 if (game == null)
                 {
                     return ResultDefine.NotInMatching;
@@ -32,10 +32,10 @@ namespace Five
 
         public Result Match(AClient client)
         {
-            var player = app.playerRsp.FindPlayer(client);
-            lock (app.roomRsp.lcoker)
+            var player = domain.playerRsp.FindPlayer(client);
+            lock (domain.roomRsp.lcoker)
             {
-                var game = app.roomRsp.GetRoom(player.RoomId);
+                var game = domain.roomRsp.GetRoom(player.RoomId);
                 if (game == null)
                 {
                     game = FindNotStartGame();
@@ -56,28 +56,28 @@ namespace Five
         }
         private Room FindNotStartGame()
         {
-            foreach (var item in app.roomRsp)
+            foreach (var item in domain.roomRsp)
             {
                 if (!item.isFull())
                 {
                     return item;
                 }
             }
-            return app.roomRsp.NewRoom();
+            return domain.roomRsp.NewRoom();
         }
-        public Result Play(int x, int y, AClient client)
+        public Result Commit(PlayRequest request, AClient client)
         {
-            return app.playerRsp.FindPlayer(client).Play(x, y);
+            return domain.playerRsp.FindPlayer(client).Commit(request);
         }
 
         public void Stop()
         {
-            app.Stop();
+            domain.Stop();
         }
 
         public void Login(AClient socket)
         {
-            app.Login(socket);
+            domain.Login(socket);
         }
     }
 }

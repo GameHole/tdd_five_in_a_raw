@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Five.RTS;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -6,9 +7,13 @@ namespace Five
 {
     public class Player
     {
+        internal IOutLineable outlineable;
+
         public INotifier notifier;
         internal IPlayable playable;
-        internal IOutLineable outlineable;
+
+        public IRTSNotifier rtsnotifier;
+
         public int RoomId { get; internal set; } = -1;
         public int chess { get; private set; }
         public int PlayerId { get; internal set; }
@@ -16,6 +21,7 @@ namespace Five
         {
             Reset();
             notifier = new NoneNotifier();
+            rtsnotifier = new NoneRTSNotifier();
         }
         public virtual void Match()
         {
@@ -38,15 +44,15 @@ namespace Five
             outlineable = new NoneOutLineable();
             chess = 0;
         }
-        //输出方法
-        public virtual Result Play(int x, int y)
-        {
-            return playable.Play(x, y, this);
-        }
         public virtual void OutLine()
         {
             notifier = new NoneNotifier();
             outlineable.OutLine();
+        }
+
+        public virtual Result Commit(Message message)
+        {
+            return playable.Commit(message, this);
         }
     }
 }

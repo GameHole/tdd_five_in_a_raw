@@ -6,7 +6,7 @@ namespace Five
 {
     class WaitGamePlayable : IPlayable
     {
-        public Result Play(int x, int y, Player player)
+        public Result Commit(Message message, Player player)
         {
             return ResultDefine.GameNotStart;
         }

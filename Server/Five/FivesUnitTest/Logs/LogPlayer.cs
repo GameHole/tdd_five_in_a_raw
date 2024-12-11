@@ -23,10 +23,11 @@ namespace FivesUnitTest
             base.Start(chess);
             log += "Start ";
         }
-        public override Result Play(int x, int y)
+        public override Result Commit(Message message)
         {
-            log += $"Play({x},{y}) ";
-            return base.Play(x, y);
+            if( message is PlayRequest playRequest)
+            log += $"Play({playRequest.x},{playRequest.y}) ";
+            return base.Commit(message);
         }
         public override void Reset()
         {
@@ -45,5 +46,7 @@ namespace FivesUnitTest
             player.log = "";
             return player;
         }
+
+       
     }
 }

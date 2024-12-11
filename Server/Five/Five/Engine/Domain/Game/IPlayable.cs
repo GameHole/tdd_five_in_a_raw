@@ -6,6 +6,6 @@ namespace Five
 {
     public interface IPlayable
     {
-        Result Play(int x, int y,Player player);
+        Result Commit(Message message,Player player);
     }
 }

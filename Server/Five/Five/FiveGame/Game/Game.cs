@@ -3,7 +3,7 @@ using System.Text;
 
 namespace Five
 {
-    public class Game:AGame,IPlayable
+    public class Game : AGame
     {
         private GameNotifier gameNotifier;
        
@@ -24,6 +24,10 @@ namespace Five
 
         public override void Start()
         {
+            foreach (var item in room.Players)
+            {
+                item.playable = this;
+            }
             var chess = 1;
             foreach (var item in room.Players)
             {
@@ -31,28 +35,21 @@ namespace Five
             }
             turn.Start();
             gameNotifier.NotifyStart();
-            TurnPlayer();
+            NotifyTurnPlayer();
             TimerDriver.Start(timer);
             timer.onTime -= NextPlayer;
             timer.onTime += NextPlayer;
         }
 
-        private void TurnPlayer()
+        private void NotifyTurnPlayer()
         {
-            foreach (var item in room.Players)
-            {
-                if (item.PlayerId == turn.index)
-                    item.playable = this;
-                else
-                    item.playable = new NotTurnPlayable();
-            }
             gameNotifier.NotifyTurn(turn.index);
         }
 
         public void NextPlayer()
         {
             turn.Next();
-            TurnPlayer();
+            NotifyTurnPlayer();
             timer.Reset();
         }
 
@@ -68,8 +65,13 @@ namespace Five
             TimerDriver.Stop(timer);
         }
 
-        public Result Play(int x,int y,Player player)
+        public override Result Commit(Message message,Player player)
         {
+            if (player.PlayerId != turn.index)
+                return ResultDefine.NotCurrentTurnPlayer;
+            PlayRequest play = message as PlayRequest;
+            int x = play.x;
+            int y = play.y;
             if (!chessboard.AddValue(x, y, player.chess))
             {
                 return ResultDefine.AllReadyHasChess;

@@ -1,4 +1,6 @@
 ﻿using Five;
+using Five.RTS;
+using System.Collections.Generic;
 
 namespace FivesUnitTest
 {
@@ -24,6 +26,8 @@ namespace FivesUnitTest
                 log += $"({item.PlayerId},{item.Chess})";
             }
         }
+
+   
 
         public void Turn(int id)
         {
