@@ -27,24 +27,23 @@ namespace FivesUnitTest
         {
             var socket = new LogSocket();
             mgr.Login(socket);
-            Assert.AreEqual(2, socket.Id);
-            
-            Assert.AreEqual(1, mgr.Count);
-            var player = mgr.FindPlayer(socket.Id);
-            Assert.AreSame(socket, player.notifier);
-            Assert.AreEqual(2, player.Id);
-            mgr.OutLine(socket.Id);
-            Assert.AreEqual(typeof(NoneNotifier), player.notifier.GetType());
+            Assert.AreEqual(0, socket.Id);
             Assert.AreEqual(0, mgr.Count);
-            Assert.AreEqual(2, socket.Id);
+            Assert.IsNull(socket.onClose);
+           
         }
         [Test]
         public void testNewPlayer()
         {
-            var player = mgr.NewPlayer();
-            Assert.IsInstanceOf<NoneNotifier>(player.notifier);
+            var ntf = new NoneNotifier();
+            var playerId = mgr.Login(ntf);
+            var player = mgr.FindPlayer(playerId);
+            Assert.AreSame(ntf,player.notifier);
             Assert.AreEqual(2, player.Id);
             Assert.AreEqual(1, mgr.Count);
+            mgr.OutLine(playerId);
+            Assert.AreEqual(typeof(NoneNotifier), player.notifier.GetType());
+            Assert.AreEqual(0, mgr.Count);
         }
         [Test]
         public void testIdGenrator()
@@ -55,14 +54,6 @@ namespace FivesUnitTest
             {
                 Assert.AreEqual(i + 1,genrator.Genrate());
             }
-        }
-        [Test]
-        public void testSocketClose()
-        {
-            var scket = new LogSocket();
-            mgr.Login(scket);
-            scket.Close();
-            Assert.AreEqual(0, mgr.Count);
         }
     }
 }

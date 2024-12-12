@@ -36,7 +36,7 @@ namespace FivesUnitTest
             var player = LogPlayer.EmntyLog();
             var socket = new LogSocket();
             mgr.Add(socket.Id, player);
-            servce.Match(socket);
+            servce.Match(socket.Id);
             Assert.AreEqual("Match ", player.log);
             Assert.AreNotEqual(0, player.RoomId);
             Assert.AreEqual(1, gameRsp.GameCount);
@@ -56,7 +56,7 @@ namespace FivesUnitTest
             }
             for (int i = 0; i < players.Length; i++)
             {
-                servce.Match(client[i]);
+                servce.Match(client[i].Id);
             }
             for (int i = 0; i < players.Length; i++)
             {
@@ -76,7 +76,7 @@ namespace FivesUnitTest
             }
             for (int i = 0; i < players.Length; i++)
             {
-                servce.Match(client[i]);
+                servce.Match(client[i].Id);
             }
             Assert.AreNotEqual(players[0].RoomId, players[2].RoomId);
         }
@@ -88,7 +88,7 @@ namespace FivesUnitTest
         [Test]
         public void testClear()
         {
-            servce.Match(client);
+            servce.Match(client.Id);
             var game = gameRsp.GetRoom(1);
             gameRsp.Clear();
             Assert.AreEqual(0, game.PlayerCount);
@@ -97,9 +97,9 @@ namespace FivesUnitTest
         [Test]
         public void testCancel()
         {
-            servce.Match(client);
+            servce.Match(client.Id);
             int id = player.RoomId;
-            Assert.AreEqual(ResultDefine.Success, servce.Cancel(client)); 
+            Assert.AreEqual(ResultDefine.Success, servce.Cancel(client.Id)); 
             Assert.AreEqual(0, gameRsp.GetRoom(id).PlayerCount);
             Assert.AreEqual("Match Reset CancelMatch ", player.log);
         }
@@ -114,42 +114,42 @@ namespace FivesUnitTest
                 var p = LogPlayer.EmntyLog();
                 player[i] = p;
                 mgr.Add(client[i].Id, p);
-                servce.Match(client[i]);
+                servce.Match(client[i].Id);
             }
             var room = gameRsp.GetRoom(player[0].RoomId);
-            Assert.AreEqual(ResultDefine.GameStarted, servce.Cancel(client[0]));
+            Assert.AreEqual(ResultDefine.GameStarted, servce.Cancel(client[0].Id));
             Assert.AreEqual(2, room.PlayerCount);
             Assert.AreEqual("Match Start ", player[0].log);
             (room.game as Game).Finish(1);
-            Assert.AreEqual(ResultDefine.NotInMatching, servce.Cancel(client[0]));
+            Assert.AreEqual(ResultDefine.NotInMatching, servce.Cancel(client[0].Id));
         }
         [Test]
         public void testCancelNotInGame()
         {
-            Assert.AreEqual(ResultDefine.NotInMatching, servce.Cancel(client));
+            Assert.AreEqual(ResultDefine.NotInMatching, servce.Cancel(client.Id));
         }
         [Test]
         public void testMgrMatch()
         {
-            var result = servce.Match(client);
+            var result = servce.Match(client.Id);
             Assert.AreEqual(ResultDefine.Success, result);
             Assert.AreEqual("Match ", player.log);
             Assert.AreEqual(1, player.RoomId);
-            result = servce.Match(client);
+            result = servce.Match(client.Id);
             Assert.AreEqual(ResultDefine.Matching, result);
-            result = servce.Cancel(client);
+            result = servce.Cancel(client.Id);
             Assert.AreEqual(ResultDefine.Success, result);
-            result = servce.Match(client);
+            result = servce.Match(client.Id);
             Assert.AreEqual(ResultDefine.Success, result);
         }
         [Test]
         public void testMgrCancelMatch()
         {
-            var result = servce.Cancel(client);
+            var result = servce.Cancel(client.Id);
             Assert.AreEqual(ResultDefine.NotInMatching, result);
-            result = servce.Match(client);
+            result = servce.Match(client.Id);
             Assert.AreEqual(ResultDefine.Success, result);
-            result = servce.Cancel(client);
+            result = servce.Cancel(client.Id);
             Assert.AreEqual("Match Reset CancelMatch ", player.log);
             Assert.AreEqual(ResultDefine.Success, result);
         }
@@ -159,12 +159,12 @@ namespace FivesUnitTest
             var player1 = new LogPlayer();
             var socket1 = new LogSocket();
             mgr.Add(socket1.Id, player1);
-            servce.Match(socket1);
-            servce.Match(client);
+            servce.Match(socket1.Id);
+            servce.Match(client.Id);
             Assert.AreEqual("Match Start ", player.log);
-            var result = servce.Match(client);
+            var result = servce.Match(client.Id);
             Assert.AreEqual(ResultDefine.GameStarted, result);
-            result = servce.Cancel(client);
+            result = servce.Cancel(client.Id);
             Assert.AreEqual(ResultDefine.GameStarted, result);
         }
     }

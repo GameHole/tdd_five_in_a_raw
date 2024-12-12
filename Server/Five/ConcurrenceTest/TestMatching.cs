@@ -40,7 +40,7 @@ namespace ConcurrenceTest
         {
             await Repeat.RepeatAsync(clients, (log) =>
             {
-                servce.Match(log);
+                servce.Match(log.Id);
             });
             Assert.AreEqual(5000, matching.GameCount);
             for (int i = 1; i <= 5000; i++)
@@ -59,8 +59,8 @@ namespace ConcurrenceTest
         {
             await Repeat.RepeatAsync(clients, (log) =>
             {
-                servce.Match(log);
-                servce.Cancel(log);
+                servce.Match(log.Id);
+                servce.Cancel(log.Id);
             });
             for (int i = 0; i < players.Count; i++)
             {
@@ -72,11 +72,11 @@ namespace ConcurrenceTest
         {
             await Repeat.RepeatAsync(clients, (log) =>
             {
-                servce.Match(log);
+                servce.Match(log.Id);
             });
             await Repeat.RepeatAsync(clients, (log) =>
             {
-                servce.Cancel(log);
+                servce.Cancel(log.Id);
             });
             for (int i = 0; i < players.Count; i++)
             {
@@ -124,10 +124,7 @@ namespace ConcurrenceTest
             {
                 socket.Close();
             });
-            for (int i = 0; i < sockets.Count; i++)
-            {
-                Assert.AreEqual(0, sockets[i].Id);
-            }
+            AssertCo.AssertSequence(sockets.ToArray(), (a) => a.Id);
         }
     }
 }

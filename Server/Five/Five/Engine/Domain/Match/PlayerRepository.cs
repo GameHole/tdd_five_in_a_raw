@@ -26,30 +26,18 @@ namespace Five
             this.gen = gen;
             players = new ConcurrentDictionary<int, Player>();
         }
-
-        public void Login(AClient client)
-        {
-            Player player = NewPlayer();
-            player.notifier = client;
-            client.Id = player.Id;
-            client.onClose += () =>
-            {
-                OutLine(client.Id);
-                client.Id = gen.InvailedId;
-            };
-         
-        }
         public Player FindPlayer(int id)
         {
             return players[id];
         }
-        public Player NewPlayer()
+        public int Login(INotifier notifier)
         {
             var id = gen.Genrate();
             var player = new Player();
+            player.notifier = notifier;
             player.Id = id;
             Add(id, player);
-            return player;
+            return id;
         }
 
         public void OutLine(int id)

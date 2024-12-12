@@ -10,50 +10,6 @@ namespace Five
         {
             this.domain = domain;
         }
-
-        public Result Cancel(AClient client)
-        {
-            var player = domain.playerRsp.FindPlayer(client.Id);
-            lock (domain.roomRsp.lcoker)
-            {
-                var game = domain.roomRsp.GetRoom(player.RoomId);
-                if (game == null)
-                {
-                    return ResultDefine.NotInMatching;
-                }
-                if (game.IsRunning)
-                {
-                    return ResultDefine.GameStarted;
-                }
-                game.Leave(player);
-                return ResultDefine.Success;
-            }
-        }
-
-        public Result Match(AClient client)
-        {
-            var player = domain.playerRsp.FindPlayer(client.Id);
-            lock (domain.roomRsp.lcoker)
-            {
-                var game = domain.roomRsp.GetRoom(player.RoomId);
-                if (game == null)
-                {
-                    game = FindNotStartGame();
-                    game.Join(player);
-                    player.Match();
-                    if (game.isFull())
-                    {
-                        game.Start();
-                    }
-                    return ResultDefine.Success;
-                }
-                if (game.IsRunning)
-                {
-                    return ResultDefine.GameStarted;
-                }
-                return ResultDefine.Matching;
-            }
-        }
         private Room FindNotStartGame()
         {
             foreach (var item in domain.roomRsp)
@@ -75,9 +31,48 @@ namespace Five
             domain.Stop();
         }
 
-        public void Login(AClient client)
+        public Result Match(int id)
         {
-            domain.playerRsp.Login(client);
+            var player = domain.playerRsp.FindPlayer(id);
+            lock (domain.roomRsp.lcoker)
+            {
+                var game = domain.roomRsp.GetRoom(player.RoomId);
+                if (game == null)
+                {
+                    game = FindNotStartGame();
+                    game.Join(player);
+                    player.Match();
+                    if (game.isFull())
+                    {
+                        game.Start();
+                    }
+                    return ResultDefine.Success;
+                }
+                if (game.IsRunning)
+                {
+                    return ResultDefine.GameStarted;
+                }
+                return ResultDefine.Matching;
+            }
+        }
+
+        public Result Cancel(int id)
+        {
+            var player = domain.playerRsp.FindPlayer(id);
+            lock (domain.roomRsp.lcoker)
+            {
+                var game = domain.roomRsp.GetRoom(player.RoomId);
+                if (game == null)
+                {
+                    return ResultDefine.NotInMatching;
+                }
+                if (game.IsRunning)
+                {
+                    return ResultDefine.GameStarted;
+                }
+                game.Leave(player);
+                return ResultDefine.Success;
+            }
         }
     }
 }

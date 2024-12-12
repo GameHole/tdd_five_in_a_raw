@@ -8,14 +8,14 @@ namespace FivesUnitTest
 {
     class TestMessageProcesser
     {
-        LogSocket logSocket;
+        LogSocket logClient;
         MessageProcesser msgProcesser;
         LogProcesser logProcesser;
         [SetUp]
         public void SetUp()
         {
             logProcesser = new LogProcesser();
-            logSocket = new LogSocket();
+            logClient = new LogSocket();
             msgProcesser = new MessageProcesser(logProcesser);
         }
         [Test]
@@ -24,9 +24,9 @@ namespace FivesUnitTest
             var processer = new LogProcesser();
             msgProcesser.Processers.Add(processer.OpCode,processer);
             var msg = new Message(processer.OpCode);
-            msgProcesser.Process(logSocket, msg);
+            msgProcesser.Process(logClient, msg);
             Assert.AreEqual("Process", processer.log);
-            Assert.AreEqual(logSocket, processer.client);
+            Assert.AreEqual(logClient, processer.client);
             Assert.AreEqual(msg, processer.msg);
         }
         [Test]
@@ -35,7 +35,7 @@ namespace FivesUnitTest
             var mgr = new Domain(new GameFactroy(), new IdGenrator());
             var svc = new MatchServce(mgr);
             LogPlayer logPlayer = LogPlayer.EmntyLog();
-            mgr.playerRsp.Add(logSocket.Id, logPlayer);
+            mgr.playerRsp.Add(logClient.Id, logPlayer);
 
             var matchProcesser = new MatchRequestProcesser();
             matchProcesser.Init(svc);
@@ -46,23 +46,23 @@ namespace FivesUnitTest
 
             var opErrProcesser = new OpCodeErrorResponseProcesser();
 
-            matchProcesser.Process(logSocket, new Message(MessageCode.RequestMatch));
+            matchProcesser.Process(logClient, new Message(MessageCode.RequestMatch));
             Assert.AreEqual("Match ", logPlayer.log);
-            Assert.AreEqual("Send opcode:2 result:0", logSocket.log);
+            Assert.AreEqual("Send opcode:2 result:0", logClient.log);
 
-            cnacelProcesser.Process(logSocket, new Message(MessageCode.RequestCancelMatch));
+            cnacelProcesser.Process(logClient, new Message(MessageCode.RequestCancelMatch));
 
             Assert.AreEqual("Match Reset CancelMatch ", logPlayer.log);
-            Assert.AreEqual("Send opcode:4 result:0", logSocket.log);
+            Assert.AreEqual("Send opcode:4 result:0", logClient.log);
 
             var message = new PlayRequest { x = 1, y = 2 };
-            playProcesser.Process(logSocket, message);
+            playProcesser.Process(logClient, message);
 
             Assert.AreEqual($"Match Reset CancelMatch Play({message.x},{message.y}) ", logPlayer.log);
-            Assert.AreEqual("Send opcode:6 result:29999", logSocket.log);
+            Assert.AreEqual("Send opcode:6 result:29999", logClient.log);
 
-            opErrProcesser.Process(logSocket, new Message(200));
-            Assert.AreEqual("Send opcode:-10000 unknown opcode:200", logSocket.log);
+            opErrProcesser.Process(logClient, new Message(200));
+            Assert.AreEqual("Send opcode:-10000 unknown opcode:200", logClient.log);
         }
         [Test]
         public void testLoginSvc()
@@ -71,14 +71,15 @@ namespace FivesUnitTest
             var svc = new MatchServce(mgr);
             var loginSvc = new ConnectProcesser();
             loginSvc.Init(svc);
-            loginSvc.Process(logSocket, default);
-            Assert.AreEqual(2, logSocket.Id);
-            var player = mgr.playerRsp.FindPlayer(logSocket.Id);
-            Assert.AreEqual(player.Id, logSocket.Id);
-            logSocket.onClose.Invoke();
+            loginSvc.Process(logClient, default);
+            Assert.AreEqual(2, logClient.Id);
+            var player = mgr.playerRsp.FindPlayer(logClient.Id);
+            Assert.AreSame(logClient, player.notifier);
+            Assert.AreEqual(player.Id, logClient.Id);
+            logClient.onClose.Invoke();
             Assert.AreEqual(typeof(NoneNotifier), player.notifier.GetType());
             Assert.AreEqual(0, mgr.playerRsp.Count);
-            Assert.AreEqual(1, logSocket.Id);
+            Assert.AreEqual(2, logClient.Id);
         }
 
         [Test]
@@ -87,7 +88,7 @@ namespace FivesUnitTest
             var play = new PlayRequestProcesser();
             var ex = Assert.Throws<NullReferenceException>(() =>
             {
-                play.Process(logSocket,new Message(MessageCode.RequestPlay));
+                play.Process(logClient,new Message(MessageCode.RequestPlay));
             });
         }
         [Test]
@@ -99,7 +100,7 @@ namespace FivesUnitTest
         [Test]
         public void testProcessUnkonwnMessage()
         {
-            msgProcesser.Process(logSocket,new Message(999));
+            msgProcesser.Process(logClient,new Message(999));
             Assert.AreEqual("Process", logProcesser.log);
         }
     }

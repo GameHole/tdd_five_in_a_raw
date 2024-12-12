@@ -4,9 +4,9 @@
     {
         public override int OpCode => MessageCode.RequestMatch;
 
-        protected override Response ProcessContant(AClient socket, Message message)
+        protected override Response ProcessContant(AClient client, Message message)
         {
-            return new Response().SetInfo(message, servce.Match(socket));
+            return new Response().SetInfo(message, servce.Match(client.Id));
         }
     }
 }
