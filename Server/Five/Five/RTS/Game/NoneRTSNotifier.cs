@@ -6,7 +6,7 @@ namespace Five.RTS
 {
     public class NoneRTSNotifier : IRTSNotifier
     {
-        public void StartRTS(List<Charater> info, float fshx, float fshy)
+        public void StartRTS(RTSStartNotify notify)
         {
         }
     }

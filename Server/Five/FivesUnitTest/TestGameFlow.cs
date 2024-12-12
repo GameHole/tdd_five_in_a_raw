@@ -108,12 +108,12 @@ namespace FivesUnitTest
         [Test]
         public void testNotify()
         {
-            Assert.AreEqual("Start(0,1)(1,2) Turn id:0", ntfs[0].log);
-            Assert.AreEqual(ntfs[0].log, ntfs[1].log);
+            Assert.AreEqual("Send opcode:7 0 (1,0)(2,1) Send opcode:13 0 ", ntfs[0].log);
+            Assert.AreEqual("Send opcode:7 1 (1,0)(2,1) Send opcode:13 0 ", ntfs[1].log);
             players[0].Commit(new PlayRequest { x = 1, y = 0 });
-            Assert.AreEqual("Start(0,1)(1,2) Turn id:0 Played(1,0)id:0 Turn id:1", ntfs[0].log);
+            Assert.AreEqual("Send opcode:7 0 (1,0)(2,1) Send opcode:13 0 Send opcode:9 (1,0)0 Send opcode:13 1 ", ntfs[0].log);
             game.Finish(0);
-            Assert.AreEqual("Start(0,1)(1,2) Turn id:0 Played(1,0)id:0 Turn id:1 Finish:0", ntfs[0].log);
+            Assert.AreEqual("Send opcode:7 0 (1,0)(2,1) Send opcode:13 0 Send opcode:9 (1,0)0 Send opcode:13 1 Send opcode:11 0 ", ntfs[0].log);
         }
 
         [Test]

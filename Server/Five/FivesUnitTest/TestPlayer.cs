@@ -62,7 +62,7 @@ namespace FivesUnitTest
         [Test]
         public void testOutLineInGame()
         {
-            player.notifier = new NetNotifier(new LogSocket(), player);
+            player.notifier = new LogNotifier();
             player.OutLine();
             Assert.IsInstanceOf<NoneNotifier>(player.notifier);
             Assert.IsFalse(room.ContainPlayer(player));

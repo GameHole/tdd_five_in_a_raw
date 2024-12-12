@@ -27,15 +27,15 @@ namespace Five
             matchers = new ConcurrentDictionary<AClient, Player>();
         }
 
-        public void Login(AClient socket)
+        public void Login(AClient client)
         {
-            Player player = NewMatcher(socket);
-            player.notifier = new NetNotifier(socket, player);
-            Add(socket, player);
+            Player player = NewMatcher(client);
+            player.notifier = client;
+            Add(client, player);
         }
-        public Player FindPlayer(AClient socket)
+        public Player FindPlayer(AClient client)
         {
-            return matchers[socket];
+            return matchers[client];
         }
         private Player NewMatcher(AClient client)
         {

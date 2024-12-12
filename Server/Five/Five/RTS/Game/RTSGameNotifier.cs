@@ -15,7 +15,7 @@ namespace Five.RTS
         {
             foreach (var item in game.Players)
             {
-                item.rtsnotifier.StartRTS(charaters, finishX, finishY);
+                item.notifier.Send(new RTSStartNotify { info = charaters, fshx = finishX, fshy = finishY });
             }
         }
     }

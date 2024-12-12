@@ -9,14 +9,10 @@ namespace FivesUnitTest
     {
         public string log;
 
-        public void StartRTS(List<Charater> info, float fshx, float fshy)
+        public void StartRTS(RTSStartNotify notify)
         {
-            log += "Start";
-            foreach (var item in info)
-            {
-                log += $"({item.id},{item.x},{item.y})";
-            }
-            log += $"({fshx},{fshy})";
+            log += $"Send {notify}";
+            
         }
     }
 }

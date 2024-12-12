@@ -12,8 +12,6 @@ namespace Five
         public INotifier notifier;
         internal IPlayable playable;
 
-        public IRTSNotifier rtsnotifier;
-
         public int RoomId { get; internal set; } = -1;
         public int chess { get; private set; }
         public int PlayerId { get; internal set; }
@@ -21,7 +19,6 @@ namespace Five
         {
             Reset();
             notifier = new NoneNotifier();
-            rtsnotifier = new NoneRTSNotifier();
         }
         public virtual void Match()
         {

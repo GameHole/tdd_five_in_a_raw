@@ -30,7 +30,7 @@ namespace FivesUnitTest
             Assert.AreEqual(2, socket.Id);
             Assert.AreEqual(1, mgr.Count);
             var player = mgr.FindPlayer(socket);
-            Assert.AreEqual(typeof(NetNotifier), player.notifier.GetType());
+            Assert.AreSame(socket, player.notifier);
 
             socket.onClose.Invoke();
             Assert.AreEqual(typeof(NoneNotifier), player.notifier.GetType());

@@ -11,7 +11,7 @@ namespace FivesUnitTest.RTS
     {
         private RTSGame game;
         private LogPlayer[] ps;
-        private LogRTSNotifier[] ntfs;
+        private LogNotifier[] ntfs;
 
         [SetUp]
         public void set()
@@ -20,11 +20,11 @@ namespace FivesUnitTest.RTS
             game = gameFact.Factroy() as RTSGame;
             var room = new TRoom();
             ps = new LogPlayer[2];
-            ntfs = new LogRTSNotifier[ps.Length];
+            ntfs = new LogNotifier[ps.Length];
             for (int i = 0; i < ps.Length; i++)
             {
                 ps[i] = new LogPlayer();
-                ps[i].rtsnotifier = ntfs[i] = new LogRTSNotifier();
+                ps[i].notifier = ntfs[i] = new LogNotifier();
             }
             room.players = ps;
             game.Init(room);
@@ -51,7 +51,7 @@ namespace FivesUnitTest.RTS
             for (int i = 0; i < ntfs.Length; i++)
             {
                 var ntf = ntfs[i];
-                Assert.AreEqual($"Start(0,0,1)(1,10,2)(20,22.5)", ntf.log);
+                Assert.AreEqual($"Send opcode:7(0,0,1)(1,10,2)(20,22.5) ", ntf.log);
             }
         }
         [Test]
@@ -77,10 +77,10 @@ namespace FivesUnitTest.RTS
         public void testReset()
         {
             var player = new LogPlayer();
-            Assert.IsInstanceOf<NoneRTSNotifier>(player.rtsnotifier);
-            var ntf = player.rtsnotifier;
+            Assert.IsInstanceOf<NoneNotifier>(player.notifier);
+            var ntf = player.notifier;
             player.Reset();
-            Assert.AreSame(ntf, player.rtsnotifier);
+            Assert.AreSame(ntf, player.notifier);
             game.Start();
             ps[0].Reset();
             Assert.AreEqual(-1, ps[0].PlayerId);

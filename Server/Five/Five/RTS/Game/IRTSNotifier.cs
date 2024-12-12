@@ -6,6 +6,6 @@ namespace Five.RTS
 {
     public interface IRTSNotifier
     {
-        void StartRTS(List<Charater> info, float fshx, float fshy);
+        void StartRTS(RTSStartNotify notify);
     }
 }
