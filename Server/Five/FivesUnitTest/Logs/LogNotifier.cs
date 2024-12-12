@@ -8,20 +8,20 @@ namespace FivesUnitTest
     {
         internal string log;
 
-        public void Finish(int id)
+        public void Finish(PlayerIdNotify notify)
         {
-            log += $" Finish:{id}";
+            log += $" Finish:{notify.playerId}";
         }
 
-        public void Played(int x, int y, int id)
+        public void Played(PlayedNotify notify)
         {
-            log += $" Played({x},{y})id:{id}";
+            log += $" Played({notify.x},{notify.y})id:{notify.id}";
         }
 
-        public void Start(PlayerInfo[] info)
+        public void Start(StartNotify notify)
         {
             log += "Start";
-            foreach (var item in info)
+            foreach (var item in notify.infos)
             {
                 log += $"({item.PlayerId},{item.Chess})";
             }
@@ -29,9 +29,9 @@ namespace FivesUnitTest
 
    
 
-        public void Turn(int id)
+        public void Turn(PlayerIdNotify notify)
         {
-            log += $" Turn id:{id}";
+            log += $" Turn id:{notify.playerId}";
         }
     }
 }

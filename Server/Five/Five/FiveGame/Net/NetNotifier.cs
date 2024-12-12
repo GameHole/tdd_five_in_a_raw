@@ -14,25 +14,25 @@ namespace Five
             this.socket = socket;
             this.player = player;
         }
-        public void Finish(int id)
+        public void Finish(PlayerIdNotify  notify)
         {
-            socket.Send(new PlayerIdNotify(MessageCode.FinishNotify, id));
+            socket.Send(notify);
         }
 
-        public void Played(int x, int y, int id)
+        public void Played(PlayedNotify notify)
         {
-            socket.Send(new PlayedNotify { x = x, y = y, id = id });
+            socket.Send(notify);
         }
 
-        public void Start(PlayerInfo[] info)
+        public void Start(StartNotify notify)
         {
-            socket.Send(new StartNotify { playerId = player.PlayerId, infos = info });
+            socket.Send(notify);
         }
 
 
-        public void Turn(int id)
+        public void Turn(PlayerIdNotify notify)
         {
-            socket.Send(new PlayerIdNotify(MessageCode.TurnNotify, id));
+            socket.Send(notify);
         }
     }
 }

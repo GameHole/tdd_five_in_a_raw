@@ -18,25 +18,26 @@ namespace FivesUnitTest
         [Test]
         public void testStart()
         {
-            notifier.Start(new PlayerInfo[] { new PlayerInfo(1, 10), new PlayerInfo(2, 20) });
+            var infos = new PlayerInfo[] { new PlayerInfo(1, 10), new PlayerInfo(2, 20) };
+            notifier.Start(new StartNotify { playerId = -1, infos = infos });
             Assert.AreEqual("Send opcode:7 -1 (1,10)(2,20)", socket.log);
         }
         [Test]
         public void testFinish()
         {
-            notifier.Finish(1);
+            notifier.Finish(new PlayerIdNotify(11, 1));
             Assert.AreEqual("Send opcode:11 1", socket.log);
         }
         [Test]
         public void testPlayed()
         {
-            notifier.Played(5,6,1);
+            notifier.Played(new PlayedNotify { x = 5, y = 6, id = 1 });
             Assert.AreEqual("Send opcode:9 (5,6)1", socket.log);
         }
         [Test]
         public void testTurn()
         {
-            notifier.Turn(1);
+            notifier.Turn(new PlayerIdNotify { opcode=13, playerId=1});
             Assert.AreEqual("Send opcode:13 1", socket.log);
         }
     }

@@ -5,9 +5,9 @@ namespace Five
 {
     public interface INotifier
     {
-        void Played(int x, int y, int id);
-        void Start(PlayerInfo[] info);
-        void Finish(int id);
-        void Turn(int id);
+        void Played(PlayedNotify notify);
+        void Start(StartNotify notify);
+        void Finish(PlayerIdNotify notify);
+        void Turn(PlayerIdNotify notify);
     }
 }

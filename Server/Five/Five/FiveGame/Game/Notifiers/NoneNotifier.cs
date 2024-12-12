@@ -7,12 +7,12 @@ namespace Five
 {
     public class NoneNotifier : INotifier
     {
-        public void Finish(int id) { }
+        public void Finish(PlayerIdNotify notify) { }
 
-        public void Played(int x, int y, int id) { }
+        public void Played(PlayedNotify notify) { }
 
-        public void Start(PlayerInfo[] info) { }
+        public void Start(StartNotify notify) { }
 
-        public void Turn(int id) { }
+        public void Turn(PlayerIdNotify notify) { }
     }
 }

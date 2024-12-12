@@ -15,7 +15,7 @@ namespace Five
         {
             foreach (var item in game.Players)
             {
-                item.notifier.Played(x, y, playerId);
+                item.notifier.Played(new PlayedNotify { x = x, y = y, id = playerId });
             }
         }
         public void NotifyStart()
@@ -28,14 +28,14 @@ namespace Five
             }
             foreach (var item in game.Players)
             {
-                item.notifier.Start(infos);
+                item.notifier.Start(new StartNotify { playerId = item.PlayerId, infos = infos });
             }
         }
         public void NotifyFinish(int id)
         {
             foreach (var item in game.Players)
             {
-                item.notifier.Finish(id);
+                item.notifier.Finish(new PlayerIdNotify(MessageCode.FinishNotify, id));
             }
         }
 
@@ -43,7 +43,7 @@ namespace Five
         {
             foreach (var item in game.Players)
             {
-                item.notifier.Turn(index);
+                item.notifier.Turn(new PlayerIdNotify(MessageCode.TurnNotify, index));
             }
         }
     }
