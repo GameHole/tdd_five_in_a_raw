@@ -6,7 +6,7 @@ namespace Five.RTS
 {
     public class RTSGame : AGame
     {
-        public List<Charater> charaters = new List<Charater>();
+        public Dictionary<int,Charater> charaters = new Dictionary<int, Charater>();
 
         public float finishX => 20;
 
@@ -15,17 +15,14 @@ namespace Five.RTS
         public override void Start()
         {
             base.Start();
-            int i = 0;
             foreach (var item in room.Players)
             {
-                var id = i++;
-                Charater ch = SpwanChar(id);
-                item.PlayerId = id;
-                charaters.Add(ch);
+                int id = item.PlayerId;
+                charaters.Add(id,SpwanChar(id));
             }
             var notify = new RTSStartNotify
             {
-                info = charaters,
+                info = charaters.Values,
                 fshx = finishX,
                 fshy = finishY
             };
@@ -53,7 +50,7 @@ namespace Five.RTS
         public override Result Commit(Message message, Player player)
         {
             var ch = charaters[player.PlayerId];
-            MoveToMessage moveToMessage = message as MoveToMessage;
+            MoveTo moveToMessage = message as MoveTo;
             ch.targetX = moveToMessage.x;
             ch.targetY = moveToMessage.y;
             return ResultDefine.Success;

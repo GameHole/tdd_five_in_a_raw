@@ -2,6 +2,7 @@
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
@@ -18,16 +19,10 @@ namespace FivesUnitTest
     }
     class TAccepter : Domain
     {
-        public Five.Client ssocket = null;
         internal int stopCount;
 
         public TAccepter() : base(new TGameFactroy(),new TIdGenrator())
         {
-        }
-
-        public override void Login(AClient socket)
-        {
-            ssocket = socket as Five.Client;
         }
 
         public override void Stop()
@@ -65,11 +60,12 @@ namespace FivesUnitTest
             client.Connect("127.0.0.1", TestApp.port);
             await Task.Delay(200);
             Assert.AreEqual(1, server.clients.Count);
+            var ssocket = server.clients.First();
             server.Stop();
             Assert.AreEqual(1, accepter.stopCount);
             Assert.IsFalse(server.IsRun);
             Assert.AreEqual(0, server.clients.Count);
-            Assert.IsFalse(accepter.ssocket.isVailed);
+            Assert.IsFalse(ssocket.isVailed);
             Assert.Throws<ObjectDisposedException>(() =>
             {
                 server.socket.Accept();

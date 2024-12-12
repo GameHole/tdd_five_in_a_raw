@@ -6,7 +6,7 @@ namespace FivesUnitTest
     internal class LogProcesser : IProcesser
     {
         internal string log;
-        internal object socket;
+        internal AClient client;
         internal Message msg;
         internal int _code = 10000;
 
@@ -14,10 +14,10 @@ namespace FivesUnitTest
 
         public List<Message> msgs = new List<Message>();
 
-        public void Process(AClient socket, Message message)
+        public void Process(AClient client, Message message)
         {
             log = "Process";
-            this.socket = socket;
+            this.client = client;
             msg = message;
             msgs.Add(message);
         }

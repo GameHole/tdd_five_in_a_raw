@@ -14,31 +14,31 @@ namespace ConcurrenceTest
         private RoomRepository matching;
         private PlayerRepository mgr;
         private MatchServce servce;
-        private List<LogSocket> sockets;
+        private List<TClient> clients;
         private List<LogPlayer> players;
 
         [SetUp]
         public void set()
         {
-            var app = new Domain( new GameFactroy(),new IdGenrator());
-            matching = app.roomRsp;
-            mgr = app.playerRsp;
-            servce = new MatchServce(app);
-            sockets = new List<LogSocket>(10000);
+            var domain = new Domain( new GameFactroy(),new IdGenrator());
+            matching = domain.roomRsp;
+            mgr = domain.playerRsp;
+            servce = new MatchServce(domain);
+            clients = new List<TClient>(10000);
             players = new List<LogPlayer>(10000);
             for (int i = 0; i < 10000; i++)
             {
-                var socket = new LogSocket();
+                var client = new TClient{ _id=i};
                 var p = LogPlayer.EmntyLog();
-                sockets.Add(socket);
+                clients.Add(client);
                 players.Add(p);
-                mgr.Add(socket, p);
+                mgr.Add(client.Id, p);
             }
         }
         [Test]
         public async Task testMgrMatch()
         {
-            await Repeat.RepeatAsync(sockets, (log) =>
+            await Repeat.RepeatAsync(clients, (log) =>
             {
                 servce.Match(log);
             });
@@ -49,7 +49,7 @@ namespace ConcurrenceTest
                 Assert.AreEqual(i, game.Id);
                 Assert.AreEqual(game.maxPlayer, game.PlayerCount);
             }
-            for (int i = 0; i < sockets.Count; i++)
+            for (int i = 0; i < clients.Count; i++)
             {
                 Assert.AreEqual("Match Start ",players[i].log);
             }
@@ -57,7 +57,7 @@ namespace ConcurrenceTest
         [Test]
         public async Task testMgrCancelMatch()
         {
-            await Repeat.RepeatAsync(sockets, (log) =>
+            await Repeat.RepeatAsync(clients, (log) =>
             {
                 servce.Match(log);
                 servce.Cancel(log);
@@ -70,27 +70,17 @@ namespace ConcurrenceTest
         [Test]
         public async Task testMgrCancelMatchAsync()
         {
-            List<LogSocket> sockets = new List<LogSocket>(10000);
-            List<LogPlayer> matchers = new List<LogPlayer>(10000);
-            for (int i = 0; i < 10000; i++)
-            {
-                var socket = new LogSocket();
-                var p = new LogPlayer();
-                sockets.Add(socket);
-                matchers.Add(p);
-                mgr.Add(socket, p);
-            }
-            await Repeat.RepeatAsync(sockets, (log) =>
+            await Repeat.RepeatAsync(clients, (log) =>
             {
                 servce.Match(log);
             });
-            await Repeat.RepeatAsync(sockets, (log) =>
+            await Repeat.RepeatAsync(clients, (log) =>
             {
                 servce.Cancel(log);
             });
-            for (int i = 0; i < matchers.Count; i++)
+            for (int i = 0; i < players.Count; i++)
             {
-                Assert.IsTrue(isCancelRunning(matchers[i]));
+                Assert.IsTrue(isCancelRunning(players[i]));
             }
         }
         bool isCancelRunning(LogPlayer matcher)
@@ -110,11 +100,13 @@ namespace ConcurrenceTest
                 array[index] = gen.Genrate();
             });
             Assert.AreEqual(count, gen.Seed);
-            AssertCo.AssertAllNotEqual(array);
+            AssertCo.AssertSequence(array);
         }
         [Test]
         public async Task testLogin()
         {
+            var loginSvc = new ConnectProcesser();
+            loginSvc.Init(servce);
             mgr.Stop();
             List<LogSocket> sockets = new List<LogSocket>(10000);
             for (int i = 0; i < 10000; i++)
@@ -124,10 +116,10 @@ namespace ConcurrenceTest
             }
             await Repeat.RepeatAsync(sockets, (socket) =>
             {
-                mgr.Login(socket);
+                loginSvc.Process(socket,default);
             });
             Assert.AreEqual(sockets.Count, mgr.Count);
-            AssertCo.AssertAllNotEqual(sockets.ToArray(),(a)=>a.Id);
+            AssertCo.AssertSequence(sockets.ToArray(),(a)=>a.Id);
             await Repeat.RepeatAsync(sockets, (socket) =>
             {
                 socket.Close();

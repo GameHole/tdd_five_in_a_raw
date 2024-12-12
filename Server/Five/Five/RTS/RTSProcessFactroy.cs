@@ -21,8 +21,26 @@ namespace Five.RTS
             var stop = new ServerStopProcesser();
             stop.Init(servce);
             p.connect = connect;
-            p.serverStop = stop;
+            p.serverStop = stop; 
+            var array = NewProcessers();
+            foreach (var item in array)
+            {
+                p.Processers.Add(item.OpCode, item);
+            }
+            foreach (var item in array)
+            {
+                item.Init(servce);
+            }
             return p;
+        }
+        protected virtual RequestProcesser[] NewProcessers()
+        {
+            return new RequestProcesser[]
+            {
+                new MatchRequestProcesser(),
+                new CancelRequestProcesser(),
+                new PlayRequestProcesser()
+            };
         }
     }
 }

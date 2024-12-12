@@ -24,6 +24,7 @@ namespace FivesUnitTest.RTS
             for (int i = 0; i < ps.Length; i++)
             {
                 ps[i] = new LogPlayer();
+                ps[i].SetPlayerId(i+1);
                 ps[i].notifier = ntfs[i] = new LogNotifier();
             }
             room.players = ps;
@@ -37,11 +38,11 @@ namespace FivesUnitTest.RTS
             Assert.AreEqual(2, game.charaters.Count);
             for (int i = 0; i < game.charaters.Count; i++)
             {
-                var ch = game.charaters[i];
-                Assert.AreEqual(i, ch.id);
-                Assert.AreEqual(i, ps[i].PlayerId);
-                Assert.AreEqual(i * 10, ch.x);
-                Assert.AreEqual(i + 1, ch.y);
+                var ch = game.charaters[i+1];
+                Assert.AreEqual(i+1, ch.id);
+                Assert.AreEqual(ps[i].PlayerId, ch.id);
+                Assert.AreEqual((i+1) * 10, ch.x);
+                Assert.AreEqual(i + 2, ch.y);
             }
         }
         [Test]
@@ -51,7 +52,7 @@ namespace FivesUnitTest.RTS
             for (int i = 0; i < ntfs.Length; i++)
             {
                 var ntf = ntfs[i];
-                Assert.AreEqual($"Send opcode:7(0,0,1)(1,10,2)(20,22.5) ", ntf.log);
+                Assert.AreEqual($"Send opcode:7(1,10,2)(2,20,3)(20,22.5) ", ntf.log);
             }
         }
         [Test]
@@ -62,7 +63,7 @@ namespace FivesUnitTest.RTS
             Assert.AreEqual(0, game.charaters.Count);
             for (int i = 0; i < ps.Length; i++)
             {
-                Assert.AreEqual(i, ps[i].PlayerId);
+                Assert.AreEqual(i+1, ps[i].PlayerId);
             }
         }
 
@@ -89,12 +90,12 @@ namespace FivesUnitTest.RTS
         public void testPlayerInput()
         {
             game.Start();
-            ps[0].Commit(new MoveToMessage { x = 1, y = 2 });
-            Assert.AreEqual(1, game.charaters[0].targetX);
-            Assert.AreEqual(2, game.charaters[0].targetY);
-            game.Commit(new MoveToMessage { x = 2, y = 3 }, ps[0]);
-            Assert.AreEqual(2, game.charaters[0].targetX);
-            Assert.AreEqual(3, game.charaters[0].targetY);
+            ps[0].Commit(new MoveTo { x = 1, y = 2 });
+            Assert.AreEqual(1, game.charaters[1].targetX);
+            Assert.AreEqual(2, game.charaters[1].targetY);
+            game.Commit(new MoveTo { x = 2, y = 3 }, ps[0]);
+            Assert.AreEqual(2, game.charaters[1].targetX);
+            Assert.AreEqual(3, game.charaters[1].targetY);
         }
     }
 }

@@ -8,7 +8,8 @@ namespace Five.RTS
     {
         public void Regist(MessageSerializer ser)
         {
-            
+            ser.Container.Add(MessageCode.RequestMatch, new DefaultSerializer());
+            ser.Container.Add(MessageCode.GetResponseCode(MessageCode.RequestMatch), new ResponseSerializer());
         }
     }
 }

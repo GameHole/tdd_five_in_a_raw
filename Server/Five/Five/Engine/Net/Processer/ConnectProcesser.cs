@@ -7,9 +7,10 @@ namespace Five
     public class ConnectProcesser : AServceProcesser
     {
         public override int OpCode { get; }
-        public override void Process(AClient socket, Message message)
+        public override void Process(AClient client, Message message)
         {
-            servce.Login(socket);
+            var rsp = servce.domain.playerRsp;
+            rsp.Login(client);
         }
     }
 }

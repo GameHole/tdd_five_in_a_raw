@@ -26,16 +26,16 @@ namespace FivesUnitTest
             var msg = new Message(processer.OpCode);
             msgProcesser.Process(logSocket, msg);
             Assert.AreEqual("Process", processer.log);
-            Assert.AreEqual(logSocket, processer.socket);
+            Assert.AreEqual(logSocket, processer.client);
             Assert.AreEqual(msg, processer.msg);
         }
         [Test]
         public void testProcessMessage()
         {
-            var mgr = new Domain(new GameFactroy(),new IdGenrator());
+            var mgr = new Domain(new GameFactroy(), new IdGenrator());
             var svc = new MatchServce(mgr);
             LogPlayer logPlayer = LogPlayer.EmntyLog();
-            mgr.playerRsp.Add(logSocket, logPlayer);
+            mgr.playerRsp.Add(logSocket.Id, logPlayer);
 
             var matchProcesser = new MatchRequestProcesser();
             matchProcesser.Init(svc);
@@ -46,24 +46,41 @@ namespace FivesUnitTest
 
             var opErrProcesser = new OpCodeErrorResponseProcesser();
 
-            matchProcesser.Process(logSocket,new Message(MessageCode.RequestMatch));
+            matchProcesser.Process(logSocket, new Message(MessageCode.RequestMatch));
             Assert.AreEqual("Match ", logPlayer.log);
             Assert.AreEqual("Send opcode:2 result:0", logSocket.log);
 
-            cnacelProcesser.Process(logSocket,new Message(MessageCode.RequestCancelMatch));
+            cnacelProcesser.Process(logSocket, new Message(MessageCode.RequestCancelMatch));
 
             Assert.AreEqual("Match Reset CancelMatch ", logPlayer.log);
             Assert.AreEqual("Send opcode:4 result:0", logSocket.log);
 
             var message = new PlayRequest { x = 1, y = 2 };
-            playProcesser.Process(logSocket,message);
+            playProcesser.Process(logSocket, message);
 
             Assert.AreEqual($"Match Reset CancelMatch Play({message.x},{message.y}) ", logPlayer.log);
             Assert.AreEqual("Send opcode:6 result:29999", logSocket.log);
 
-            opErrProcesser.Process(logSocket,new Message(200));
+            opErrProcesser.Process(logSocket, new Message(200));
             Assert.AreEqual("Send opcode:-10000 unknown opcode:200", logSocket.log);
         }
+        [Test]
+        public void testLoginSvc()
+        {
+            var mgr = new Domain(new GameFactroy(), new TIdGenrator { id=2, inviled=1});
+            var svc = new MatchServce(mgr);
+            var loginSvc = new ConnectProcesser();
+            loginSvc.Init(svc);
+            loginSvc.Process(logSocket, default);
+            Assert.AreEqual(2, logSocket.Id);
+            var player = mgr.playerRsp.FindPlayer(logSocket.Id);
+            Assert.AreEqual(player.Id, logSocket.Id);
+            logSocket.onClose.Invoke();
+            Assert.AreEqual(typeof(NoneNotifier), player.notifier.GetType());
+            Assert.AreEqual(0, mgr.playerRsp.Count);
+            Assert.AreEqual(1, logSocket.Id);
+        }
+
         [Test]
         public void testCastException()
         {

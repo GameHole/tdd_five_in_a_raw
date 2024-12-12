@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Five.RTS
 {
-    public class MoveToMessage : Message
+    public class MoveTo : Message
     {
         public int x;
         public int y;

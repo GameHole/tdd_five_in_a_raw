@@ -17,47 +17,55 @@ namespace Five
     }
     public class PlayerRepository
     {
-        private ConcurrentDictionary<AClient, Player> matchers;
+        private ConcurrentDictionary<int, Player> players;
         private IdGenrator gen;
 
-        public int Count => matchers.Count;
+        public int Count => players.Count;
         public PlayerRepository(IdGenrator gen)
         {
             this.gen = gen;
-            matchers = new ConcurrentDictionary<AClient, Player>();
+            players = new ConcurrentDictionary<int, Player>();
         }
 
         public void Login(AClient client)
         {
-            Player player = NewMatcher(client);
+            Player player = NewPlayer();
             player.notifier = client;
-            Add(client, player);
-        }
-        public Player FindPlayer(AClient client)
-        {
-            return matchers[client];
-        }
-        private Player NewMatcher(AClient client)
-        {
-            client.Id = gen.Genrate();
-            var player = new Player();
+            client.Id = player.Id;
             client.onClose += () =>
             {
-                player.OutLine();
+                OutLine(client.Id);
                 client.Id = gen.InvailedId;
-                matchers.TryRemove(client, out var c);
             };
+         
+        }
+        public Player FindPlayer(int id)
+        {
+            return players[id];
+        }
+        public Player NewPlayer()
+        {
+            var id = gen.Genrate();
+            var player = new Player();
+            player.Id = id;
+            Add(id, player);
             return player;
+        }
+
+        public void OutLine(int id)
+        {
+            FindPlayer(id).OutLine();
+            players.TryRemove(id, out var c);
         }
 
         public void Stop()
         {
-            matchers.Clear();
+            players.Clear();
         }
 
-        public void Add(AClient client,Player player)
+        public void Add(int id,Player player)
         {
-            matchers.TryAdd(client, player);
+            players.TryAdd(id, player);
         }
     }
 }

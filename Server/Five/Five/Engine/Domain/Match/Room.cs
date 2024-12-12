@@ -40,7 +40,7 @@ namespace Five
             if (TryDistributeIdentity(out var playerId))
             {
                 player.RoomId = Id;
-                player.PlayerId = playerId;
+                player.SetPlayerId(playerId);
                 players.TryAdd(player.PlayerId, player);
 
                 player.playable = new WaitGamePlayable();

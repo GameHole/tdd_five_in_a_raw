@@ -8,12 +8,12 @@ namespace ConcurrenceTest
 {
     public static class AssertCo
     {
-        public static void AssertAllNotEqual(int[] array)
+        public static void AssertSequence(int[] array)
         {
-            AssertAllNotEqual(array, (i) => i);
+            AssertSequence(array, (i) => i);
         }
 
-        internal static void AssertAllNotEqual<T>(T[] array, Func<T, int> property)
+        internal static void AssertSequence<T>(T[] array, Func<T, int> property)
         {
             Array.Sort(array, (a, b) =>
             {

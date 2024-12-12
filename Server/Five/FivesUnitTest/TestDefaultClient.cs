@@ -2,6 +2,7 @@
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using System.Text;
 using System.Threading.Tasks;
@@ -12,6 +13,7 @@ namespace FivesUnitTest
     {
         Server server;
         private TAccepter accepter;
+        private LogRequestRegister logProcFact;
         Five.Client client;
         [SetUp]
         public void SetUp()
@@ -19,8 +21,8 @@ namespace FivesUnitTest
             var factroy = new NetFactroy(new SerializerRegister(),new SocketFactroy());
             client = factroy.NewClient();
             accepter = new TAccepter();
-            var log = new LogRequestRegister(new MatchServce( accepter));
-            server = factroy.NewServer("127.0.0.1", TestApp.port, log);// new Server(net, log);
+            logProcFact = new LogRequestRegister(new MatchServce( accepter));
+            server = factroy.NewServer("127.0.0.1", TestApp.port, logProcFact);
             server.StartAsync();
         }
         [TearDown]
@@ -81,7 +83,7 @@ namespace FivesUnitTest
             Assert.AreEqual(12 * 3, client.packer.recevingStream.Count);
             client.Recv();
             Assert.AreEqual(3, log.msgs.Count);
-            Assert.AreSame(client, log.socket);
+            Assert.AreSame(client, log.client);
             for (int i = 0; i < log.msgs.Count; i++)
             {
                 Assert.AreEqual(1, log.msgs[i].opcode);
@@ -89,18 +91,18 @@ namespace FivesUnitTest
         }
 
         [Test]
-        public async Task testSend()
+        public async Task testLogin()
         {
+            var test = new LogProcesser();
+            logProcFact.processer.connect = test;
             await Task.Delay(200);
             client.Connect("127.0.0.1", TestApp.port);
             await Task.Delay(200);
-            LogProcesser log = LogProcesser.mockServerClient(accepter.ssocket);
+            LogProcesser log = LogProcesser.mockServerClient(test.client as Client);
             client.Send(new Message(MessageCode.RequestMatch));
             await Task.Delay(100);
             Assert.AreEqual(1, log.msg.opcode);
         }
-
-      
 
         [Test]
         public async Task testClose()
@@ -108,16 +110,17 @@ namespace FivesUnitTest
             await Task.Delay(200);
             client.Connect("127.0.0.1", TestApp.port);
             await Task.Delay(200);
+            var ssocket = server.clients.First();
             var log = "";
-            accepter.ssocket.onClose += () => log += $"close";
+            ssocket.onClose += () => log += $"close";
             client.Close();
             await Task.Delay(100);
             Assert.AreEqual("close", log);
-            Assert.IsFalse(server.clients.Contains(accepter.ssocket));
-            Assert.IsFalse(accepter.ssocket.isVailed);
+            Assert.IsFalse(server.clients.Contains(ssocket));
+            Assert.IsFalse(ssocket.isVailed);
             Assert.Throws<ObjectDisposedException>(()=>
             {
-                accepter.ssocket.Send(new Message(1));
+                ssocket.Send(new Message(1));
             });
         }
     }

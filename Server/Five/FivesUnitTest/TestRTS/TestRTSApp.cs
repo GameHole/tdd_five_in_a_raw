@@ -39,9 +39,17 @@ namespace FivesUnitTest.RTS
             }
         }
         [Test]
-        public void testStart()
+        public async Task testStart()
         {
-            Assert.Pass();
+            await Task.Delay(200);
+            clients[0].Connect("127.0.0.1", 12000);
+            await Task.Delay(200);
+            var code = MessageCode.GetResponseCode(MessageCode.RequestMatch);
+            var log = LogProcesser.mockProcesser(clients[0], code);
+            clients[0].Send(new Message { opcode = MessageCode.RequestMatch });
+            await Task.Delay(200);
+            Assert.AreEqual(code, log.msg.opcode);
+
         }
     }
 }

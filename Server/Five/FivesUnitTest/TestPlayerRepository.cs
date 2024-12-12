@@ -7,7 +7,7 @@ using System.Text;
 
 namespace FivesUnitTest
 {
-    class TestMatcherMgr
+    class TestPlayerRepository
     {
         private TIdGenrator gen;
         PlayerRepository mgr;
@@ -18,24 +18,33 @@ namespace FivesUnitTest
             mgr = new PlayerRepository(gen);
         }
         [Test]
-        public void testClientMgr()
+        public void testNew()
         {
             Assert.AreEqual(0, mgr.Count);
         }
         [Test]
-        public void testonAcceptMgr()
+        public void testOnAcceptMgr()
         {
             var socket = new LogSocket();
             mgr.Login(socket);
             Assert.AreEqual(2, socket.Id);
+            
             Assert.AreEqual(1, mgr.Count);
-            var player = mgr.FindPlayer(socket);
+            var player = mgr.FindPlayer(socket.Id);
             Assert.AreSame(socket, player.notifier);
-
-            socket.onClose.Invoke();
+            Assert.AreEqual(2, player.Id);
+            mgr.OutLine(socket.Id);
             Assert.AreEqual(typeof(NoneNotifier), player.notifier.GetType());
             Assert.AreEqual(0, mgr.Count);
-            Assert.AreEqual(1, socket.Id);
+            Assert.AreEqual(2, socket.Id);
+        }
+        [Test]
+        public void testNewPlayer()
+        {
+            var player = mgr.NewPlayer();
+            Assert.IsInstanceOf<NoneNotifier>(player.notifier);
+            Assert.AreEqual(2, player.Id);
+            Assert.AreEqual(1, mgr.Count);
         }
         [Test]
         public void testIdGenrator()

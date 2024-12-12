@@ -22,7 +22,7 @@ namespace FivesUnitTest
     {
 
         public TReqProc test = new TReqProc();
-        internal object processer;
+        internal MessageProcesser processer;
 
         public LogRequestRegister(MatchServce mgr) : base(mgr)
         {

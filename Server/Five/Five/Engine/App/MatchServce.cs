@@ -4,7 +4,7 @@ namespace Five
 {
     public class MatchServce
     {
-        private Domain domain;
+        public Domain domain { get; }
 
         public MatchServce(Domain domain)
         {
@@ -13,7 +13,7 @@ namespace Five
 
         public Result Cancel(AClient client)
         {
-            var player = domain.playerRsp.FindPlayer(client);
+            var player = domain.playerRsp.FindPlayer(client.Id);
             lock (domain.roomRsp.lcoker)
             {
                 var game = domain.roomRsp.GetRoom(player.RoomId);
@@ -32,7 +32,7 @@ namespace Five
 
         public Result Match(AClient client)
         {
-            var player = domain.playerRsp.FindPlayer(client);
+            var player = domain.playerRsp.FindPlayer(client.Id);
             lock (domain.roomRsp.lcoker)
             {
                 var game = domain.roomRsp.GetRoom(player.RoomId);
@@ -67,7 +67,7 @@ namespace Five
         }
         public Result Commit(PlayRequest request, AClient client)
         {
-            return domain.playerRsp.FindPlayer(client).Commit(request);
+            return domain.playerRsp.FindPlayer(client.Id).Commit(request);
         }
 
         public void Stop()
@@ -75,9 +75,9 @@ namespace Five
             domain.Stop();
         }
 
-        public void Login(AClient socket)
+        public void Login(AClient client)
         {
-            domain.Login(socket);
+            domain.playerRsp.Login(client);
         }
     }
 }

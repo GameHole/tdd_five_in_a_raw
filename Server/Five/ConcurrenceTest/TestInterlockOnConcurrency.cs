@@ -52,7 +52,7 @@ namespace ConcurrenceTest
                 array[index] = Interlocked.Increment(ref t.index);
             });
             Assert.AreEqual(count, t.index);
-            AssertCo.AssertAllNotEqual(array);
+            AssertCo.AssertSequence(array);
         }
         
 
@@ -65,7 +65,7 @@ namespace ConcurrenceTest
                 array[index] = Interlocked.Increment(ref this.index);
             });
             Assert.AreEqual(count, index);
-            AssertCo.AssertAllNotEqual(array);
+            AssertCo.AssertSequence(array);
         }
 
         [Test]
@@ -87,7 +87,7 @@ namespace ConcurrenceTest
             Assert.AreEqual(count, t.index);
             Assert.Throws<AssertionException>(() =>
             {
-                AssertCo.AssertAllNotEqual(array);
+                AssertCo.AssertSequence(array);
             });
         }
         [Test]
@@ -99,7 +99,7 @@ namespace ConcurrenceTest
                 array[index] = t.add1();
             });
             Assert.AreEqual(count, t.index);
-            AssertCo.AssertAllNotEqual(array);
+            AssertCo.AssertSequence(array);
         }
         [Test]
         public async Task testArrayForClassVirMethord()
@@ -110,7 +110,7 @@ namespace ConcurrenceTest
                 array[index] = t.viradd();
             });
             Assert.AreEqual(count, t.index);
-            AssertCo.AssertAllNotEqual(array);
+            AssertCo.AssertSequence(array);
         }
         [Test]
         public async Task testArrayForClassPrivateAttr()
@@ -121,7 +121,7 @@ namespace ConcurrenceTest
                 array[index] = t.priadd();
             });
             Assert.AreEqual(count, t.Pindex);
-            AssertCo.AssertAllNotEqual(array);
+            AssertCo.AssertSequence(array);
         }
         [Test]
         public async Task testArrayForInner()
@@ -132,7 +132,7 @@ namespace ConcurrenceTest
                 array[index] = Interlocked.Increment(ref mark);
             });
             Assert.AreEqual(count, mark);
-            AssertCo.AssertAllNotEqual(array);
+            AssertCo.AssertSequence(array);
         }
         [Test]
         public async Task testArrayForLock()
@@ -144,7 +144,7 @@ namespace ConcurrenceTest
                     array[index] = ++mark;
             });
             Assert.AreEqual(count, mark);
-            AssertCo.AssertAllNotEqual(array);
+            AssertCo.AssertSequence(array);
         }
         [Test]
         public async Task testArrayForLocal()
