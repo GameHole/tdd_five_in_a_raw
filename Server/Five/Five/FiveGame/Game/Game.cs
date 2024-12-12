@@ -4,9 +4,7 @@ using System.Text;
 namespace Five
 {
     public class Game : AGame
-    {
-        private GameNotifier gameNotifier;
-       
+    {       
         public Turn turn { get; private set; }
         public LoopTimer timer { get; private set; }
         public Chessboard chessboard { get; private set; }
@@ -19,31 +17,42 @@ namespace Five
         {
             base.Init(room);
             turn = new Turn(room.maxPlayer);
-            gameNotifier = new GameNotifier(room);
         }
 
         public override void Start()
         {
-            foreach (var item in room.Players)
-            {
-                item.playable = this;
-            }
+            base.Start();
             var chess = 1;
             foreach (var item in room.Players)
             {
                 item.Start(chess++);
             }
             turn.Start();
-            gameNotifier.NotifyStart();
+            NotifyStart();
             NotifyTurnPlayer();
             TimerDriver.Start(timer);
             timer.onTime -= NextPlayer;
             timer.onTime += NextPlayer;
         }
 
+      
+
+        public void NotifyStart()
+        {
+            var infos = new PlayerInfo[room.maxPlayer];
+            int i = 0;
+            foreach (var item in room.Players)
+            {
+                infos[i++] = new PlayerInfo(item.chess, item.PlayerId);
+            }
+            foreach (var item in room.Players)
+            {
+                item.notifier.Send(new StartNotify { playerId = item.PlayerId, infos = infos });
+            }
+        }
         private void NotifyTurnPlayer()
         {
-            gameNotifier.NotifyTurn(turn.index);
+            room.NotifyAllPlayer(new PlayerIdNotify(MessageCode.TurnNotify, turn.index));
         }
 
         public void NextPlayer()
@@ -55,7 +64,7 @@ namespace Five
 
         public void Finish(int id)
         {
-            gameNotifier.NotifyFinish(id);
+            room.NotifyAllPlayer(new PlayerIdNotify(MessageCode.FinishNotify, id));
             room.Stop();
         }
 
@@ -76,7 +85,8 @@ namespace Five
             {
                 return ResultDefine.AllReadyHasChess;
             }
-            gameNotifier.NotifyPlay(x, y, player.PlayerId);
+            var notify = new PlayedNotify { x = x, y = y, id = player.PlayerId };
+            room.NotifyAllPlayer(notify);
             if (chessboard.isFiveInRow(player.chess))
             {
                 Finish(player.PlayerId);

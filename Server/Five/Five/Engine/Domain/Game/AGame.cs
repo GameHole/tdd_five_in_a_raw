@@ -7,7 +7,17 @@
         {
             this.room = room;
         }
-        public abstract void Start();
+        public virtual void Start()
+        {
+            SetPlayable();
+        }
+        private void SetPlayable()
+        {
+            foreach (var item in room.Players)
+            {
+                item.playable = this;
+            }
+        }
         public abstract void Stop();
         public abstract Result Commit(Message message, Player player);
     }

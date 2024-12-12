@@ -7,23 +7,14 @@ namespace Five.RTS
     public class RTSGame : AGame
     {
         public List<Charater> charaters = new List<Charater>();
-        private RTSGameNotifier notifier;
 
         public float finishX => 20;
 
         public float finishY => 22.5f;
 
-        public override void Init(IRoom room)
-        {
-            base.Init(room);
-            notifier = new RTSGameNotifier(room);
-        }
         public override void Start()
         {
-            foreach (var item in room.Players)
-            {
-                item.playable = this;
-            }
+            base.Start();
             int i = 0;
             foreach (var item in room.Players)
             {
@@ -32,9 +23,14 @@ namespace Five.RTS
                 item.PlayerId = id;
                 charaters.Add(ch);
             }
-            notifier.NotifyRTSStart(charaters,finishX,finishY);
+            var notify = new RTSStartNotify
+            {
+                info = charaters,
+                fshx = finishX,
+                fshy = finishY
+            };
+            room.NotifyAllPlayer(notify);
         }
-
         private Charater SpwanChar(int id)
         {
             var ch = new Charater { id = id };

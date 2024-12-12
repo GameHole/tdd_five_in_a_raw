@@ -9,6 +9,13 @@ namespace Five
     {
         IEnumerable<Player> Players { get; }
         int maxPlayer { get; }
+        void NotifyAllPlayer(Message notify)
+        {
+            foreach (var item in Players)
+            {
+                item.notifier.Send(notify);
+            }
+        }
     }
     public class Room: IRoom
     {
