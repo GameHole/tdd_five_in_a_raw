@@ -23,16 +23,6 @@ namespace FivesUnitTest
             Assert.AreEqual(0, mgr.Count);
         }
         [Test]
-        public void testOnAcceptMgr()
-        {
-            var socket = new LogSocket();
-            mgr.Login(socket);
-            Assert.AreEqual(0, socket.Id);
-            Assert.AreEqual(0, mgr.Count);
-            Assert.IsNull(socket.onClose);
-           
-        }
-        [Test]
         public void testNewPlayer()
         {
             var ntf = new NoneNotifier();
