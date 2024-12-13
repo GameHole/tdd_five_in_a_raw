@@ -14,12 +14,7 @@ namespace Five
 
         public int RoomId { get; internal set; } = -1;
         public int chess { get; private set; }
-        public int PlayerId { get; private set; }
         public int Id { get; }
-        public void SetPlayerId(int id)
-        {
-            PlayerId = id;
-        }
         public Player(int id=0)
         {
             Id = id;
@@ -42,7 +37,6 @@ namespace Five
         public virtual void Reset()
         {
             RoomId = 0;
-            PlayerId = -1;
             playable = new NonePlayable();
             outlineable = new NoneOutLineable();
             chess = 0;

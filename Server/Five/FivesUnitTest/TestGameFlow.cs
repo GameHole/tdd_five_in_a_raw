@@ -22,7 +22,7 @@ namespace FivesUnitTest
             ntfs = new LogNotifier[2];
             for (int i = 0; i < players.Length; i++)
             {
-                var player = LogPlayer.EmntyLog();
+                var player = LogPlayer.EmntyLog(i+3);
                 ntfs[i] = new LogNotifier();
                 player.notifier = ntfs[i];
                 room.Join(player);
@@ -67,9 +67,11 @@ namespace FivesUnitTest
             game.chessboard.AddValue(1, 0, chess);
             game.chessboard.AddValue(2, 0, chess);
             game.chessboard.AddValue(3, 0, chess);
+            ntfs[0].log = null;
             players[0].Commit(new PlayRequest { x = 4, y = 0 });
             Assert.AreEqual("Start Play(4,0) Reset ", players[0].log);
             Assert.AreEqual("Start Reset ", players[1].log);
+            Assert.AreEqual("Send opcode:9 (4,0)3 Send opcode:11 3 ", ntfs[0].log);
             Assert.AreEqual(0, game.turn.index);
             players[1].Commit(new PlayRequest { x = 10, y = 10 });
             Assert.AreEqual("Start Play(4,0) Reset ", players[0].log);
@@ -87,7 +89,6 @@ namespace FivesUnitTest
             Assert.AreEqual(0, room.PlayerCount);
             foreach (var item in players)
             {
-                Assert.AreEqual(-1, item.PlayerId);
                 Assert.AreEqual(0, item.RoomId);
             }
             Assert.IsFalse(TimerDriver.IsContainTimer(game.timer));
@@ -108,12 +109,12 @@ namespace FivesUnitTest
         [Test]
         public void testNotify()
         {
-            Assert.AreEqual("Send opcode:7 0 (1,0)(2,1) Send opcode:13 0 ", ntfs[0].log);
-            Assert.AreEqual("Send opcode:7 1 (1,0)(2,1) Send opcode:13 0 ", ntfs[1].log);
+            Assert.AreEqual("Send opcode:7 3 (1,3)(2,4) Send opcode:13 3 ", ntfs[0].log);
+            Assert.AreEqual("Send opcode:7 4 (1,3)(2,4) Send opcode:13 3 ", ntfs[1].log);
             players[0].Commit(new PlayRequest { x = 1, y = 0 });
-            Assert.AreEqual("Send opcode:7 0 (1,0)(2,1) Send opcode:13 0 Send opcode:9 (1,0)0 Send opcode:13 1 ", ntfs[0].log);
-            game.Finish(0);
-            Assert.AreEqual("Send opcode:7 0 (1,0)(2,1) Send opcode:13 0 Send opcode:9 (1,0)0 Send opcode:13 1 Send opcode:11 0 ", ntfs[0].log);
+            Assert.AreEqual("Send opcode:7 3 (1,3)(2,4) Send opcode:13 3 Send opcode:9 (1,0)3 Send opcode:13 4 ", ntfs[0].log);
+            game.Finish(3);
+            Assert.AreEqual("Send opcode:7 3 (1,3)(2,4) Send opcode:13 3 Send opcode:9 (1,0)3 Send opcode:13 4 Send opcode:11 3 ", ntfs[0].log);
         }
 
         [Test]
@@ -133,10 +134,6 @@ namespace FivesUnitTest
             room.Stop();
             Assert.IsFalse(room.IsRunning);
             Assert.AreEqual(0, room.PlayerCount);
-            foreach (var item in players)
-            {
-                Assert.AreEqual(-1, item.PlayerId);
-            }
             Assert.IsFalse(TimerDriver.IsContainTimer(game.timer));
         }
         [Test]

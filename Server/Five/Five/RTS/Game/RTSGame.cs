@@ -17,7 +17,7 @@ namespace Five.RTS
             base.Start();
             foreach (var item in room.Players)
             {
-                int id = item.PlayerId;
+                int id = item.Id;
                 charaters.Add(id,SpwanChar(id));
             }
             var notify = new RTSStartNotify
@@ -40,16 +40,9 @@ namespace Five.RTS
         {
             charaters.Clear();
         }
-
-        public void MoveTo(float x, float y, Player player)
-        {
-            var ch = charaters[player.PlayerId];
-            ch.targetX = x;
-            ch.targetY = y;
-        }
         public override Result Commit(Message message, Player player)
         {
-            var ch = charaters[player.PlayerId];
+            var ch = charaters[player.Id];
             MoveTo moveToMessage = message as MoveTo;
             ch.targetX = moveToMessage.x;
             ch.targetY = moveToMessage.y;

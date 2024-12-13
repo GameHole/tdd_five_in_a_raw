@@ -40,8 +40,7 @@ namespace Five
             if (TryDistributeIdentity(out var playerId))
             {
                 player.RoomId = Id;
-                player.SetPlayerId(playerId);
-                players.TryAdd(player.PlayerId, player);
+                players.TryAdd(player.Id, player);
 
                 player.playable = new WaitGamePlayable();
                 player.outlineable = new StopOutLineable(this, player);
@@ -79,7 +78,7 @@ namespace Five
 
         public void Remove(Player player)
         {
-            if (players.TryRemove(player.PlayerId, out var p))
+            if (players.TryRemove(player.Id, out var p))
             {
                 Interlocked.Decrement(ref _count);
                 player.Reset();
@@ -87,7 +86,7 @@ namespace Five
         }
         public bool ContainPlayer(Player player)
         {
-            return players.ContainsKey(player.PlayerId);
+            return players.ContainsKey(player.Id);
         }
         public virtual void Stop()
         {

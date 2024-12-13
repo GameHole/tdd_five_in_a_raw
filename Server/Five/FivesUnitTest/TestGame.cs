@@ -32,7 +32,7 @@ namespace FivesUnitTest
             var players = new LogPlayer[2];
             for (int i = 0; i < players.Length; i++)
             {
-                players[i] = LogPlayer.EmntyLog();
+                players[i] = LogPlayer.EmntyLog(i+2);
                 room.Join(players[i]);
             }
             game.turn.index = 1;
@@ -57,9 +57,9 @@ namespace FivesUnitTest
         [Test]
         public void testFull()
         {
-            room.Join(new Player());
+            room.Join(new Player(1));
             Assert.IsFalse(room.isFull());
-            var p = new Player();
+            var p = new Player(2);
             room.Join(p);
             Assert.IsTrue(room.isFull());
             room.Remove(p);
@@ -68,14 +68,12 @@ namespace FivesUnitTest
         [Test]
         public void testJoinPlayer()
         {
-            var player0 = new Player();
-            Assert.AreEqual(-1, player0.PlayerId);
+            var player0 = new Player(1);
             Assert.IsTrue(room.Join(player0));
             Assert.IsTrue(room.ContainPlayer(player0));
-            Assert.AreEqual(0, player0.PlayerId);
             Assert.AreEqual(room.Id, player0.RoomId);
             Assert.AreEqual(1, room.PlayerCount);
-            Assert.AreEqual(player0, room.GetPlayer(player0.PlayerId));
+            Assert.AreEqual(player0, room.GetPlayer(player0.Id));
         }
         [Test]
         public void testJoinMaxPlayer()
@@ -94,7 +92,6 @@ namespace FivesUnitTest
             var player0 = new Player();
             room.Join(player0);
             room.Remove(player0);
-            Assert.AreEqual(-1, player0.PlayerId);
             Assert.AreEqual(0, room.PlayerCount);
             Assert.AreEqual(0, player0.RoomId);
             Assert.IsFalse(room.ContainPlayer(player0));
@@ -121,7 +118,11 @@ namespace FivesUnitTest
         {
             for (int c = 0; c < 2; c++)
             {
-                var players = new Player[] { new Player(), new Player() };
+                var players = new Player[] 
+                {
+                    new Player(3),
+                    new Player(4) 
+                };
                 for (int i = 0; i < players.Length; i++)
                 {
                     room.Join(players[i]);

@@ -23,8 +23,7 @@ namespace FivesUnitTest.RTS
             ntfs = new LogNotifier[ps.Length];
             for (int i = 0; i < ps.Length; i++)
             {
-                ps[i] = new Player();
-                ps[i].SetPlayerId(i+1);
+                ps[i] = new Player(i + 1);
                 ps[i].notifier = ntfs[i] = new LogNotifier();
             }
             room.players = ps;
@@ -40,7 +39,6 @@ namespace FivesUnitTest.RTS
             {
                 var ch = game.charaters[i+1];
                 Assert.AreEqual(i+1, ch.id);
-                Assert.AreEqual(ps[i].PlayerId, ch.id);
                 Assert.AreEqual((i+1) * 10, ch.x);
                 Assert.AreEqual(i + 2, ch.y);
             }
@@ -63,7 +61,7 @@ namespace FivesUnitTest.RTS
             Assert.AreEqual(0, game.charaters.Count);
             for (int i = 0; i < ps.Length; i++)
             {
-                Assert.AreEqual(i+1, ps[i].PlayerId);
+                Assert.AreEqual(i+1, ps[i].Id);
             }
         }
 
@@ -82,9 +80,6 @@ namespace FivesUnitTest.RTS
             var ntf = player.notifier;
             player.Reset();
             Assert.AreSame(ntf, player.notifier);
-            game.Start();
-            ps[0].Reset();
-            Assert.AreEqual(-1, ps[0].PlayerId);
         }
         [Test]
         public void testPlayerInput()

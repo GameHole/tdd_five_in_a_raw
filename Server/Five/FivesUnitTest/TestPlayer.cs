@@ -44,7 +44,6 @@ namespace FivesUnitTest
             player.Reset();
             Assert.AreEqual(0, player.chess);
             Assert.AreEqual(0, player.RoomId);
-            Assert.AreEqual(-1, player.PlayerId);
             Assert.DoesNotThrow(() =>
             {
                 player.Commit(new PlayRequest());

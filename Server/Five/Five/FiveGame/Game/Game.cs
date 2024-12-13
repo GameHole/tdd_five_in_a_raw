@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Text;
 
 namespace Five
@@ -8,6 +9,7 @@ namespace Five
         public Turn turn { get; private set; }
         public LoopTimer timer { get; private set; }
         public Chessboard chessboard { get; private set; }
+        private List<int> playerIDs;
         public Game(int boardSize,float turnTime)
         {
             timer = new LoopTimer(turnTime);
@@ -22,10 +24,12 @@ namespace Five
         public override void Start()
         {
             base.Start();
+            playerIDs = new List<int>();
             var chess = 1;
             foreach (var item in room.Players)
             {
                 item.Start(chess++);
+                playerIDs.Add(item.Id);
             }
             turn.Start();
             NotifyStart();
@@ -34,25 +38,22 @@ namespace Five
             timer.onTime -= NextPlayer;
             timer.onTime += NextPlayer;
         }
-
-      
-
         public void NotifyStart()
         {
             var infos = new PlayerInfo[room.maxPlayer];
             int i = 0;
             foreach (var item in room.Players)
             {
-                infos[i++] = new PlayerInfo(item.chess, item.PlayerId);
+                infos[i++] = new PlayerInfo(item.chess, item.Id);
             }
             foreach (var item in room.Players)
             {
-                item.notifier.Send(new StartNotify { playerId = item.PlayerId, infos = infos });
+                item.notifier.Send(new StartNotify { playerId = item.Id, infos = infos });
             }
         }
         private void NotifyTurnPlayer()
         {
-            room.NotifyAllPlayer(new PlayerIdNotify(MessageCode.TurnNotify, turn.index));
+            room.NotifyAllPlayer(new PlayerIdNotify(MessageCode.TurnNotify, playerIDs[turn.index]));
         }
 
         public void NextPlayer()
@@ -76,7 +77,7 @@ namespace Five
 
         public override Result Commit(Message message,Player player)
         {
-            if (player.PlayerId != turn.index)
+            if (player.Id !=playerIDs[turn.index])
                 return ResultDefine.NotCurrentTurnPlayer;
             PlayMessage play = message as PlayMessage;
             int x = play.x;
@@ -85,11 +86,11 @@ namespace Five
             {
                 return ResultDefine.AllReadyHasChess;
             }
-            var notify = new PlayedNotify { x = x, y = y, id = player.PlayerId };
+            var notify = new PlayedNotify { x = x, y = y, id = player.Id };
             room.NotifyAllPlayer(notify);
             if (chessboard.isFiveInRow(player.chess))
             {
-                Finish(player.PlayerId);
+                Finish(player.Id);
             }
             else
             {
