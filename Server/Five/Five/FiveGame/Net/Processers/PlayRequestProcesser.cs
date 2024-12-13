@@ -6,8 +6,6 @@ namespace Five
 {
     public class PlayRequestProcesser : RequestProcesser
     {
-        public override int OpCode => MessageCode.RequestPlay;
-
         protected override Response ProcessContant(AClient client, Message message)
         {
             var player = servce.domain.playerRsp.FindPlayer(client.Id);

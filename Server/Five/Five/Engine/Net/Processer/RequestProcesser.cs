@@ -7,8 +7,6 @@
         {
             this.servce = app;
         }
-        public abstract int OpCode { get; }
-
         public abstract void Process(AClient socket, Message message);
     }
     public abstract class RequestProcesser : AServceProcesser

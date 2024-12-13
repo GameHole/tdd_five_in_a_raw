@@ -8,9 +8,6 @@ namespace FivesUnitTest
         internal string log;
         internal AClient client;
         internal Message msg;
-        internal int _code = 10000;
-
-        public int OpCode => _code;
 
         public List<Message> msgs = new List<Message>();
 

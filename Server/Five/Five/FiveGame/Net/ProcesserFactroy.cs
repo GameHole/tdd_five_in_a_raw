@@ -1,5 +1,16 @@
 ﻿namespace Five
 {
+    public class Binder
+    {
+        public int OpCode { get; }
+        public AServceProcesser processer { get; }
+
+        public Binder(int code, AServceProcesser processer)
+        {
+            this.OpCode = code;
+            this.processer = processer;
+        }
+    }
     public class ProcesserFactroy: IProcesserFactroy
     {
         private readonly MatchServce app;
@@ -20,22 +31,22 @@
             var array = NewProcessers();
             foreach (var item in array)
             {
-                processer.Processers.Add(item.OpCode, item);
+                processer.Processers.Add(item.OpCode, item.processer);
             }
             foreach (var item in array)
             {
-                item.Init(app);
+                item.processer.Init(app);
             }
             return processer;
         }
-
-        protected virtual RequestProcesser[] NewProcessers()
+      
+        protected virtual Binder[] NewProcessers()
         {
-            return new RequestProcesser[]
+            return new Binder[]
             {
-                new MatchRequestProcesser(),
-                new CancelRequestProcesser(),
-                new PlayRequestProcesser()
+                new Binder(MessageCode.RequestMatch, new MatchRequestProcesser()),
+                new Binder(MessageCode.RequestCancelMatch, new CancelRequestProcesser()),
+                new Binder(MessageCode.RequestPlay, new PlayRequestProcesser())
             };
         }
     }

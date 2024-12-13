@@ -6,7 +6,6 @@ namespace Five
 {
     public interface IProcesser
     {
-        int OpCode { get; }
         void Process(AClient socket,Message message);
     }
 }
