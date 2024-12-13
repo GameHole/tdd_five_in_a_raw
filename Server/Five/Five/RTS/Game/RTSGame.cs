@@ -6,7 +6,7 @@ namespace Five.RTS
 {
     public class RTSGame : AGame
     {
-        public Dictionary<int,Charater> charaters = new Dictionary<int, Charater>();
+        public Dictionary<int,RTSCharater> charaters = new Dictionary<int, RTSCharater>();
 
         public float finishX => 20;
 
@@ -28,9 +28,9 @@ namespace Five.RTS
             };
             room.NotifyAllPlayer(notify);
         }
-        private Charater SpwanChar(int id)
+        private RTSCharater SpwanChar(int id)
         {
-            var ch = new Charater { id = id };
+            var ch = new RTSCharater(id);
             ch.x = id * 10;
             ch.y = id + 1;
             return ch;

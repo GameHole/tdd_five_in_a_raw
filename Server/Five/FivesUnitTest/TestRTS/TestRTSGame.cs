@@ -38,7 +38,7 @@ namespace FivesUnitTest.RTS
             for (int i = 0; i < game.charaters.Count; i++)
             {
                 var ch = game.charaters[i+1];
-                Assert.AreEqual(i+1, ch.id);
+                Assert.AreEqual(i+1, ch.Id);
                 Assert.AreEqual((i+1) * 10, ch.x);
                 Assert.AreEqual(i + 2, ch.y);
             }

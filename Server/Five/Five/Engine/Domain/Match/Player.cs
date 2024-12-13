@@ -13,8 +13,9 @@ namespace Five
         internal IPlayable playable;
 
         public int RoomId { get; internal set; } = -1;
-        public int chess { get; private set; }
         public int Id { get; }
+        public int state { get;private set; }
+
         public Player(int id=0)
         {
             Id = id;
@@ -31,15 +32,15 @@ namespace Five
         }
         public virtual void Start(int chess)
         {
-            this.chess = chess;
+          
         }
        
         public virtual void Reset()
         {
             RoomId = 0;
+            state = StateDefine.Idle;
             playable = new NonePlayable();
             outlineable = new NoneOutLineable();
-            chess = 0;
         }
         public virtual void OutLine()
         {
@@ -50,6 +51,27 @@ namespace Five
         public virtual Result Commit(Message message)
         {
             return playable.Commit(message, this);
+        }
+
+        public bool TrySwitchStateTo(int nextState)
+        {
+            if (forbinedTransition(nextState))
+                return false;
+            if (inviledTransition(nextState))
+                return false;
+            state = nextState;
+            return true;
+        }
+
+        private bool inviledTransition(int nextState)
+        {
+            return nextState == state;
+        }
+
+        private bool forbinedTransition(int nextState)
+        {
+            return nextState == StateDefine.Matching 
+                && state == StateDefine.Playing;
         }
     }
 }

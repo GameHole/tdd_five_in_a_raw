@@ -62,7 +62,7 @@ namespace FivesUnitTest
         public async Task testPlayToFinish()
         {
             game.timer.time = 1;
-            var chess = players[0].chess;
+            var chess = game.GetPlayerChess(players[0]);
             game.chessboard.AddValue(0,0, chess);
             game.chessboard.AddValue(1, 0, chess);
             game.chessboard.AddValue(2, 0, chess);

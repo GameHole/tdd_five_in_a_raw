@@ -11,7 +11,7 @@ namespace ConcurrenceTest
 {
     public class TestMatching
     {
-        private RoomRepository matching;
+        private RoomRepository roomRsp;
         private PlayerRepository mgr;
         private MatchServce servce;
         private List<LogPlayer> players;
@@ -20,7 +20,7 @@ namespace ConcurrenceTest
         public void set()
         {
             var domain = new Domain( new GameFactroy(),new IdGenrator());
-            matching = domain.roomRsp;
+            roomRsp = domain.roomRsp;
             mgr = domain.playerRsp;
             servce = new MatchServce(domain);
             players = new List<LogPlayer>(count);
@@ -38,17 +38,17 @@ namespace ConcurrenceTest
             {
                 servce.Match(i);
             });
-            int rc = count / 2;
-            Assert.AreEqual(rc, matching.Count);
-            for (int i = 1; i <= rc; i++)
+            int roomCount = count / 2;
+            Assert.AreEqual(roomCount, roomRsp.Count);
+            for (int i = 1; i <= roomCount; i++)
             {
-                var game = matching.GetRoom(i);
-                Assert.AreEqual(i, game.Id);
-                Assert.AreEqual(game.maxPlayer, game.PlayerCount);
+                var room = roomRsp.GetRoom(i);
+                Assert.AreEqual(i, room.Id);
+                Assert.AreEqual(room.maxPlayer, room.PlayerCount);
             }
             for (int i = 0; i < players.Count; i++)
             {
-                Assert.AreEqual("Match Start ",players[i].log);
+                Assert.AreEqual("Start ",players[i].log);
             }
         }
         [Test]

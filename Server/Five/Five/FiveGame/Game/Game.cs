@@ -5,11 +5,11 @@ using System.Text;
 namespace Five
 {
     public class Game : AGame
-    {       
+    {
         public Turn turn { get; private set; }
         public LoopTimer timer { get; private set; }
         public Chessboard chessboard { get; private set; }
-        private List<int> playerIDs;
+        private List<FiveCharater> playerIDs;
         public Game(int boardSize,float turnTime)
         {
             timer = new LoopTimer(turnTime);
@@ -24,12 +24,12 @@ namespace Five
         public override void Start()
         {
             base.Start();
-            playerIDs = new List<int>();
+            playerIDs = new List<FiveCharater>();
             var chess = 1;
             foreach (var item in room.Players)
             {
-                item.Start(chess++);
-                playerIDs.Add(item.Id);
+                item.Start(0);
+                playerIDs.Add(new FiveCharater(item.Id, chess++));
             }
             turn.Start();
             NotifyStart();
@@ -44,7 +44,7 @@ namespace Five
             int i = 0;
             foreach (var item in room.Players)
             {
-                infos[i++] = new PlayerInfo(item.chess, item.Id);
+                infos[i++] = new PlayerInfo(GetPlayerChess(item), item.Id);
             }
             foreach (var item in room.Players)
             {
@@ -53,7 +53,8 @@ namespace Five
         }
         private void NotifyTurnPlayer()
         {
-            room.NotifyAllPlayer(new PlayerIdNotify(MessageCode.TurnNotify, playerIDs[turn.index]));
+            var charater = getCurrentCharater();
+            room.NotifyAllPlayer(new PlayerIdNotify(MessageCode.TurnNotify, charater.Id));
         }
 
         public void NextPlayer()
@@ -77,26 +78,37 @@ namespace Five
 
         public override Result Commit(Message message,Player player)
         {
-            if (player.Id !=playerIDs[turn.index])
+            var charater = getCurrentCharater();
+            if (player.Id != charater.Id)
                 return ResultDefine.NotCurrentTurnPlayer;
             PlayMessage play = message as PlayMessage;
             int x = play.x;
             int y = play.y;
-            if (!chessboard.AddValue(x, y, player.chess))
+            if (!chessboard.AddValue(x, y, charater.Chess))
             {
                 return ResultDefine.AllReadyHasChess;
             }
             var notify = new PlayedNotify { x = x, y = y, id = player.Id };
             room.NotifyAllPlayer(notify);
-            if (chessboard.isFiveInRow(player.chess))
+            if (chessboard.isFiveInRow(charater.Chess))
             {
-                Finish(player.Id);
+                Finish(charater.Id);
             }
             else
             {
                 NextPlayer();
             }
             return ResultDefine.Success;
+        }
+
+        private FiveCharater getCurrentCharater()
+        {
+            return playerIDs[turn.index];
+        }
+
+        public int GetPlayerChess(Player player)
+        {
+            return playerIDs.Find((v) => v.Id == player.Id).Chess;
         }
     }
 }

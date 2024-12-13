@@ -9,11 +9,6 @@ namespace FivesUnitTest
     {
         public string log;
         public LogPlayer(int id) : base(id) { }
-        public override void Match()
-        {
-            base.Match();
-            log += "Match ";
-        }
         public override void CancelMatch()
         {
             base.CancelMatch();

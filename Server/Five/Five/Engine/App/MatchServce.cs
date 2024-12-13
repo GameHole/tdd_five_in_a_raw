@@ -57,16 +57,16 @@ namespace Five
             var player = domain.playerRsp.FindPlayer(id);
             lock (domain.roomRsp.lcoker)
             {
-                var game = domain.roomRsp.GetRoom(player.RoomId);
-                if (game == null)
+                var room = domain.roomRsp.GetRoom(player.RoomId);
+                if (room == null)
                 {
                     return ResultDefine.NotInMatching;
                 }
-                if (game.IsRunning)
+                if (room.IsRunning)
                 {
                     return ResultDefine.GameStarted;
                 }
-                game.Leave(player);
+                room.Leave(player);
                 return ResultDefine.Success;
             }
         }

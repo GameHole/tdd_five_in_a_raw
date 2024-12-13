@@ -8,7 +8,7 @@ namespace FivesUnitTest
 {
     class TestMatching
     {
-        RoomRepository gameRsp;
+        RoomRepository roomRsp;
         private PlayerRepository mgr;
         private LogPlayer player;
         private MatchServce servce;
@@ -18,7 +18,7 @@ namespace FivesUnitTest
         {
             clientId = 10000;
             var app = new Domain(new GameFactroy(),new TIdGenrator());
-            gameRsp = app.roomRsp;
+            roomRsp = app.roomRsp;
             mgr = app.playerRsp;
             player = LogPlayer.EmntyLog(clientId);
             mgr.Add(player);
@@ -27,24 +27,25 @@ namespace FivesUnitTest
         [Test]
         public void testMatching()
         {
-            Assert.AreEqual(0,gameRsp.Count);
+            Assert.AreEqual(0,roomRsp.Count);
         }
         [Test]
         public void testMatchOnePlayer()
         {
             servce.Match(clientId);
-            Assert.AreEqual("Match ", player.log);
+            Assert.IsEmpty(player.log);
             Assert.AreNotEqual(0, player.RoomId);
-            Assert.AreEqual(1, gameRsp.Count);
-            Assert.AreEqual(1, gameRsp.GetRoom(player.RoomId).PlayerCount);
+            Assert.AreEqual(1, roomRsp.Count);
+            Assert.AreEqual(1, roomRsp.GetRoom(player.RoomId).PlayerCount);
+            Assert.IsTrue(roomRsp.GetRoom(player.RoomId).ContainPlayer(player));
         }
         [Test]
         public void testMatchTwoPlayer()
         {
-            var players = new LogPlayer[2];
+            var players = new Player[2];
             for (int i = 0; i < players.Length; i++)
             {
-                var p = LogPlayer.EmntyLog(i);
+                var p = new Player(i);
                 players[i] = p;
                 mgr.Add(p);
             }
@@ -52,9 +53,12 @@ namespace FivesUnitTest
             {
                 servce.Match(i);
             }
+            var room = roomRsp.GetRoom(1);
             for (int i = 0; i < players.Length; i++)
             {
-                Assert.AreEqual("Match Start ", players[i].log);
+                Assert.AreEqual(1, players[i].RoomId);
+                Assert.IsTrue(room.ContainPlayer(players[i]));
+                Assert.IsTrue(room.IsRunning);
             }
         }
         [Test]
@@ -75,16 +79,16 @@ namespace FivesUnitTest
         [Test]
         public void testGetGame()
         {
-            Assert.AreEqual(null, gameRsp.GetRoom(0));
+            Assert.AreEqual(null, roomRsp.GetRoom(0));
         }
         [Test]
         public void testClear()
         {
             servce.Match(clientId);
-            var game = gameRsp.GetRoom(1);
-            gameRsp.Clear();
+            var game = roomRsp.GetRoom(1);
+            roomRsp.Clear();
             Assert.AreEqual(0, game.PlayerCount);
-            Assert.AreEqual(0, gameRsp.Count);
+            Assert.AreEqual(0, roomRsp.Count);
         }
         [Test]
         public void testCancel()
@@ -92,8 +96,8 @@ namespace FivesUnitTest
             servce.Match(clientId);
             int id = player.RoomId;
             Assert.AreEqual(ResultDefine.Success, servce.Cancel(clientId)); 
-            Assert.AreEqual(0, gameRsp.GetRoom(id).PlayerCount);
-            Assert.AreEqual("Match Reset CancelMatch ", player.log);
+            Assert.AreEqual(0, roomRsp.GetRoom(id).PlayerCount);
+            Assert.AreEqual("Reset CancelMatch ", player.log);
         }
         [Test]
         public void testCancelOnGameStart()
@@ -106,10 +110,10 @@ namespace FivesUnitTest
                 mgr.Add(p);
                 servce.Match(i);
             }
-            var room = gameRsp.GetRoom(player[0].RoomId);
+            var room = roomRsp.GetRoom(player[0].RoomId);
             Assert.AreEqual(ResultDefine.GameStarted, servce.Cancel(0));
             Assert.AreEqual(2, room.PlayerCount);
-            Assert.AreEqual("Match Start ", player[0].log);
+            Assert.AreEqual("Start ", player[0].log);
             (room.game as Game).Finish(1);
             Assert.AreEqual(ResultDefine.NotInMatching, servce.Cancel(0));
         }
@@ -123,7 +127,7 @@ namespace FivesUnitTest
         {
             var result = servce.Match(clientId);
             Assert.AreEqual(ResultDefine.Success, result);
-            Assert.AreEqual("Match ", player.log);
+            Assert.IsEmpty(player.log);
             Assert.AreEqual(1, player.RoomId);
             result = servce.Match(clientId);
             Assert.AreEqual(ResultDefine.Matching, result);
@@ -140,7 +144,7 @@ namespace FivesUnitTest
             result = servce.Match(clientId);
             Assert.AreEqual(ResultDefine.Success, result);
             result = servce.Cancel(clientId);
-            Assert.AreEqual("Match Reset CancelMatch ", player.log);
+            Assert.AreEqual("Reset CancelMatch ", player.log);
             Assert.AreEqual(ResultDefine.Success, result);
         }
         [Test]
@@ -150,7 +154,7 @@ namespace FivesUnitTest
             mgr.Add(player1);
             servce.Match(10001);
             servce.Match(clientId);
-            Assert.AreEqual("Match Start ", player.log);
+            Assert.AreEqual("Start ", player.log);
             var result = servce.Match(clientId);
             Assert.AreEqual(ResultDefine.GameStarted, result);
             result = servce.Cancel(clientId);

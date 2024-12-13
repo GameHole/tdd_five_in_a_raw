@@ -47,18 +47,18 @@ namespace FivesUnitTest
             var opErrProcesser = new OpCodeErrorResponseProcesser();
 
             matchProcesser.Process(logClient, new Message(MessageCode.RequestMatch));
-            Assert.AreEqual("Match ", logPlayer.log);
+            Assert.AreEqual(1, logPlayer.RoomId);
             Assert.AreEqual("Send opcode:2 result:0", logClient.log);
 
             cnacelProcesser.Process(logClient, new Message(MessageCode.RequestCancelMatch));
 
-            Assert.AreEqual("Match Reset CancelMatch ", logPlayer.log);
+            Assert.AreEqual("Reset CancelMatch ", logPlayer.log);
             Assert.AreEqual("Send opcode:4 result:0", logClient.log);
 
             var message = new PlayRequest { x = 1, y = 2 };
             playProcesser.Process(logClient, message);
 
-            Assert.AreEqual($"Match Reset CancelMatch Play({message.x},{message.y}) ", logPlayer.log);
+            Assert.AreEqual($"Reset CancelMatch Play({message.x},{message.y}) ", logPlayer.log);
             Assert.AreEqual("Send opcode:6 result:29999", logClient.log);
 
             opErrProcesser.Process(logClient, new Message(200));

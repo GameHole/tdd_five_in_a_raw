@@ -20,11 +20,6 @@ namespace FivesUnitTest
             player.Start(1);
         }
         [Test]
-        public void testJoinedPlayer()
-        {
-            Assert.AreEqual(1,player.chess);
-        }
-        [Test]
         public void testNoGamePlay()
         {
             var player = new Player();
@@ -42,12 +37,36 @@ namespace FivesUnitTest
         public void testFinish()
         {
             player.Reset();
-            Assert.AreEqual(0, player.chess);
             Assert.AreEqual(0, player.RoomId);
             Assert.DoesNotThrow(() =>
             {
                 player.Commit(new PlayRequest());
             });
+        }
+        [Test]
+        public void testState()
+        {
+            Assert.AreEqual(StateDefine.Idle, player.state);
+            Assert.IsTrue(player.TrySwitchStateTo(1));
+            Assert.AreEqual(1, player.state);
+            player.Reset();
+            Assert.AreEqual(StateDefine.Idle, player.state);
+        }
+        [Test]
+        public void testSwitchState()
+        {
+            Assert.IsTrue(player.TrySwitchStateTo(1));
+            Assert.IsFalse(player.TrySwitchStateTo(1));
+        }
+        [Test]
+        public void testSwitchStateForGame()
+        {
+            Assert.IsTrue(player.TrySwitchStateTo(StateDefine.Matching));
+            Assert.IsFalse(player.TrySwitchStateTo(StateDefine.Matching));
+            player.TrySwitchStateTo(StateDefine.Matching);
+            Assert.IsTrue(player.TrySwitchStateTo(StateDefine.Playing));
+            Assert.IsFalse(player.TrySwitchStateTo(StateDefine.Playing));
+            Assert.IsFalse(player.TrySwitchStateTo(StateDefine.Matching));
         }
         [Test]
         public void testOutLine()
