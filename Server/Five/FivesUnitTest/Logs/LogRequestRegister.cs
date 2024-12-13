@@ -18,7 +18,7 @@ namespace FivesUnitTest
     {
 
         public TReqProc test = new TReqProc();
-        internal MessageProcesser processer;
+        internal App processer;
 
         public LogRequestRegister(MatchServce mgr) : base(mgr)
         {
@@ -29,7 +29,7 @@ namespace FivesUnitTest
             list.Add(new Binder(-1, test));
             return list.ToArray();
         }
-        public override MessageProcesser Factroy()
+        public override App Factroy()
         {
             var t = base.Factroy();
             this.processer = t;

@@ -13,31 +13,31 @@
     }
     public class ProcesserFactroy: IProcesserFactroy
     {
-        private readonly MatchServce app;
+        private readonly MatchServce svc;
 
         public ProcesserFactroy(MatchServce mgr)
         {
-            this.app = mgr;
+            this.svc = mgr;
         }
-        public virtual MessageProcesser Factroy()
+        public virtual App Factroy()
         {
-            MessageProcesser processer = new MessageProcesser(new OpCodeErrorResponseProcesser());
+            App app = new App(new OpCodeErrorResponseProcesser());
             var connect = new ConnectProcesser();
-            connect.Init(app);
-            processer.connect = connect;
+            connect.Init(svc);
+            app.connect = connect;
             var stop = new ServerStopProcesser();
-            stop.Init(app);
-            processer.serverStop = stop;
+            stop.Init(svc);
+            app.serverStop = stop;
             var array = NewProcessers();
             foreach (var item in array)
             {
-                processer.Processers.Add(item.OpCode, item.processer);
+                app.Add(item.OpCode, item.processer);
             }
             foreach (var item in array)
             {
-                item.processer.Init(app);
+                item.processer.Init(svc);
             }
-            return processer;
+            return app;
         }
       
         protected virtual Binder[] NewProcessers()

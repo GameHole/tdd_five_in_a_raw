@@ -22,7 +22,7 @@ namespace FivesUnitTest
         public void testRunProcess()
         {
             var processer = new LogProcesser();
-            msgProcesser.Processers.Add(10000, processer);
+            msgProcesser.Add(10000, processer);
             var msg = new Message(10000);
             msgProcesser.Process(logClient, msg);
             Assert.AreEqual("Process", processer.log);

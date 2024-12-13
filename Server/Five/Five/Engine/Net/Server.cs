@@ -15,10 +15,10 @@ namespace Five
 
 
         public bool IsRun { get; private set; }
-        public MessageProcesser processer { get; }
+        public App processer { get; }
         private MessageSerializer serializer;
 
-        public Server(ASocket socket, MessageProcesser processer, MessageSerializer serializer)
+        public Server(ASocket socket, App processer, MessageSerializer serializer)
         {
             this.processer = processer;
             this.socket = socket;

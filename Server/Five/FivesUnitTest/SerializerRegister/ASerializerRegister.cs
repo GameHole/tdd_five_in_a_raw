@@ -24,7 +24,7 @@ namespace FivesUnitTest
             for (int i = 0; i < codes.Count; i++)
             {
                 int code = getCode(codes, i);
-                Assert.IsTrue(ser.Container.Contains(code), code.ToString());
+                Assert.IsTrue(ser.Contains(code), code.ToString());
                 Assert.AreEqual(types[i], ser.GetSerializer(code).GetType());
             }
         }

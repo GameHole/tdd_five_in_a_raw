@@ -22,13 +22,13 @@ namespace FivesUnitTest
         {
             var log = new LogProcesser();
             client.processer = new MessageProcesser(new OpCodeErrorResponseProcesser());
-            client.processer.Processers.Add(code, log);
+            client.processer.Add(code, log);
             return log;
         }
         public static LogProcesser mockServerClient(Client client)
         {
             var log = new LogProcesser();
-            var ps = client.processer.Processers;
+            var ps = client.processer;
             ps.Clear();
             ps.Add(1, log);
             return log;

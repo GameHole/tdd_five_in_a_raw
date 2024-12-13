@@ -2,6 +2,6 @@
 {
     public interface IProcesserFactroy
     {
-        MessageProcesser Factroy();
+        App Factroy();
     }
 }

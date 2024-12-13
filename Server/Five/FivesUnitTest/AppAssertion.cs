@@ -17,7 +17,7 @@ namespace FivesUnitTest
         public void AssertProcesserIs<T>(int code)
         {
             IProcesser processer;
-            Assert.IsTrue(app.Processers.TryGetValue(code, out processer),$"code:{code},type:{typeof(T).Name}");
+            Assert.IsTrue(app.TryGetValue(code, out processer),$"code:{code},type:{typeof(T).Name}");
             Assert.IsInstanceOf<T>(processer);
         }
     }

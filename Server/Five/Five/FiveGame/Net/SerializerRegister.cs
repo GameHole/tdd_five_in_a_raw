@@ -8,16 +8,16 @@ namespace Five
     {
         public void Regist(MessageSerializer ser)
         {
-            ser.Container.Add(MessageCode.RequestMatch, new DefaultSerializer());
-            ser.Container.Add(MessageCode.GetResponseCode(MessageCode.RequestMatch), new ResponseSerializer());
-            ser.Container.Add(MessageCode.RequestCancelMatch, new DefaultSerializer());
-            ser.Container.Add(MessageCode.GetResponseCode(MessageCode.RequestCancelMatch), new ResponseSerializer());
-            ser.Container.Add(MessageCode.RequestPlay, new PlayMessageSerializer());
-            ser.Container.Add(MessageCode.GetResponseCode(MessageCode.RequestPlay), new ResponseSerializer());
-            ser.Container.Add(MessageCode.StartNotify, new StartNotifySerializer());
-            ser.Container.Add(MessageCode.PlayedNotify, new PlayNotifySerializer());
-            ser.Container.Add(MessageCode.FinishNotify, new PlayerIdNotifySerializer());
-            ser.Container.Add(MessageCode.TurnNotify, new PlayerIdNotifySerializer());
+            ser.Add(MessageCode.RequestMatch, new DefaultSerializer());
+            ser.Add(MessageCode.GetResponseCode(MessageCode.RequestMatch), new ResponseSerializer());
+            ser.Add(MessageCode.RequestCancelMatch, new DefaultSerializer());
+            ser.Add(MessageCode.GetResponseCode(MessageCode.RequestCancelMatch), new ResponseSerializer());
+            ser.Add(MessageCode.RequestPlay, new PlayMessageSerializer());
+            ser.Add(MessageCode.GetResponseCode(MessageCode.RequestPlay), new ResponseSerializer());
+            ser.Add(MessageCode.StartNotify, new StartNotifySerializer());
+            ser.Add(MessageCode.PlayedNotify, new PlayNotifySerializer());
+            ser.Add(MessageCode.FinishNotify, new PlayerIdNotifySerializer());
+            ser.Add(MessageCode.TurnNotify, new PlayerIdNotifySerializer());
         }
     }
 }

@@ -13,7 +13,7 @@ namespace FivesUnitTest.RTS
         private LogSocket[] clients;
         private RTGGameFactroy gameFact;
         private Domain domain;
-        private MessageProcesser app;
+        private App app;
 
         [SetUp]
         public void set()
