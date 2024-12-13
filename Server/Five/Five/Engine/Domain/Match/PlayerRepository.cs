@@ -33,10 +33,9 @@ namespace Five
         public int Login(INotifier notifier)
         {
             var id = gen.Genrate();
-            var player = new Player();
+            var player = new Player(id);
             player.notifier = notifier;
-            player.Id = id;
-            Add(id, player);
+            Add(player);
             return id;
         }
 
@@ -54,6 +53,11 @@ namespace Five
         public void Add(int id,Player player)
         {
             players.TryAdd(id, player);
+        }
+
+        public void Add(Player player)
+        {
+            players.TryAdd(player.Id, player);
         }
     }
 }

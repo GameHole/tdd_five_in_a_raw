@@ -8,6 +8,7 @@ namespace FivesUnitTest
     public class LogPlayer : Player
     {
         public string log;
+        public LogPlayer(int id) : base(id) { }
         public override void Match()
         {
             base.Match();
@@ -40,9 +41,9 @@ namespace FivesUnitTest
             log += "OutLine ";
         }
 
-        public static LogPlayer EmntyLog()
+        public static LogPlayer EmntyLog(int id=0)
         {
-            var player = new LogPlayer();
+            var player = new LogPlayer(id);
             player.log = "";
             return player;
         }

@@ -21,10 +21,6 @@ namespace Five
             }
             return domain.roomRsp.NewRoom();
         }
-        public Result Commit(PlayRequest request, AClient client)
-        {
-            return domain.playerRsp.FindPlayer(client.Id).Commit(request);
-        }
 
         public void Stop()
         {

@@ -4,17 +4,15 @@ using System.Text;
 
 namespace Five
 {
-    public class PlayRequestProcesser : RequestProcesser<PlayMessage>
+    public class PlayRequestProcesser : RequestProcesser
     {
         public override int OpCode => MessageCode.RequestPlay;
 
-        protected override Response ProcessContant(AClient socket, PlayMessage message)
+        protected override Response ProcessContant(AClient client, Message message)
         {
-            return new Response().SetInfo(message, servce.Commit(new PlayRequest 
-            { 
-                x = message.x,
-                y = message.y 
-            }, socket));
+            var player = servce.domain.playerRsp.FindPlayer(client.Id);
+            var result = player.Commit(message);
+            return new Response().SetInfo(message, result);
         }
     }
 }

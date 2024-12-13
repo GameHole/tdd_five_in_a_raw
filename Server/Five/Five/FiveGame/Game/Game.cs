@@ -78,7 +78,7 @@ namespace Five
         {
             if (player.PlayerId != turn.index)
                 return ResultDefine.NotCurrentTurnPlayer;
-            PlayRequest play = message as PlayRequest;
+            PlayMessage play = message as PlayMessage;
             int x = play.x;
             int y = play.y;
             if (!chessboard.AddValue(x, y, player.chess))

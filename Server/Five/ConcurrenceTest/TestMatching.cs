@@ -14,9 +14,8 @@ namespace ConcurrenceTest
         private RoomRepository matching;
         private PlayerRepository mgr;
         private MatchServce servce;
-        private List<TClient> clients;
         private List<LogPlayer> players;
-
+        int count = 10000;
         [SetUp]
         public void set()
         {
@@ -24,32 +23,30 @@ namespace ConcurrenceTest
             matching = domain.roomRsp;
             mgr = domain.playerRsp;
             servce = new MatchServce(domain);
-            clients = new List<TClient>(10000);
-            players = new List<LogPlayer>(10000);
-            for (int i = 0; i < 10000; i++)
+            players = new List<LogPlayer>(count);
+            for (int i = 0; i < count; i++)
             {
-                var client = new TClient{ _id=i};
-                var p = LogPlayer.EmntyLog();
-                clients.Add(client);
+                var p = LogPlayer.EmntyLog(i);
                 players.Add(p);
-                mgr.Add(client.Id, p);
+                mgr.Add(p);
             }
         }
         [Test]
         public async Task testMgrMatch()
         {
-            await Repeat.RepeatAsync(clients, (log) =>
+            await Repeat.RepeatAsync(count, (i) =>
             {
-                servce.Match(log.Id);
+                servce.Match(i);
             });
-            Assert.AreEqual(5000, matching.GameCount);
-            for (int i = 1; i <= 5000; i++)
+            int rc = count / 2;
+            Assert.AreEqual(rc, matching.Count);
+            for (int i = 1; i <= rc; i++)
             {
                 var game = matching.GetRoom(i);
                 Assert.AreEqual(i, game.Id);
                 Assert.AreEqual(game.maxPlayer, game.PlayerCount);
             }
-            for (int i = 0; i < clients.Count; i++)
+            for (int i = 0; i < players.Count; i++)
             {
                 Assert.AreEqual("Match Start ",players[i].log);
             }
@@ -57,10 +54,10 @@ namespace ConcurrenceTest
         [Test]
         public async Task testMgrCancelMatch()
         {
-            await Repeat.RepeatAsync(clients, (log) =>
+            await Repeat.RepeatAsync(count, (i) =>
             {
-                servce.Match(log.Id);
-                servce.Cancel(log.Id);
+                servce.Match(i);
+                servce.Cancel(i);
             });
             for (int i = 0; i < players.Count; i++)
             {
@@ -70,13 +67,13 @@ namespace ConcurrenceTest
         [Test]
         public async Task testMgrCancelMatchAsync()
         {
-            await Repeat.RepeatAsync(clients, (log) =>
+            await Repeat.RepeatAsync(count, (i) =>
             {
-                servce.Match(log.Id);
+                servce.Match(i);
             });
-            await Repeat.RepeatAsync(clients, (log) =>
+            await Repeat.RepeatAsync(count, (i) =>
             {
-                servce.Cancel(log.Id);
+                servce.Cancel(i);
             });
             for (int i = 0; i < players.Count; i++)
             {
@@ -108,8 +105,8 @@ namespace ConcurrenceTest
             var loginSvc = new ConnectProcesser();
             loginSvc.Init(servce);
             mgr.Stop();
-            List<LogSocket> sockets = new List<LogSocket>(10000);
-            for (int i = 0; i < 10000; i++)
+            List<LogSocket> sockets = new List<LogSocket>(count);
+            for (int i = 0; i < count; i++)
             {
                 var socket = new LogSocket();
                 sockets.Add(socket);

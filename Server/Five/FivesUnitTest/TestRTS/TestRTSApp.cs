@@ -10,46 +10,44 @@ namespace FivesUnitTest.RTS
 {
     internal class TestRTSApp
     {
-        private Client[] clients;
-        private Server server;
+        private LogSocket[] clients;
         private RTGGameFactroy gameFact;
+        private Domain domain;
+        private MessageProcesser app;
 
         [SetUp]
         public void set()
         {
-            var net = new NetFactroy(new RTSSerializerRegister(),new SocketFactroy());
             gameFact = new RTGGameFactroy();
-            var domain = new Domain(gameFact, new IdGenrator());
+            domain = new Domain(gameFact, new IdGenrator());
             var servce = new MatchServce(domain);
-            server = net.NewServer("127.0.0.1", 12000, new RTSProcessFactroy(servce));
-            server.StartAsync();
-            clients = new Client[2];
+            clients = new LogSocket[2];
+            app = new RTSProcessFactroy(servce).Factroy();
             for (int i = 0; i < clients.Length; i++)
             {
-                clients[i] = net.NewClient();
-            }
-        }
-        [TearDown]
-        public void tear()
-        {
-            server.Stop();
-            foreach (var item in clients)
-            {
-                item.Close();
+                clients[i] = new LogSocket();
+                app.connect.Process(clients[i], default);
             }
         }
         [Test]
-        public async Task testStart()
+        public void testLogin()
         {
-            await Task.Delay(200);
-            clients[0].Connect("127.0.0.1", 12000);
-            await Task.Delay(200);
-            var code = MessageCode.GetResponseCode(MessageCode.RequestMatch);
-            var log = LogProcesser.mockProcesser(clients[0], code);
-            clients[0].Send(new Message { opcode = MessageCode.RequestMatch });
-            await Task.Delay(200);
-            Assert.AreEqual(code, log.msg.opcode);
+            var assert = new AppAssertion(app);
+            Assert.IsInstanceOf<ConnectProcesser>(app.connect);
+            Assert.IsInstanceOf<ServerStopProcesser>(app.serverStop);
+            Assert.IsInstanceOf<OpCodeErrorResponseProcesser>(app.defaultProcesser);
+            assert.AssertProcesserIs<MatchRequestProcesser>(MessageCode.RequestMatch);
+            assert.AssertProcesserIs<CancelRequestProcesser>(MessageCode.RequestCancelMatch);
+            assert.AssertProcesserIs<PlayRequestProcesser>(MessageCode.RequestPlay);
+            Assert.AreEqual(2, domain.playerRsp.Count);
+        }
 
+      
+
+        [Test]
+        public void testStart()
+        {
+            
         }
     }
 }

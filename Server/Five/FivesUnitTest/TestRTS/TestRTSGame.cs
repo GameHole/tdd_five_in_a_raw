@@ -10,7 +10,7 @@ namespace FivesUnitTest.RTS
     internal class TestRTSGame
     {
         private RTSGame game;
-        private LogPlayer[] ps;
+        private Player[] ps;
         private LogNotifier[] ntfs;
 
         [SetUp]
@@ -19,11 +19,11 @@ namespace FivesUnitTest.RTS
             var gameFact = new RTGGameFactroy();
             game = gameFact.Factroy() as RTSGame;
             var room = new TRoom();
-            ps = new LogPlayer[2];
+            ps = new Player[2];
             ntfs = new LogNotifier[ps.Length];
             for (int i = 0; i < ps.Length; i++)
             {
-                ps[i] = new LogPlayer();
+                ps[i] = new Player();
                 ps[i].SetPlayerId(i+1);
                 ps[i].notifier = ntfs[i] = new LogNotifier();
             }
@@ -77,7 +77,7 @@ namespace FivesUnitTest.RTS
         [Test]
         public void testReset()
         {
-            var player = new LogPlayer();
+            var player = new Player();
             Assert.IsInstanceOf<NoneNotifier>(player.notifier);
             var ntf = player.notifier;
             player.Reset();

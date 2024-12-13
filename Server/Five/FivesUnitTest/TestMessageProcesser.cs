@@ -34,8 +34,8 @@ namespace FivesUnitTest
         {
             var mgr = new Domain(new GameFactroy(), new IdGenrator());
             var svc = new MatchServce(mgr);
-            LogPlayer logPlayer = LogPlayer.EmntyLog();
-            mgr.playerRsp.Add(logClient.Id, logPlayer);
+            LogPlayer logPlayer = LogPlayer.EmntyLog(0);
+            mgr.playerRsp.Add(logPlayer);
 
             var matchProcesser = new MatchRequestProcesser();
             matchProcesser.Init(svc);
@@ -83,10 +83,14 @@ namespace FivesUnitTest
         }
 
         [Test]
-        public void testCastException()
+        public void testNoCastException()
         {
             var play = new PlayRequestProcesser();
-            var ex = Assert.Throws<NullReferenceException>(() =>
+            var mgr = new Domain(new GameFactroy(), new TIdGenrator { id = 2, inviled = 1 });
+            var svc = new MatchServce(mgr);
+            play.Init(svc);
+            mgr.playerRsp.Add(new Player());
+            Assert.DoesNotThrow(() =>
             {
                 play.Process(logClient,new Message(MessageCode.RequestPlay));
             });

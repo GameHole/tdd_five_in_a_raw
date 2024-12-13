@@ -36,6 +36,14 @@ namespace FivesUnitTest
             Assert.AreEqual(0, mgr.Count);
         }
         [Test]
+        public void testAdd()
+        {
+            var player = new Player(2);
+            mgr.Add(player);
+            Assert.AreEqual(1, mgr.Count);
+            Assert.AreSame(player, mgr.FindPlayer(2));
+        }
+        [Test]
         public void testIdGenrator()
         {
             var genrator = new IdGenrator();

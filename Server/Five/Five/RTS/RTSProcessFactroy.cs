@@ -15,13 +15,13 @@ namespace Five.RTS
 
         public MessageProcesser Factroy()
         {
-            var p=new MessageProcesser(default);
-            var connect= new ConnectProcesser();
+            var p = new MessageProcesser(new OpCodeErrorResponseProcesser());
+            var connect = new ConnectProcesser();
             connect.Init(servce);
             var stop = new ServerStopProcesser();
             stop.Init(servce);
             p.connect = connect;
-            p.serverStop = stop; 
+            p.serverStop = stop;
             var array = NewProcessers();
             foreach (var item in array)
             {

@@ -22,7 +22,7 @@ namespace ConcurrenceTest
         {
             await Repeat.RepeatAsync(10000, (i) =>
             {
-                var player = new LogPlayer();
+                var player = new Player();
                 room.Join(player);
             });
             Assert.AreEqual(room.maxPlayer, room.PlayerCount);
@@ -30,7 +30,7 @@ namespace ConcurrenceTest
         [Test]
         public async Task testRemove()
         {
-            var player = new LogPlayer();
+            var player = new Player();
             room.Join(player);
             await Repeat.RepeatAsync(10000, (i) =>
             {

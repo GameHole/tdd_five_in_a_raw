@@ -52,13 +52,15 @@ namespace FivesUnitTest
         public void testClientRsp()
         {
             Assert.AreSame(server.processer, log.processer);
-            Assert.AreEqual(typeof(OpCodeErrorResponseProcesser), server.processer.defaultProcesser.GetType());
-            Assert.AreEqual(typeof(ConnectProcesser),server.processer.connect.GetType());
-            Assert.AreEqual(typeof(ServerStopProcesser), server.processer.serverStop.GetType());
-            Assert.IsTrue(server.processer.Processers.Contains(MessageCode.RequestMatch));
-            Assert.IsTrue(server.processer.Processers.Contains(MessageCode.RequestCancelMatch));
-            Assert.IsTrue(server.processer.Processers.Contains(MessageCode.RequestPlay));
-            Assert.IsTrue(server.processer.Processers.Contains(-1));
+            var app = server.processer;
+            var assert = new AppAssertion(app);
+            Assert.IsInstanceOf<ConnectProcesser>(app.connect);
+            Assert.IsInstanceOf<ServerStopProcesser>(app.serverStop);
+            Assert.IsInstanceOf<OpCodeErrorResponseProcesser>(app.defaultProcesser);
+            assert.AssertProcesserIs<MatchRequestProcesser>(MessageCode.RequestMatch);
+            assert.AssertProcesserIs<CancelRequestProcesser>(MessageCode.RequestCancelMatch);
+            assert.AssertProcesserIs<PlayRequestProcesser>(MessageCode.RequestPlay);
+            assert.AssertProcesserIs<TReqProc>(-1);
         }
         [Test]
         public async Task testonAccept()
@@ -85,7 +87,7 @@ namespace FivesUnitTest
             await Task.Delay(100);
             Assert.NotNull(log.msg);
             server.Stop();
-            Assert.AreEqual(0, app.roomRsp.GameCount);
+            Assert.AreEqual(0, app.roomRsp.Count);
             Assert.AreEqual(0, app.playerRsp.Count);
             Assert.IsFalse(server.IsRun);
         }

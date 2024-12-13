@@ -82,10 +82,10 @@ namespace FivesUnitTest
         {
             for (int i = 0; i < 2; i++)
             {
-                Assert.IsTrue(room.Join(new LogPlayer()));
+                Assert.IsTrue(room.Join(new Player()));
             }
             Assert.AreEqual(room.maxPlayer, room.PlayerCount);
-            Assert.IsFalse(room.Join(new LogPlayer()));
+            Assert.IsFalse(room.Join(new Player()));
             Assert.AreEqual(room.maxPlayer, room.PlayerCount);
         }
         [Test]

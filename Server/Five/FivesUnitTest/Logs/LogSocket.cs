@@ -16,17 +16,4 @@ namespace FivesUnitTest
             log = "Send " + message.ToString();
         }
     }
-    public class TClient : AClient
-    {
-        public int _id;
-
-        public override int Id =>_id;
-        public TClient()
-        {
-            _id = GetHashCode();
-        }
-        public override void Close() { }
-
-        public override void Send(Message message) { }
-    }
 }

@@ -15,13 +15,14 @@ namespace Five
         public int RoomId { get; internal set; } = -1;
         public int chess { get; private set; }
         public int PlayerId { get; private set; }
-        public int Id { get; set; }
+        public int Id { get; }
         public void SetPlayerId(int id)
         {
             PlayerId = id;
         }
-        public Player()
+        public Player(int id=0)
         {
+            Id = id;
             Reset();
             notifier = new NoneNotifier();
         }

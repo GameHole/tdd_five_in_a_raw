@@ -28,7 +28,7 @@ namespace FivesUnitTest
         public void testNoGamePlay()
         {
             var player = new Player();
-            Assert.AreEqual(ResultDefine.PlayerNotInTheGame, player.Commit(new PlayRequest()));
+            Assert.AreEqual(ResultDefine.PlayerNotInTheGame, player.Commit(new PlayMessage()));
         }
         [Test]
         public void testNotStartPlay()

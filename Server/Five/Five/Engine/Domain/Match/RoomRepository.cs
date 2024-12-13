@@ -8,24 +8,23 @@ namespace Five
 {
     public class RoomRepository:IEnumerable<Room>
     {
-        public int GameCount { get => games.Count; }
-        public object lcoker => games;
-        private ConcurrentDictionary<int, Room> games = new ConcurrentDictionary<int, Room>();
+        public int Count { get => rooms.Count; }
+        public object lcoker => rooms;
+        private ConcurrentDictionary<int, Room> rooms = new ConcurrentDictionary<int, Room>();
         private IGameFactroy factroy;
 
         public RoomRepository(IGameFactroy factroy)
         {
             this.factroy = factroy;
         }
-
       
         public void Clear()
         {
-            foreach (var item in games.Values)
+            foreach (var item in rooms.Values)
             {
                 item.Stop();
             }
-            games.Clear();
+            rooms.Clear();
         }
 
         public Room NewRoom()
@@ -33,20 +32,20 @@ namespace Five
             var game = factroy.Factroy();
             var room = new Room(game);
             game.Init(room);
-            room.Id = games.Count + 1;
-            games.TryAdd(room.Id,room);
+            room.Id = rooms.Count + 1;
+            rooms.TryAdd(room.Id,room);
             return room;
         }
 
         public Room GetRoom(int id)
         {
-            games.TryGetValue(id, out var game);
+            rooms.TryGetValue(id, out var game);
             return game;
         }
 
         public IEnumerator<Room> GetEnumerator()
         {
-            return games.Values.GetEnumerator();
+            return rooms.Values.GetEnumerator();
         }
         IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
     }
