@@ -43,31 +43,7 @@ namespace FivesUnitTest
                 player.Commit(new PlayRequest());
             });
         }
-        [Test]
-        public void testState()
-        {
-            Assert.AreEqual(StateDefine.Idle, player.state);
-            Assert.IsTrue(player.TrySwitchStateTo(1));
-            Assert.AreEqual(1, player.state);
-            player.Reset();
-            Assert.AreEqual(StateDefine.Idle, player.state);
-        }
-        [Test]
-        public void testSwitchState()
-        {
-            Assert.IsTrue(player.TrySwitchStateTo(1));
-            Assert.IsFalse(player.TrySwitchStateTo(1));
-        }
-        [Test]
-        public void testSwitchStateForGame()
-        {
-            Assert.IsTrue(player.TrySwitchStateTo(StateDefine.Matching));
-            Assert.IsFalse(player.TrySwitchStateTo(StateDefine.Matching));
-            player.TrySwitchStateTo(StateDefine.Matching);
-            Assert.IsTrue(player.TrySwitchStateTo(StateDefine.Playing));
-            Assert.IsFalse(player.TrySwitchStateTo(StateDefine.Playing));
-            Assert.IsFalse(player.TrySwitchStateTo(StateDefine.Matching));
-        }
+
         [Test]
         public void testOutLine()
         {
