@@ -14,7 +14,7 @@ namespace ConcurrenceTest
         private RoomRepository roomRsp;
         private PlayerRepository mgr;
         private MatchServce servce;
-        private List<LogPlayer> players;
+        private List<Player> players;
         int count = 10000;
         [SetUp]
         public void set()
@@ -23,10 +23,10 @@ namespace ConcurrenceTest
             roomRsp = domain.roomRsp;
             mgr = domain.playerRsp;
             servce = new MatchServce(domain);
-            players = new List<LogPlayer>(count);
+            players = new List<Player>(count);
             for (int i = 0; i < count; i++)
             {
-                var p = LogPlayer.EmntyLog(i);
+                var p = new Player(i);
                 players.Add(p);
                 mgr.Add(p);
             }
@@ -45,10 +45,7 @@ namespace ConcurrenceTest
                 var room = roomRsp.GetRoom(i);
                 Assert.AreEqual(i, room.Id);
                 Assert.AreEqual(room.maxPlayer, room.PlayerCount);
-            }
-            for (int i = 0; i < players.Count; i++)
-            {
-                Assert.AreEqual("Start ",players[i].log);
+                Assert.IsTrue(room.IsRunning);
             }
         }
         [Test]
@@ -59,11 +56,18 @@ namespace ConcurrenceTest
                 servce.Match(i);
                 servce.Cancel(i);
             });
+            AssertCanceledOrStarted();
+        }
+
+        private void AssertCanceledOrStarted()
+        {
             for (int i = 0; i < players.Count; i++)
             {
-                Assert.IsTrue(isCancelRunning(players[i]));
+                if (players[i].RoomId != 0)
+                    Assert.IsTrue(roomRsp.GetRoom(players[i].RoomId).IsRunning);
             }
         }
+
         [Test]
         public async Task testMgrCancelMatchAsync()
         {
@@ -75,16 +79,7 @@ namespace ConcurrenceTest
             {
                 servce.Cancel(i);
             });
-            for (int i = 0; i < players.Count; i++)
-            {
-                Assert.IsTrue(isCancelRunning(players[i]));
-            }
-        }
-        bool isCancelRunning(LogPlayer matcher)
-        {
-            var log = matcher.log;
-            //异或表示 CancelMatch 与 Start 只能存在一个（互斥）
-            return log.Contains("CancelMatch") ^ log.Contains("Start");
+            AssertCanceledOrStarted();
         }
         [Test]
         public async Task testIdGenrator()

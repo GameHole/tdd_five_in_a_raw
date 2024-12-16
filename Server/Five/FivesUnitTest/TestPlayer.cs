@@ -17,7 +17,6 @@ namespace FivesUnitTest
             factroy = new RoomRepository(new TGameFactroy());
             room = factroy.NewRoom();
             room.Join(player);
-            player.Start(1);
         }
         [Test]
         public void testNoGamePlay()

@@ -69,12 +69,12 @@ namespace FivesUnitTest
             game.chessboard.AddValue(3, 0, chess);
             ntfs[0].log = null;
             players[0].Commit(new PlayRequest { x = 4, y = 0 });
-            Assert.AreEqual("Start Play(4,0) Reset ", players[0].log);
-            Assert.AreEqual("Start Reset ", players[1].log);
+            Assert.AreEqual("Play(4,0) Reset ", players[0].log);
+            Assert.AreEqual("Reset ", players[1].log);
             Assert.AreEqual("Send opcode:9 (4,0)3 Send opcode:11 3 ", ntfs[0].log);
             Assert.AreEqual(0, game.turn.index);
             players[1].Commit(new PlayRequest { x = 10, y = 10 });
-            Assert.AreEqual("Start Play(4,0) Reset ", players[0].log);
+            Assert.AreEqual("Play(4,0) Reset ", players[0].log);
             Assert.AreEqual(0, game.turn.index);
             Assert.AreEqual(0, game.chessboard.GetValue(10,10));
             await Task.Delay(1100);
@@ -107,12 +107,21 @@ namespace FivesUnitTest
             Assert.AreEqual(1, game.turn.index);
         }
         [Test]
-        public void testNotify()
+        public void testStartNotify()
         {
             Assert.AreEqual("Send opcode:7 3 (1,3)(2,4) Send opcode:13 3 ", ntfs[0].log);
             Assert.AreEqual("Send opcode:7 4 (1,3)(2,4) Send opcode:13 3 ", ntfs[1].log);
+        }
+        [Test]
+        public void testPlayNotify()
+        {
             players[0].Commit(new PlayRequest { x = 1, y = 0 });
             Assert.AreEqual("Send opcode:7 3 (1,3)(2,4) Send opcode:13 3 Send opcode:9 (1,0)3 Send opcode:13 4 ", ntfs[0].log);
+        }
+        [Test]
+        public void testFinishNotify()
+        {
+            players[0].Commit(new PlayRequest { x = 1, y = 0 });
             game.Finish(3);
             Assert.AreEqual("Send opcode:7 3 (1,3)(2,4) Send opcode:13 3 Send opcode:9 (1,0)3 Send opcode:13 4 Send opcode:11 3 ", ntfs[0].log);
         }

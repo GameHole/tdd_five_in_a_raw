@@ -94,10 +94,11 @@ namespace FivesUnitTest
         public void testCancel()
         {
             servce.Match(clientId);
-            int id = player.RoomId;
+            var room = roomRsp.GetRoom(player.RoomId);
             Assert.AreEqual(ResultDefine.Success, servce.Cancel(clientId)); 
-            Assert.AreEqual(0, roomRsp.GetRoom(id).PlayerCount);
-            Assert.AreEqual("Reset CancelMatch ", player.log);
+            Assert.AreEqual(0, room.PlayerCount);
+            Assert.IsFalse(room.ContainPlayer(player));
+            Assert.AreEqual(0, player.RoomId);
         }
         [Test]
         public void testCancelOnGameStart()
@@ -113,7 +114,8 @@ namespace FivesUnitTest
             var room = roomRsp.GetRoom(player[0].RoomId);
             Assert.AreEqual(ResultDefine.GameStarted, servce.Cancel(0));
             Assert.AreEqual(2, room.PlayerCount);
-            Assert.AreEqual("Start ", player[0].log);
+            Assert.IsEmpty(player[0].log);
+            Assert.IsTrue(room.IsRunning);
             (room.game as Game).Finish(1);
             Assert.AreEqual(ResultDefine.NotInMatching, servce.Cancel(0));
         }
@@ -142,9 +144,10 @@ namespace FivesUnitTest
             var result = servce.Cancel(clientId);
             Assert.AreEqual(ResultDefine.NotInMatching, result);
             result = servce.Match(clientId);
+            Assert.AreEqual(1, player.RoomId);
             Assert.AreEqual(ResultDefine.Success, result);
             result = servce.Cancel(clientId);
-            Assert.AreEqual("Reset CancelMatch ", player.log);
+            Assert.AreEqual(0, player.RoomId);
             Assert.AreEqual(ResultDefine.Success, result);
         }
         [Test]
@@ -154,7 +157,7 @@ namespace FivesUnitTest
             mgr.Add(player1);
             servce.Match(10001);
             servce.Match(clientId);
-            Assert.AreEqual("Start ", player.log);
+            Assert.IsEmpty(player.log);
             var result = servce.Match(clientId);
             Assert.AreEqual(ResultDefine.GameStarted, result);
             result = servce.Cancel(clientId);

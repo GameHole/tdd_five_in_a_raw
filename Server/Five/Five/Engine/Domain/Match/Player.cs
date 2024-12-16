@@ -9,7 +9,7 @@ namespace Five
     {
         internal IOutLineable outlineable;
 
-        public INotifier notifier;
+        public INotifier notifier { get; set; }
         internal IPlayable playable;
 
         public int RoomId { get; internal set; } = -1;
@@ -20,18 +20,6 @@ namespace Five
             Id = id;
             Reset();
             notifier = new NoneNotifier();
-        }
-        public virtual void Match()
-        {
-
-        }
-        public virtual void CancelMatch()
-        {
-
-        }
-        public virtual void Start(int chess)
-        {
-          
         }
        
         public virtual void Reset()

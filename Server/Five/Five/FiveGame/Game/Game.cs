@@ -9,7 +9,7 @@ namespace Five
         public Turn turn { get; private set; }
         public LoopTimer timer { get; private set; }
         public Chessboard chessboard { get; private set; }
-        private List<FiveCharater> playerIDs;
+        private List<FiveCharater> charaters;
         public Game(int boardSize,float turnTime)
         {
             timer = new LoopTimer(turnTime);
@@ -24,12 +24,11 @@ namespace Five
         public override void Start()
         {
             base.Start();
-            playerIDs = new List<FiveCharater>();
+            charaters = new List<FiveCharater>();
             var chess = 1;
             foreach (var item in room.Players)
             {
-                item.Start(0);
-                playerIDs.Add(new FiveCharater(item.Id, chess++));
+                charaters.Add(new FiveCharater(item.Id, chess++));
             }
             turn.Start();
             NotifyStart();
@@ -88,8 +87,11 @@ namespace Five
             {
                 return ResultDefine.AllReadyHasChess;
             }
-            var notify = new PlayedNotify { x = x, y = y, id = player.Id };
-            room.NotifyAllPlayer(notify);
+            room.NotifyAllPlayer(new PlayedNotify 
+            { 
+                x = x, y = y,
+                id = player.Id 
+            });
             if (chessboard.isFiveInRow(charater.Chess))
             {
                 Finish(charater.Id);
@@ -103,12 +105,12 @@ namespace Five
 
         private FiveCharater getCurrentCharater()
         {
-            return playerIDs[turn.index];
+            return charaters[turn.index];
         }
 
         public int GetPlayerChess(Player player)
         {
-            return playerIDs.Find((v) => v.Id == player.Id).Chess;
+            return charaters.Find((v) => v.Id == player.Id).Chess;
         }
     }
 }

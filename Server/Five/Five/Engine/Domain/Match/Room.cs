@@ -64,11 +64,6 @@ namespace Five
         {
             return _count >= maxPlayer;
         }
-        public void Leave(Player player)
-        {
-            Remove(player);
-            player.CancelMatch();
-        }
 
         public Player GetPlayer(int index)
         {
