@@ -13,16 +13,15 @@ namespace FivesUnitTest.RTS
         private LogSocket[] clients;
         private RTGGameFactroy gameFact;
         private Domain domain;
-        private App app;
+        private ServerProcesser app;
 
         [SetUp]
         public void set()
         {
             gameFact = new RTGGameFactroy();
             domain = new Domain(gameFact, new IdGenrator());
-            var servce = new MatchServce(domain);
             clients = new LogSocket[2];
-            app = new RTSProcessFactroy(servce).Factroy();
+            app = new RTSProcessFactroy(domain).Factroy();
             for (int i = 0; i < clients.Length; i++)
             {
                 clients[i] = new LogSocket();

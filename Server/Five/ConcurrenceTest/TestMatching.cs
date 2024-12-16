@@ -11,6 +11,7 @@ namespace ConcurrenceTest
 {
     public class TestMatching
     {
+        private Domain domain;
         private RoomRepository roomRsp;
         private PlayerRepository mgr;
         private MatchServce servce;
@@ -19,10 +20,10 @@ namespace ConcurrenceTest
         [SetUp]
         public void set()
         {
-            var domain = new Domain( new GameFactroy(),new IdGenrator());
+            domain = new Domain(new GameFactroy(),new IdGenrator());
             roomRsp = domain.roomRsp;
             mgr = domain.playerRsp;
-            servce = new MatchServce(domain);
+            servce = domain.matchServce;
             players = new List<Player>(count);
             for (int i = 0; i < count; i++)
             {
@@ -98,7 +99,7 @@ namespace ConcurrenceTest
         public async Task testLogin()
         {
             var loginSvc = new ConnectProcesser();
-            loginSvc.Init(servce);
+            loginSvc.Init(domain);
             mgr.Stop();
             List<LogSocket> sockets = new List<LogSocket>(count);
             for (int i = 0; i < count; i++)

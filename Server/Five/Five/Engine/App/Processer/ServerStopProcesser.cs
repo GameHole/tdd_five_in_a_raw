@@ -8,7 +8,7 @@ namespace Five
     {
         public override void Process(AClient socket, Message message)
         {
-            servce.Stop();
+            domain.Stop();
         }
     }
 }

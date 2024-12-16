@@ -1,38 +1,36 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace Five
 {
     public class MatchServce
     {
-        public Domain domain { get; }
+        private RoomRepository roomRsp;
+        private PlayerRepository playerRsp;
 
-        public MatchServce(Domain domain)
+        public MatchServce(RoomRepository roomRsp,PlayerRepository playerRsp)
         {
-            this.domain = domain;
+            this.roomRsp = roomRsp;
+            this.playerRsp = playerRsp;
         }
         private Room FindNotStartGame()
         {
-            foreach (var item in domain.roomRsp)
+            foreach (var item in roomRsp)
             {
                 if (!item.isFull())
                 {
                     return item;
                 }
             }
-            return domain.roomRsp.NewRoom();
-        }
-
-        public void Stop()
-        {
-            domain.Stop();
+            return roomRsp.NewRoom();
         }
 
         public Result Match(int id)
         {
-            var player = domain.playerRsp.FindPlayer(id);
-            lock (domain.roomRsp.lcoker)
+            var player = playerRsp.FindPlayer(id);
+            lock (roomRsp.lcoker)
             {
-                var room = domain.roomRsp.GetRoom(player.RoomId);
+                var room = roomRsp.GetRoom(player.RoomId);
                 if (room == null)
                 {
                     room = FindNotStartGame();
@@ -53,10 +51,10 @@ namespace Five
 
         public Result Cancel(int id)
         {
-            var player = domain.playerRsp.FindPlayer(id);
-            lock (domain.roomRsp.lcoker)
+            var player = playerRsp.FindPlayer(id);
+            lock (roomRsp.lcoker)
             {
-                var room = domain.roomRsp.GetRoom(player.RoomId);
+                var room = roomRsp.GetRoom(player.RoomId);
                 if (room == null)
                 {
                     return ResultDefine.NotInMatching;

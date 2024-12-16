@@ -22,7 +22,7 @@ namespace FivesUnitTest
             mgr = app.playerRsp;
             player = LogPlayer.EmntyLog(clientId);
             mgr.Add(player);
-            servce = new MatchServce(app);
+            servce = app.matchServce;
         }
         [Test]
         public void testMatching()

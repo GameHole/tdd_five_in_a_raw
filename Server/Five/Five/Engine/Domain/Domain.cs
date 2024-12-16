@@ -8,11 +8,13 @@ namespace Five
     {
         public PlayerRepository playerRsp { get; private set; }
         public RoomRepository roomRsp { get; private set; }
+        public MatchServce matchServce { get; private set; }
 
         public Domain(IGameFactroy factroy, IdGenrator genrator)
         {
             roomRsp = new RoomRepository(factroy);
             playerRsp = new PlayerRepository(genrator);
+            matchServce = new MatchServce(roomRsp, playerRsp);
         }
         public virtual void Stop()
         {

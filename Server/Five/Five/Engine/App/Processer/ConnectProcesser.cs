@@ -8,7 +8,7 @@ namespace Five
     {
         public override void Process(AClient client, Message message)
         {
-            var rsp = servce.domain.playerRsp;
+            var rsp = domain.playerRsp;
             var id = rsp.Login(client);
             client.Id = id;
             client.onClose += () =>

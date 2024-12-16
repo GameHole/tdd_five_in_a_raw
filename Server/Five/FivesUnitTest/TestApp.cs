@@ -23,8 +23,7 @@ namespace FivesUnitTest
         {
             var factroy = new NetFactroy(new SerializerRegister(),new SocketFactroy());
             app = new Domain(new GameFactroy(),new IdGenrator());
-            servce = new MatchServce(app);
-            log = new LogRequestRegister(servce);
+            log = new LogRequestRegister(app);
             server = factroy.NewServer("127.0.0.1", port, log);
             server.StartAsync();
             clients = new Client[2];
@@ -70,7 +69,7 @@ namespace FivesUnitTest
             await Task.Delay(100);
             var socket = server.clients.First();
 
-            Assert.AreSame(servce, log.test.Mgr);
+            Assert.AreSame(app, log.test.Mgr);
             Assert.AreSame(socket.processer, log.processer);
             socket.processer.Process(socket,new Message { opcode = -1 });
             Assert.AreSame(socket, log.test.msgSock);

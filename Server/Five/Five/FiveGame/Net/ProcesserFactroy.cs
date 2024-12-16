@@ -13,20 +13,20 @@
     }
     public class ProcesserFactroy: IProcesserFactroy
     {
-        private readonly MatchServce svc;
+        private readonly Domain domain;
 
-        public ProcesserFactroy(MatchServce mgr)
+        public ProcesserFactroy(Domain domain)
         {
-            this.svc = mgr;
+            this.domain = domain;
         }
-        public virtual App Factroy()
+        public virtual ServerProcesser Factroy()
         {
-            App app = new App(new OpCodeErrorResponseProcesser());
+            ServerProcesser app = new ServerProcesser(new OpCodeErrorResponseProcesser());
             var connect = new ConnectProcesser();
-            connect.Init(svc);
+            connect.Init(domain);
             app.connect = connect;
             var stop = new ServerStopProcesser();
-            stop.Init(svc);
+            stop.Init(domain);
             app.serverStop = stop;
             var array = NewProcessers();
             foreach (var item in array)
@@ -35,7 +35,7 @@
             }
             foreach (var item in array)
             {
-                item.processer.Init(svc);
+                item.processer.Init(domain);
             }
             return app;
         }

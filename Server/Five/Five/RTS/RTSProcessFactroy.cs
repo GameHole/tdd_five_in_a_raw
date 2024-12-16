@@ -6,7 +6,7 @@ namespace Five.RTS
 {
     public class RTSProcessFactroy : ProcesserFactroy
     {
-        public RTSProcessFactroy(MatchServce servce):base(servce)
+        public RTSProcessFactroy(Domain servce):base(servce)
         {
             
         }

@@ -42,7 +42,7 @@ namespace FivesUnitTest
         {
             var factroy = new NetFactroy(new SerializerRegister(),new SocketFactroy());
             accepter = new TAccepter();
-            log = new LogRequestRegister(new MatchServce( accepter));
+            log = new LogRequestRegister(accepter);
             server = factroy.NewServer("127.0.0.1", TestApp.port, log);
             client = factroy.NewClient();
         }

@@ -2,10 +2,10 @@
 {
     public abstract class AServceProcesser : IProcesser
     {
-        protected MatchServce servce;
-        public void Init(MatchServce app)
+        protected Domain domain;
+        public void Init(Domain domain)
         {
-            this.servce = app;
+            this.domain = domain;
         }
         public abstract void Process(AClient socket, Message message);
     }

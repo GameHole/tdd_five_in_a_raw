@@ -4,11 +4,11 @@ using System.Text;
 
 namespace Five
 {
-    public class App : MessageProcesser
+    public class ServerProcesser : MessageProcesser
     {
         public IProcesser connect { get; set; }
         public IProcesser serverStop { get; set; }
-        public App(IProcesser defaultProcesser) : base(defaultProcesser)
+        public ServerProcesser(IProcesser defaultProcesser) : base(defaultProcesser)
         {
         }
     }

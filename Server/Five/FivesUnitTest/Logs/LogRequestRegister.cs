@@ -6,7 +6,7 @@ namespace FivesUnitTest
     class TReqProc : RequestProcesser
     {
         internal object msgSock;
-        public object Mgr => servce;
+        public object Mgr => domain;
 
         protected override Response ProcessContant(AClient socket, Message message)
         {
@@ -18,9 +18,9 @@ namespace FivesUnitTest
     {
 
         public TReqProc test = new TReqProc();
-        internal App processer;
+        internal ServerProcesser processer;
 
-        public LogRequestRegister(MatchServce mgr) : base(mgr)
+        public LogRequestRegister(Domain mgr) : base(mgr)
         {
         }
         protected override Binder[] NewProcessers()
@@ -29,7 +29,7 @@ namespace FivesUnitTest
             list.Add(new Binder(-1, test));
             return list.ToArray();
         }
-        public override App Factroy()
+        public override ServerProcesser Factroy()
         {
             var t = base.Factroy();
             this.processer = t;

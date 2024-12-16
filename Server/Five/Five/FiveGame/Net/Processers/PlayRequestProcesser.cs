@@ -8,7 +8,7 @@ namespace Five
     {
         protected override Response ProcessContant(AClient client, Message message)
         {
-            var player = servce.domain.playerRsp.FindPlayer(client.Id);
+            var player = domain.playerRsp.FindPlayer(client.Id);
             var result = player.Commit(message);
             return new Response().SetInfo(message, result);
         }

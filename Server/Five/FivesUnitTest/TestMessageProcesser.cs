@@ -33,16 +33,15 @@ namespace FivesUnitTest
         public void testProcessMessage()
         {
             var mgr = new Domain(new GameFactroy(), new IdGenrator());
-            var svc = new MatchServce(mgr);
             LogPlayer logPlayer = LogPlayer.EmntyLog(0);
             mgr.playerRsp.Add(logPlayer);
 
             var matchProcesser = new MatchRequestProcesser();
-            matchProcesser.Init(svc);
+            matchProcesser.Init(mgr);
             var cnacelProcesser = new CancelRequestProcesser();
-            cnacelProcesser.Init(svc);
+            cnacelProcesser.Init(mgr);
             var playProcesser = new PlayRequestProcesser();
-            playProcesser.Init(svc);
+            playProcesser.Init(mgr);
 
             var opErrProcesser = new OpCodeErrorResponseProcesser();
 
@@ -67,9 +66,8 @@ namespace FivesUnitTest
         public void testLoginSvc()
         {
             var mgr = new Domain(new GameFactroy(), new TIdGenrator { id=2, inviled=1});
-            var svc = new MatchServce(mgr);
             var loginSvc = new ConnectProcesser();
-            loginSvc.Init(svc);
+            loginSvc.Init(mgr);
             loginSvc.Process(logClient, default);
             Assert.AreEqual(2, logClient.Id);
             var player = mgr.playerRsp.FindPlayer(logClient.Id);
@@ -86,8 +84,7 @@ namespace FivesUnitTest
         {
             var play = new PlayRequestProcesser();
             var mgr = new Domain(new GameFactroy(), new TIdGenrator { id = 2, inviled = 1 });
-            var svc = new MatchServce(mgr);
-            play.Init(svc);
+            play.Init(mgr);
             mgr.playerRsp.Add(new Player());
             Assert.DoesNotThrow(() =>
             {
