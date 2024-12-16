@@ -7,13 +7,14 @@ namespace FivesUnitTest
 {
     public class TGame : AGame
     {
+        internal object msg;
+        internal object player;
+
         public override Result Commit(Message message, Player player)
         {
-            return default;
-        }
-
-        public override void Start()
-        {
+            msg = message;
+            this.player = player;
+            return new Result(-1);
         }
 
         public override void Stop()

@@ -1,7 +1,7 @@
 ﻿using Five;
 using System.Collections.Generic;
 
-namespace FivesUnitTest.RTS
+namespace FivesUnitTest
 {
     internal class TRoom : IRoom
     {

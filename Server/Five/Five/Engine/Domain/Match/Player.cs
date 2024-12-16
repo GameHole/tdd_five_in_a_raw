@@ -10,7 +10,7 @@ namespace Five
         internal IOutLineable outlineable;
 
         public INotifier notifier { get; set; }
-        internal IPlayable playable;
+        internal IPlayable playable { get; set; }
 
         public int RoomId { get; internal set; } = -1;
         public int Id { get; }

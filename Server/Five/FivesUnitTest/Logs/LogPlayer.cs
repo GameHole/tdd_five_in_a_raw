@@ -8,11 +8,12 @@ namespace FivesUnitTest
     public class LogPlayer : Player
     {
         public string log;
+        internal object msg;
+
         public LogPlayer(int id) : base(id) { }
         public override Result Commit(Message message)
         {
-            if( message is PlayRequest playRequest)
-            log += $"Play({playRequest.x},{playRequest.y}) ";
+            msg = message;
             return base.Commit(message);
         }
         public override void Reset()

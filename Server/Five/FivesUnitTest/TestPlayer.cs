@@ -33,6 +33,19 @@ namespace FivesUnitTest
             Assert.AreEqual(ResultDefine.GameNotStart, player.Commit(new PlayRequest()));
         }
         [Test]
+        public void testPlayable()
+        {
+            var room = new TRoom();
+            room.players = new Player[] { player };
+            var test = new TGame();
+            test.Init(room);
+            test.Start();
+            var msg = new Message();
+            Assert.AreEqual(-1, player.Commit(msg).code);
+            Assert.AreSame(msg, test.msg);
+            Assert.AreSame(player, test.player);
+        }
+        [Test]
         public void testFinish()
         {
             player.Reset();

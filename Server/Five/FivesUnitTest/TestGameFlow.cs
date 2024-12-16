@@ -69,12 +69,12 @@ namespace FivesUnitTest
             game.chessboard.AddValue(3, 0, chess);
             ntfs[0].log = null;
             players[0].Commit(new PlayRequest { x = 4, y = 0 });
-            Assert.AreEqual("Play(4,0) Reset ", players[0].log);
+            Assert.AreEqual("Reset ", players[0].log);
             Assert.AreEqual("Reset ", players[1].log);
             Assert.AreEqual("Send opcode:9 (4,0)3 Send opcode:11 3 ", ntfs[0].log);
             Assert.AreEqual(0, game.turn.index);
             players[1].Commit(new PlayRequest { x = 10, y = 10 });
-            Assert.AreEqual("Play(4,0) Reset ", players[0].log);
+            Assert.AreEqual("Reset ", players[0].log);
             Assert.AreEqual(0, game.turn.index);
             Assert.AreEqual(0, game.chessboard.GetValue(10,10));
             await Task.Delay(1100);

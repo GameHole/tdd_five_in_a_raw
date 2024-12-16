@@ -54,11 +54,10 @@ namespace FivesUnitTest
 
             Assert.AreEqual(0, logPlayer.RoomId);
             Assert.AreEqual("Send opcode:4 result:0", logClient.log);
-            logPlayer.log = null;
             var message = new PlayRequest { x = 1, y = 2 };
             playProcesser.Process(logClient, message);
            
-            Assert.AreEqual($"Play({message.x},{message.y}) ", logPlayer.log);
+            Assert.AreSame(message, logPlayer.msg);
             Assert.AreEqual("Send opcode:6 result:29999", logClient.log);
 
             opErrProcesser.Process(logClient, new Message(200));

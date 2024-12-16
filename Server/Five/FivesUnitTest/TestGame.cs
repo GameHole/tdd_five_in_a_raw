@@ -42,7 +42,6 @@ namespace FivesUnitTest
             for (int i = 0; i < players.Length; i++)
             {
                 var item = players[i];
-                Assert.IsEmpty(item.log);
                 var chess = game.GetPlayerChess(item);
                 Assert.AreEqual(i + 1, chess);
                 item.Commit(new PlayRequest { y=i});
