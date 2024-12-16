@@ -8,9 +8,15 @@ namespace Five
     {
         protected override Response ProcessContant(AClient client, Message message)
         {
-            var player = domain.playerRsp.FindPlayer(client.Id);
-            var result = player.Commit(message);
+            Result result = Play(client.Id, message);
             return new Response().SetInfo(message, result);
+        }
+
+        private Result Play(int id, Message message)
+        {
+            var player = domain.playerRsp.FindPlayer(id);
+            var result = player.Commit(message);
+            return result;
         }
     }
 }

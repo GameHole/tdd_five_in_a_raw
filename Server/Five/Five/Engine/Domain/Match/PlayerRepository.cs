@@ -18,30 +18,19 @@ namespace Five
     public class PlayerRepository
     {
         private ConcurrentDictionary<int, Player> players;
-        private IdGenrator gen;
 
         public int Count => players.Count;
-        public PlayerRepository(IdGenrator gen)
+        public PlayerRepository()
         {
-            this.gen = gen;
             players = new ConcurrentDictionary<int, Player>();
         }
         public Player FindPlayer(int id)
         {
             return players[id];
         }
-        public int Login(INotifier notifier)
-        {
-            var id = gen.Genrate();
-            var player = new Player(id);
-            player.notifier = notifier;
-            Add(player);
-            return id;
-        }
 
-        public void OutLine(int id)
+        public void Remove(int id)
         {
-            FindPlayer(id).OutLine();
             players.TryRemove(id, out var c);
         }
 

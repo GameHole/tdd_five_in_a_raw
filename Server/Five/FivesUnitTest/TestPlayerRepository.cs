@@ -10,38 +10,41 @@ namespace FivesUnitTest
     class TestPlayerRepository
     {
         private TIdGenrator gen;
-        PlayerRepository mgr;
+        PlayerRepository rsp;
+        private LoginServce servce;
+
         [SetUp]
         public void SetUp()
         {
             gen = new TIdGenrator() { id=2,inviled=1 };
-            mgr = new PlayerRepository(gen);
+            rsp = new PlayerRepository();
+            servce = new LoginServce(rsp, gen);
         }
         [Test]
         public void testNew()
         {
-            Assert.AreEqual(0, mgr.Count);
+            Assert.AreEqual(0, rsp.Count);
         }
         [Test]
         public void testNewPlayer()
         {
             var ntf = new NoneNotifier();
-            var playerId = mgr.Login(ntf);
-            var player = mgr.FindPlayer(playerId);
+            var playerId = servce.Login(ntf);
+            var player = rsp.FindPlayer(playerId);
             Assert.AreSame(ntf,player.notifier);
             Assert.AreEqual(2, player.Id);
-            Assert.AreEqual(1, mgr.Count);
-            mgr.OutLine(playerId);
+            Assert.AreEqual(1, rsp.Count);
+            servce.OutLine(playerId);
             Assert.AreEqual(typeof(NoneNotifier), player.notifier.GetType());
-            Assert.AreEqual(0, mgr.Count);
+            Assert.AreEqual(0, rsp.Count);
         }
         [Test]
         public void testAdd()
         {
             var player = new Player(2);
-            mgr.Add(player);
-            Assert.AreEqual(1, mgr.Count);
-            Assert.AreSame(player, mgr.FindPlayer(2));
+            rsp.Add(player);
+            Assert.AreEqual(1, rsp.Count);
+            Assert.AreSame(player, rsp.FindPlayer(2));
         }
         [Test]
         public void testIdGenrator()
