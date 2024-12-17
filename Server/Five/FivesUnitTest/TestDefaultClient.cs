@@ -94,7 +94,7 @@ namespace FivesUnitTest
         public async Task testLogin()
         {
             var test = new LogProcesser();
-            logProcFact.processer.connect = test;
+            logProcFact.processer.SetConnectProcesser(test);
             await Task.Delay(200);
             client.Connect("127.0.0.1", TestApp.port);
             await Task.Delay(200);

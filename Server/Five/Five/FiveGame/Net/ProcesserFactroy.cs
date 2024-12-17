@@ -24,7 +24,7 @@
             ServerProcesser app = new ServerProcesser(new OpCodeErrorResponseProcesser());
             var connect = new ConnectProcesser();
             connect.Init(domain);
-            app.connect = connect;
+            app.SetConnectProcesser(connect);
             var stop = new ServerStopProcesser();
             stop.Init(domain);
             app.serverStop = stop;

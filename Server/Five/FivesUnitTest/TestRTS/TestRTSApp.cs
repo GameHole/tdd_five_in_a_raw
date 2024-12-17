@@ -25,7 +25,7 @@ namespace FivesUnitTest.RTS
             for (int i = 0; i < clients.Length; i++)
             {
                 clients[i] = new LogSocket();
-                app.connect.Process(clients[i], default);
+                app.OnConnect(clients[i]);
             }
         }
         [Test]

@@ -26,7 +26,7 @@ namespace FivesUnitTest
         public void testConnect()
         {
             var cLog = new LogProcesser();
-            serverProcesser.connect = cLog;
+            serverProcesser.SetConnectProcesser(cLog);
 
             var clientLog = new LogProcesser();
             clientProcesser.Add(2, clientLog);

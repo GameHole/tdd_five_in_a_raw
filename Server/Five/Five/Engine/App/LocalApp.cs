@@ -34,7 +34,7 @@ namespace Five
 
         public void Start()
         {
-            serverProcesser.connect.Process(serverClient, default);
+            serverProcesser.OnConnect(serverClient);
         }
 
         public override void Send(Message msg)

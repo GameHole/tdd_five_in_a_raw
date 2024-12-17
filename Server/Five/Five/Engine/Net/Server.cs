@@ -56,7 +56,7 @@ namespace Five
                 client.RecvAsync();
                 client.onClose += () => clients.Remove(client);
                 clients.Add(client);
-                processer.connect.Process(client, default);
+                processer.OnConnect(client);
                 client.processer = processer;
             }
         }
