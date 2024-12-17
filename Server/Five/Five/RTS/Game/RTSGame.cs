@@ -14,7 +14,6 @@ namespace Five.RTS
 
         public override void Start()
         {
-            base.Start();
             foreach (var item in room.Players)
             {
                 int id = item.Id;

@@ -23,7 +23,7 @@ namespace Five
 
         public void OnStop()
         {
-            throw new NotImplementedException();
+            
         }
     }
 }

@@ -20,12 +20,12 @@ namespace Five
             clientProcesser.Process(client, message);
         }
     }
-    public class LocalClient:AClient
+    public class LocalApp:AClient
     {
         private ServceClient serverClient;
         private ServerProcesser serverProcesser;
 
-        public LocalClient(MessageProcesser clientProcesser, ServerProcesser serverProcesser)
+        public LocalApp(MessageProcesser clientProcesser, ServerProcesser serverProcesser)
         {
             serverClient = new ServceClient(this,clientProcesser);
             this.serverProcesser = serverProcesser;

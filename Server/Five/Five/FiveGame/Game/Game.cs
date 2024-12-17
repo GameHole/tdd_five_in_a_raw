@@ -23,7 +23,6 @@ namespace Five
 
         public override void Start()
         {
-            base.Start();
             charaters = new List<FiveCharater>();
             var chess = 1;
             foreach (var item in room.Players)

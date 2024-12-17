@@ -10,8 +10,6 @@ namespace Five
         internal IOutLineable outlineable;
 
         public INotifier notifier { get; set; }
-        internal IPlayable playable { get; set; }
-
         public int RoomId { get; internal set; } = -1;
         public int Id { get; }
 
@@ -25,18 +23,12 @@ namespace Five
         public virtual void Reset()
         {
             RoomId = 0;
-            playable = new NonePlayable();
             outlineable = new NoneOutLineable();
         }
         public virtual void OutLine()
         {
             notifier = new NoneNotifier();
             outlineable.OutLine();
-        }
-
-        public virtual Result Commit(Message message)
-        {
-            return playable.Commit(message, this);
         }
     }
 }

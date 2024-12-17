@@ -17,6 +17,10 @@ namespace FivesUnitTest
             return new Result(-1);
         }
 
+        public override void Start()
+        {
+        }
+
         public override void Stop()
         {
         }

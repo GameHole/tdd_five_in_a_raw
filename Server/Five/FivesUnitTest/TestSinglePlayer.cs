@@ -10,7 +10,7 @@ namespace FivesUnitTest
     {
         private MessageProcesser clientProcesser;
         private ServerProcesser serverProcesser;
-        private LocalClient sclient;
+        private LocalApp sclient;
 
         [SetUp]
         public void set()
@@ -19,7 +19,7 @@ namespace FivesUnitTest
 
             clientProcesser = new MessageProcesser(default);
 
-            sclient = new LocalClient(clientProcesser,serverProcesser);
+            sclient = new LocalApp(clientProcesser,serverProcesser);
 
         }
         [Test]

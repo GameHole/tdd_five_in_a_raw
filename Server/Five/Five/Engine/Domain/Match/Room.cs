@@ -41,10 +41,7 @@ namespace Five
             {
                 player.RoomId = Id;
                 players.TryAdd(player.Id, player);
-
-                player.playable = new WaitGamePlayable();
                 player.outlineable = new StopOutLineable(this, player);
-
                 return true;
             }
             return false;

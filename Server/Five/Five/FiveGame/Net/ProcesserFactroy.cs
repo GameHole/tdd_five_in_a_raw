@@ -1,4 +1,6 @@
-﻿namespace Five
+﻿using System.Collections.Generic;
+
+namespace Five
 {
     public class Binder
     {
@@ -21,21 +23,25 @@
         }
         public virtual ServerProcesser Factroy()
         {
+            List<AServceProcesser> processers = new List<AServceProcesser>();
+
             ServerProcesser app = new ServerProcesser(new OpCodeErrorResponseProcesser());
             var connect = new ConnectProcesser();
-            connect.Init(domain);
             app.SetConnectProcesser(connect);
             var stop = new ServerStopProcesser();
-            stop.Init(domain);
             app.serverStop = stop;
+
+            processers.Add(connect);
+            processers.Add(stop);
             var array = NewProcessers();
             foreach (var item in array)
             {
                 app.Add(item.OpCode, item.processer);
+                processers.Add(item.processer);
             }
-            foreach (var item in array)
+            foreach (var item in processers)
             {
-                item.processer.Init(domain);
+                item.Init(domain);
             }
             return app;
         }
