@@ -41,7 +41,7 @@ namespace FivesUnitTest
             test.Init(room);
             test.Start();
             var msg = new Message();
-            Assert.AreEqual(-1, player.Commit(msg).code);
+            Assert.AreEqual(-1, test.Commit(msg, player).code);
             Assert.AreSame(msg, test.msg);
             Assert.AreSame(player, test.player);
         }

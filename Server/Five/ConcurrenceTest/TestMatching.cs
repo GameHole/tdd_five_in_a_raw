@@ -13,27 +13,28 @@ namespace ConcurrenceTest
     {
         private Domain domain;
         private RoomRepository roomRsp;
-        private PlayerRepository mgr;
+        private PlayerRepository playerRsp;
         private MatchServce servce;
         private List<Player> players;
         int count = 10000;
         [SetUp]
         public void set()
         {
-            domain = new Domain(new GameFactroy(),new IdGenrator());
+            var fact = new TGameFactroy();
+            domain = new Domain(fact, new IdGenrator());
             roomRsp = domain.roomRsp;
-            mgr = domain.playerRsp;
+            playerRsp = domain.playerRsp;
             servce = domain.matchServce;
             players = new List<Player>(count);
             for (int i = 0; i < count; i++)
             {
                 var p = new Player(i);
                 players.Add(p);
-                mgr.Add(p);
+                playerRsp.Add(p);
             }
         }
         [Test]
-        public async Task testMgrMatch()
+        public async Task testMatch()
         {
             await Repeat.RepeatAsync(count, (i) =>
             {
@@ -70,7 +71,7 @@ namespace ConcurrenceTest
         }
 
         [Test]
-        public async Task testMgrCancelMatchAsync()
+        public async Task testCancelMatchAsync()
         {
             await Repeat.RepeatAsync(count, (i) =>
             {
@@ -82,6 +83,7 @@ namespace ConcurrenceTest
             });
             AssertCanceledOrStarted();
         }
+        
         [Test]
         public async Task testIdGenrator()
         {
@@ -100,7 +102,7 @@ namespace ConcurrenceTest
         {
             var loginSvc = new ConnectProcesser();
             loginSvc.Init(domain);
-            mgr.Stop();
+            playerRsp.Stop();
             List<LogSocket> sockets = new List<LogSocket>(count);
             for (int i = 0; i < count; i++)
             {
@@ -111,13 +113,23 @@ namespace ConcurrenceTest
             {
                 loginSvc.Process(socket,default);
             });
-            Assert.AreEqual(sockets.Count, mgr.Count);
+            Assert.AreEqual(sockets.Count, playerRsp.Count);
             AssertCo.AssertSequence(sockets.ToArray(),(a)=>a.Id);
             await Repeat.RepeatAsync(sockets, (socket) =>
             {
                 socket.Close();
             });
             AssertCo.AssertSequence(sockets.ToArray(), (a) => a.Id);
+        }
+        [Test]
+        public async Task testPlay()
+        {
+            await Repeat.RepeatAsync(count, (i) =>
+            {
+                servce.Match(i);
+                servce.Cancel(i);
+                domain.playServce.Commit(i, new PlayMessage { x = i % 2 });
+            });
         }
     }
 }

@@ -6,10 +6,11 @@ namespace Five
 {
     public class Domain
     {
-        public LoginServce loginServce { get; private set; }
         public PlayerRepository playerRsp { get; private set; }
         public RoomRepository roomRsp { get; private set; }
+        public LoginServce loginServce { get; private set; }
         public MatchServce matchServce { get; private set; }
+        public PlayServce playServce { get; private set; }
 
         public Domain(IGameFactroy factroy, IdGenrator genrator)
         {
@@ -17,6 +18,7 @@ namespace Five
             playerRsp = new PlayerRepository();
             matchServce = new MatchServce(roomRsp, playerRsp);
             loginServce = new LoginServce(playerRsp, genrator);
+            playServce = new PlayServce(playerRsp,roomRsp);
         }
         public virtual void Stop()
         {

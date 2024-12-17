@@ -7,8 +7,11 @@ namespace Five
     public abstract class AClient:INotifier
     {
         public int Id { get; internal set; }
-        public Action onClose;
+        public event Action onClose;
         public abstract void Send(Message message);
-        public abstract void Close();
+        public virtual void Close()
+        {
+            onClose?.Invoke();
+        }
     }
 }

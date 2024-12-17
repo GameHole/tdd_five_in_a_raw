@@ -37,7 +37,7 @@ namespace Five
 
         public bool Join(Player player)
         {
-            if (TryDistributeIdentity(out var playerId))
+            if (tryAdd())
             {
                 player.RoomId = Id;
                 players.TryAdd(player.Id, player);
@@ -49,10 +49,10 @@ namespace Five
             }
             return false;
         }
-        bool TryDistributeIdentity(out int index)
+        bool tryAdd()
         {
             var count = Interlocked.Increment(ref _count);
-            index = Interlocked.Decrement(ref count);
+            var index = Interlocked.Decrement(ref count);
             if (index >= maxPlayer)
             {
                 Interlocked.Decrement(ref _count);

@@ -11,14 +11,13 @@ namespace FivesUnitTest
     {
         private TIdGenrator gen;
         PlayerRepository rsp;
-        private LoginServce servce;
 
         [SetUp]
         public void SetUp()
         {
             gen = new TIdGenrator() { id=2,inviled=1 };
             rsp = new PlayerRepository();
-            servce = new LoginServce(rsp, gen);
+            
         }
         [Test]
         public void testNew()
@@ -26,12 +25,13 @@ namespace FivesUnitTest
             Assert.AreEqual(0, rsp.Count);
         }
         [Test]
-        public void testNewPlayer()
+        public void testLoginServce()
         {
+            LoginServce servce = new LoginServce(rsp, gen);
             var ntf = new NoneNotifier();
             var playerId = servce.Login(ntf);
             var player = rsp.FindPlayer(playerId);
-            Assert.AreSame(ntf,player.notifier);
+            Assert.AreSame(ntf, player.notifier);
             Assert.AreEqual(2, player.Id);
             Assert.AreEqual(1, rsp.Count);
             servce.OutLine(playerId);

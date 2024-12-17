@@ -9,6 +9,10 @@ namespace FivesUnitTest
     {
         public string log = "";
 
+        public LogResetPlayer(int id):base(id)
+        {
+        }
+
         public override void Reset()
         {
             base.Reset();

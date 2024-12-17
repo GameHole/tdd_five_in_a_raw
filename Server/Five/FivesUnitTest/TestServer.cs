@@ -10,11 +10,12 @@ using System.Threading.Tasks;
 
 namespace FivesUnitTest
 {
-    class TGameFactroy : IGameFactroy
+    public class TGameFactroy : IGameFactroy
     {
+       public TGame game= new TGame();
         public AGame Factroy()
         {
-            return new TGame();
+            return game;
         }
     }
     class TAccepter : Domain

@@ -85,7 +85,7 @@ namespace FivesUnitTest.RTS
         public void testPlayerInput()
         {
             game.Start();
-            ps[0].Commit(new MoveTo { x = 1, y = 2 });
+            game.Commit(new MoveTo { x = 1, y = 2 }, ps[0]);
             Assert.AreEqual(1, game.charaters[1].targetX);
             Assert.AreEqual(2, game.charaters[1].targetY);
             game.Commit(new MoveTo { x = 2, y = 3 }, ps[0]);

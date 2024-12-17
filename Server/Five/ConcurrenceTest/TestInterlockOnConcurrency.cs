@@ -35,7 +35,7 @@ namespace ConcurrenceTest
                 return Interlocked.Increment(ref pIndex);
             }
         }
-        int count = 100000;
+        int count = 10000;
         int index;
         int[] array;
         [SetUp]

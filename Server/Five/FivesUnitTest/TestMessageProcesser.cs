@@ -40,8 +40,7 @@ namespace FivesUnitTest
             matchProcesser.Init(mgr);
             var cnacelProcesser = new CancelRequestProcesser();
             cnacelProcesser.Init(mgr);
-            var playProcesser = new PlayRequestProcesser();
-            playProcesser.Init(mgr);
+           
 
             var opErrProcesser = new OpCodeErrorResponseProcesser();
 
@@ -53,11 +52,19 @@ namespace FivesUnitTest
 
             Assert.AreEqual(0, logPlayer.RoomId);
             Assert.AreEqual("Send opcode:4 result:0", logClient.log);
-            var message = new PlayRequest { x = 1, y = 2 };
-            playProcesser.Process(logClient, message);
            
-            Assert.AreSame(message, logPlayer.msg);
+            var message = new PlayRequest { x = 1, y = 2 };
+            var playProcesser = new PlayRequestProcesser();
+            playProcesser.Init(mgr);
+            playProcesser.Process(logClient, message);
             Assert.AreEqual("Send opcode:6 result:29999", logClient.log);
+            mgr.matchServce.Match(0);
+            playProcesser.Process(logClient, message);
+            Assert.AreEqual("Send opcode:6 result:30000", logClient.log);
+            mgr.playerRsp.Add(LogPlayer.EmntyLog(1));
+            mgr.matchServce.Match(1);
+            playProcesser.Process(logClient, message);
+            Assert.AreEqual("Send opcode:6 result:0", logClient.log);
 
             opErrProcesser.Process(logClient, new Message(200));
             Assert.AreEqual("Send opcode:-10000 unknown opcode:200", logClient.log);
@@ -73,7 +80,7 @@ namespace FivesUnitTest
             var player = mgr.playerRsp.FindPlayer(logClient.Id);
             Assert.AreSame(logClient, player.notifier);
             Assert.AreEqual(player.Id, logClient.Id);
-            logClient.onClose.Invoke();
+            logClient.Close();
             Assert.AreEqual(typeof(NoneNotifier), player.notifier.GetType());
             Assert.AreEqual(0, mgr.playerRsp.Count);
             Assert.AreEqual(2, logClient.Id);

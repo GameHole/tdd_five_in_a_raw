@@ -2,7 +2,7 @@
 
 namespace FivesUnitTest
 {
-    internal class TIdGenrator : IdGenrator
+    public class TIdGenrator : IdGenrator
     {
         internal int id;
         internal int inviled;

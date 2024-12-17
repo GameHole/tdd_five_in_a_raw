@@ -77,7 +77,7 @@ namespace Five
         protected virtual void CloseInternal()
         {
             Release();
-            onClose?.Invoke();
+            base.Close();
         }
         public override void Close()
         {

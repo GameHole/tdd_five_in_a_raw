@@ -58,10 +58,6 @@ namespace Five
                 clients.Add(client);
                 processer.connect.Process(client, default);
                 client.processer = processer;
-                //client.onRecv = (message) =>
-                //{
-                //    processer.Process(client, message);
-                //};
             }
         }
     }

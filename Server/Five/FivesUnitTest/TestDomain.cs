@@ -14,7 +14,7 @@ namespace FivesUnitTest
             var domain = new Domain(new TGameFactroy(), new TIdGenrator());
             Assert.NotNull(domain.matchServce);
             Assert.NotNull(domain.loginServce);
-            Assert.NotNull(domain.gameServce);
+            Assert.NotNull(domain.playServce);
         }
     }
 }

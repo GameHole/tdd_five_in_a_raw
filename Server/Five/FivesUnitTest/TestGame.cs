@@ -44,7 +44,7 @@ namespace FivesUnitTest
                 var item = players[i];
                 var chess = game.GetPlayerChess(item);
                 Assert.AreEqual(i + 1, chess);
-                item.Commit(new PlayRequest { y=i});
+                game.Commit(new PlayRequest { y=i},item);
                 Assert.AreEqual(chess, game.chessboard.GetValue(0, i));
             }
         }
@@ -80,10 +80,10 @@ namespace FivesUnitTest
         {
             for (int i = 0; i < 2; i++)
             {
-                Assert.IsTrue(room.Join(new Player()));
+                Assert.IsTrue(room.Join(new Player(i)));
             }
             Assert.AreEqual(room.maxPlayer, room.PlayerCount);
-            Assert.IsFalse(room.Join(new Player()));
+            Assert.IsFalse(room.Join(new Player(3)));
             Assert.AreEqual(room.maxPlayer, room.PlayerCount);
         }
         [Test]
